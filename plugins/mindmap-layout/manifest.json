@@ -1,0 +1,9 @@
+{
+  "id": "mindmap-layout",
+  "name": "Mindmap Layout",
+  "version": "1.0.3",
+  "description": "UI overhaul: the app menu and correspondence items become an interactive mindmap. Drill into cards, letters, planets, and paths to see how they link.",
+  "entry": "mindmap-layout.js",
+  "css": "mindmap-layout.css",
+  "role": "skin"
+}

@@ -1,0 +1,133 @@
+.plugin-api-section {
+  padding: 24px 20px 48px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.hydrus-shell {
+  display: grid;
+  gap: 16px;
+}
+
+.hydrus-head h1 {
+  margin: 0 0 4px;
+  font-size: 28px;
+}
+
+.hydrus-head p {
+  margin: 0;
+  color: var(--tt-text-muted);
+  font-size: 13px;
+}
+
+.hydrus-tabs,
+.hydrus-inline,
+.hydrus-search {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.hydrus-tabs button,
+.hydrus-btn {
+  border: 1px solid var(--tt-border);
+  background: var(--tt-bg-deep);
+  color: inherit;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.hydrus-tabs button.is-active,
+.hydrus-btn-primary {
+  background: var(--tt-accent, #6b4e71);
+  border-color: transparent;
+}
+
+.hydrus-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.hydrus-search input,
+.hydrus-select {
+  flex: 1 1 160px;
+  min-width: 0;
+  border: 1px solid var(--tt-border);
+  background: var(--tt-bg-deep);
+  color: inherit;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+.hydrus-status,
+.hydrus-meta {
+  min-height: 18px;
+  color: var(--tt-text-muted);
+  font-size: 12px;
+}
+
+.hydrus-status.is-error {
+  color: #fca5a5;
+}
+
+.hydrus-status.is-offline {
+  color: var(--tt-text-muted);
+}
+
+.hydrus-status.is-ok {
+  color: var(--tt-accent);
+}
+
+.hydrus-empty {
+  border: 1px dashed var(--tt-border);
+  border-radius: 12px;
+  padding: 18px 14px;
+  color: var(--tt-text-muted);
+}
+
+.hydrus-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+.hydrus-file {
+  border: 1px solid var(--tt-border);
+  border-radius: 12px;
+  background: var(--tt-bg-deep);
+  padding: 10px;
+  display: grid;
+  gap: 6px;
+}
+
+.hydrus-file strong {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.hydrus-thumb {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--tt-bg, #111);
+}
+
+.hydrus-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hydrus-chip {
+  border: 1px solid var(--tt-border);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 11px;
+}

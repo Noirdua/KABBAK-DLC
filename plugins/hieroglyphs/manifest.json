@@ -1,0 +1,12 @@
+{
+  "id": "hieroglyphs",
+  "name": "Hieroglyphs",
+  "version": "1.0.0",
+  "description": "Egyptian hieroglyph dictionary and sign viewer (Gardiner's list). Browse 6,700+ signs with SVGs, tags, and transliterations.",
+  "entry": "hieroglyphs.js",
+  "css": "hieroglyphs.css",
+  "section": {
+    "id": "hieroglyphs",
+    "label": "Hieroglyphs"
+  }
+}

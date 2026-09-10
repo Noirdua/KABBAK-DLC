@@ -1,0 +1,11 @@
+{
+  "entries": [
+    {
+      "version": "1.0.0",
+      "date": "2026-09-07",
+      "notes": [
+        "Official default layout plugin: keeps the built-in top bar and page layout so it can be chosen next to other UI overhauls."
+      ]
+    }
+  ]
+}

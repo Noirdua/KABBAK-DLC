@@ -1,0 +1,13 @@
+{
+  "id": "urantia",
+  "name": "Urantia Book",
+  "kind": "api",
+  "version": "1.1.0",
+  "description": "Read, listen, search, and browse The Urantia Book via api.urantia.dev — papers, audio, entities, lookup, and semantic search.",
+  "entry": "urantia.js",
+  "css": "urantia.css",
+  "section": {
+    "id": "urantia",
+    "label": "Urantia"
+  }
+}

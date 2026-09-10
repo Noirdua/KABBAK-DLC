@@ -7,16 +7,23 @@ Downloadable content repository for the KABBAK API server. Add decks, text sourc
 ```
 decks/                 ← Tarot deck folders (one per deck)
   Rider Waite/
-    deck.json          ← Deck manifest
-    00-TheFool.png     ← Card images
-    ...
+    deck.json
+    00-TheFool.png
 texts/                 ← Text source folders (one per source)
   Gospel of Philip/
-    text.json          ← Metadata manifest (title, author, format, etc.)
-    gospel.txt         ← Content file
+    text.json
+    gospel.txt
 packs/                 ← Curated install lists (no content files)
   Abrahamic/
-    pack.json          ← Lists the decks and texts to install together
+    pack.json
+plugins/               ← GUI plugins (widgets, skins, section pages)
+  hieroglyphs/
+    manifest.json
+    hieroglyphs.js
+apis/                  ← Extra app pages that talk to an external API
+  hydrus-network/
+    manifest.json
+    hydrus-network.js
 ```
 
 ## Adding the Catalog to a Server

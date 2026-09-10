@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "version": "1.0.0",
+      "date": "2026-09-07",
+      "notes": [
+        "Example skin plugin: left dock navigation, content on the right, bottom HUD."
+      ]
+    },
+    {
+      "version": "1.0.1",
+      "date": "2026-09-07",
+      "notes": [
+        "Custom thin scrollbars that follow the active theme instead of the OS chrome."
+      ]
+    }
+  ]
+}

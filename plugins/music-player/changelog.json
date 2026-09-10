@@ -1,0 +1,55 @@
+{
+  "entries": [
+    {
+      "version": "2.4.0",
+      "date": "2026-08-26",
+      "notes": [
+        "Shared song library. Playlists assign existing tracks with checkboxes — no per-playlist re-upload."
+      ]
+    },
+    {
+      "version": "2.3.0",
+      "date": "2026-08-26",
+      "notes": [
+        "Playlist-only player: no reserved music/ambient mode. Users pick a playlist and a song from a list."
+      ]
+    },
+    {
+      "version": "2.2.0",
+      "date": "2026-08-26",
+      "notes": [
+        "Player bar and settings list follow app Looks (Neon, Wood, Paper, Stone, Velvet) and color palettes."
+      ]
+    },
+    {
+      "version": "2.1.0",
+      "date": "2026-08-24",
+      "notes": [
+        "Widget alignment: align the player left, center, or right in the top bar (config.align)."
+      ]
+    },
+    {
+      "version": "2.0.0",
+      "date": "2026-08-24",
+      "notes": [
+        "Removed the generative synth: the player only plays uploaded audio files.",
+        "Multiple playlists: every folder inside the plugin is a playlist with its own track order.",
+        "Only audio files (mp3, ogg, wav, webm, m4a) appear in playlists — README and other files are ignored."
+      ]
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-08-24",
+      "notes": [
+        "Playlist order: reorder tracks in the DLC shop; playback follows the configured order (top first)."
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-08-21",
+      "notes": [
+        "Initial release: generative ambient music player for the top bar."
+      ]
+    }
+  ]
+}

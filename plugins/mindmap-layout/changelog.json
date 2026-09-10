@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "version": "1.0.0",
+      "date": "2026-09-07",
+      "notes": [
+        "Radial mindmap chrome: menu as a graph, items expand into correspondence maps, original pages available in a side drawer."
+      ]
+    },
+    {
+      "version": "1.0.1",
+      "date": "2026-09-07",
+      "notes": [
+        "Clicks on nodes and links were swallowed by canvas panning; they now open the next map or original page."
+      ]
+    }
+  ]
+}

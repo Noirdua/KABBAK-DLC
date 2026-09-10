@@ -1,0 +1,9 @@
+{
+  "id": "layout-dock",
+  "name": "Dock Layout",
+  "version": "1.0.1",
+  "description": "Example UI overhaul: a persistent left dock and bottom status strip instead of the top bar. App pages are unchanged; only the chrome/layout is replaced.",
+  "entry": "layout-dock.js",
+  "css": "layout-dock.css",
+  "role": "skin"
+}

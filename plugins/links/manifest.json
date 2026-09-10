@@ -1,0 +1,12 @@
+{
+  "id": "links",
+  "name": "Links",
+  "version": "1.0.0",
+  "description": "Animated bookmark directory. Admins add entries with optional custom images stored in the plugin folder.",
+  "entry": "links.js",
+  "css": "links.css",
+  "section": {
+    "id": "links",
+    "label": "Links"
+  }
+}

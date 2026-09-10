@@ -1,0 +1,445 @@
+/* music-player.js — DLC plugin: playlist player for the top bar.
+ * Plays admin-uploaded audio files only. Every folder inside the plugin is a
+ * playlist; the playlist select picks the folder and playback follows its
+ * configured order (config.playlistOrder, top first).
+ * config.json: {
+ *   "align": "left" | "center" | "right",
+ *   "playlistOrder": { "<folder>": ["track-a.mp3", "track-b.mp3"] }
+ * }
+ */
+(function () {
+  "use strict";
+
+  const LIBRARY_DIR = "library";
+  const DEFAULT_CONFIG = {
+    align: "center",
+    playlists: []
+  };
+
+  const AUDIO_EXTENSIONS = new Set([".mp3", ".ogg", ".wav", ".webm", ".m4a"]);
+
+  function displayName(folder) {
+    return String(folder || "")
+      .replace(/[-_]+/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase()) || "Playlist";
+  }
+
+  function isAudioFile(file) {
+    const name = String(file?.name || "").toLowerCase();
+    if (!name || name.startsWith(".")) return false;
+    return AUDIO_EXTENSIONS.has(`.${name.split(".").pop()}`);
+  }
+
+  function createPlayerUi(helpers) {
+    const root = document.createElement("div");
+    root.className = "mp-root";
+    root.setAttribute("role", "group");
+    root.setAttribute("aria-label", "Music Player");
+
+    let config = { ...DEFAULT_CONFIG, ...(helpers.config || {}) };
+    const playlists = [];
+    const files = [];
+    let currentPlaylist = "";
+    let trackIndex = 0;
+    let currentTrackName = "";
+    let audio = null;
+    let isPlaying = false;
+    let loopEnabled = false;
+
+    // Horizontal placement of the whole widget inside the top bar.
+    function applyAlignment(align) {
+      const host = helpers.containerEl;
+      if (!host) return;
+      const normalized = String(align || "center").trim().toLowerCase();
+      if (normalized === "right") {
+        host.style.marginLeft = "auto";
+        host.style.marginRight = "0";
+      } else if (normalized === "center") {
+        host.style.marginLeft = "auto";
+        host.style.marginRight = "auto";
+      } else {
+        host.style.marginLeft = "0";
+        host.style.marginRight = "auto";
+      }
+    }
+
+    // Order within a playlist: configured order first, unlisted tracks appended
+    // alphabetically.
+    function configuredPlaylists() {
+      if (Array.isArray(config.playlists) && config.playlists.length) return config.playlists;
+      return Object.entries(config.playlistOrder || {}).map(([name, tracks]) => ({
+        id: name,
+        name: displayName(name),
+        tracks: Array.isArray(tracks) ? tracks : []
+      }));
+    }
+
+    async function indexLibrary() {
+      const byName = new Map();
+      const addFiles = async (dir) => {
+        try {
+          const listed = await helpers.listFiles(dir);
+          (Array.isArray(listed) ? listed : []).filter(isAudioFile).forEach((file) => {
+            const key = String(file.name || "").toLowerCase();
+            if (key && !byName.has(key)) byName.set(key, { ...file, dir });
+          });
+        } catch (_error) {}
+      };
+      await addFiles(LIBRARY_DIR);
+      try {
+        const dirs = await helpers.listDirs();
+        for (const entry of Array.isArray(dirs) ? dirs : []) {
+          const dir = String(entry?.name || "");
+          if (!dir || dir === LIBRARY_DIR) continue;
+          await addFiles(dir);
+        }
+      } catch (_error) {}
+      return byName;
+    }
+
+    async function refreshPlaylists() {
+      playlists.splice(0, playlists.length, ...configuredPlaylists());
+      playlistSelect.innerHTML = "";
+      if (!playlists.length) {
+        const option = document.createElement("option");
+        option.value = "";
+        option.textContent = "— no playlists —";
+        playlistSelect.appendChild(option);
+      } else {
+        playlists.forEach((entry) => {
+          const option = document.createElement("option");
+          option.value = entry.id;
+          option.textContent = entry.name || displayName(entry.id);
+          playlistSelect.appendChild(option);
+        });
+      }
+      if (!currentPlaylist || !playlists.some((entry) => entry.id === currentPlaylist)) {
+        currentPlaylist = playlists[0]?.id || "";
+      }
+      playlistSelect.value = currentPlaylist;
+      await refreshFiles();
+    }
+
+    async function refreshFiles() {
+      const playlist = playlists.find((entry) => entry.id === currentPlaylist);
+      const wanted = Array.isArray(playlist?.tracks) ? playlist.tracks : [];
+      const library = await indexLibrary();
+      const nextFiles = wanted.map((name) => library.get(String(name).toLowerCase())).filter(Boolean);
+      files.splice(0, files.length, ...nextFiles);
+      if (currentTrackName) {
+        const foundIndex = files.findIndex((file) => file.name === currentTrackName);
+        trackIndex = foundIndex >= 0 ? foundIndex : Math.min(trackIndex, files.length - 1);
+      }
+      refreshTrackOptions();
+      if (files.length && (!audio || !audio.src)) {
+        loadTrack(Math.max(0, Math.min(trackIndex, files.length - 1)));
+      }
+      syncPlayUi();
+    }
+
+    async function refreshFromConfig() {
+      let nextConfig = DEFAULT_CONFIG;
+      try {
+        const url = helpers.assetUrl("config.json");
+        if (url) {
+          const response = await fetch(url, { cache: "no-store" });
+          if (response.ok) {
+            const loaded = await response.json();
+            if (loaded && typeof loaded === "object" && !Array.isArray(loaded)) {
+              nextConfig = { ...DEFAULT_CONFIG, ...loaded };
+            }
+          }
+        }
+      } catch (_error) {}
+      config = { ...DEFAULT_CONFIG, ...nextConfig };
+      applyAlignment(config.align);
+      await refreshFiles();
+    }
+
+    const onContentUpdated = (event) => {
+      if (String(event?.detail?.pluginName || "") === "music-player") {
+        void refreshFromConfig();
+        void refreshPlaylists();
+      }
+    };
+    document.addEventListener("taro-plugin-content-updated", onContentUpdated);
+
+    const playBtn = document.createElement("button");
+    playBtn.type = "button";
+    playBtn.className = "mp-play";
+    playBtn.setAttribute("aria-label", "Play/Pause");
+
+    const playlistSelect = document.createElement("select");
+    playlistSelect.className = "mp-preset";
+    playlistSelect.setAttribute("aria-label", "Playlist");
+
+    const songBtn = document.createElement("button");
+    songBtn.type = "button";
+    songBtn.className = "mp-song-btn";
+    songBtn.setAttribute("aria-label", "Choose song");
+    songBtn.setAttribute("aria-expanded", "false");
+    songBtn.textContent = "Songs";
+
+    const songPanel = document.createElement("div");
+    songPanel.className = "mp-tracks-panel";
+    songPanel.hidden = true;
+
+    const prevBtn = document.createElement("button");
+    prevBtn.type = "button";
+    prevBtn.className = "mp-play";
+    prevBtn.textContent = "⏮";
+    prevBtn.setAttribute("aria-label", "Previous track");
+
+    const nextBtn = document.createElement("button");
+    nextBtn.type = "button";
+    nextBtn.className = "mp-play";
+    nextBtn.textContent = "⏭";
+    nextBtn.setAttribute("aria-label", "Next track");
+
+    const loopBtn = document.createElement("button");
+    loopBtn.type = "button";
+    loopBtn.className = "mp-play";
+    loopBtn.textContent = "🔁";
+    loopBtn.setAttribute("aria-label", "Toggle loop");
+    loopBtn.classList.toggle("is-active", loopEnabled);
+
+    const seek = document.createElement("input");
+    seek.type = "range";
+    seek.className = "mp-volume";
+    seek.min = "0";
+    seek.max = "100";
+    seek.step = "0.1";
+    seek.value = "0";
+    seek.setAttribute("aria-label", "Seek");
+    seek.disabled = true;
+
+    const volume = document.createElement("input");
+    volume.type = "range";
+    volume.className = "mp-volume";
+    volume.min = "0";
+    volume.max = "1";
+    volume.step = "0.01";
+    volume.value = "0.75";
+    volume.setAttribute("aria-label", "Volume");
+
+    function setSongPanelOpen(open) {
+      songPanel.hidden = !open;
+      songBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    function refreshTrackOptions() {
+      songPanel.innerHTML = "";
+      if (!files.length) {
+        const empty = document.createElement("div");
+        empty.className = "mp-tracks-empty";
+        empty.textContent = currentPlaylist ? "No songs in this playlist." : "No playlists yet.";
+        songPanel.appendChild(empty);
+        songBtn.textContent = "Songs";
+        return;
+      }
+      files.forEach((file, index) => {
+        const row = document.createElement("button");
+        row.type = "button";
+        row.className = "mp-track-name";
+        row.classList.toggle("is-current", index === trackIndex);
+        row.textContent = file.name.replace(/\.[^.]+$/, "");
+        row.addEventListener("click", () => {
+          loadTrack(index);
+          setSongPanelOpen(false);
+          pauseFiles();
+          playFiles();
+        });
+        songPanel.appendChild(row);
+      });
+      const current = files[trackIndex];
+      songBtn.textContent = current ? current.name.replace(/\.[^.]+$/, "") : "Songs";
+    }
+
+    function loadTrack(index) {
+      if (!files.length) {
+        trackIndex = 0;
+        currentTrackName = "";
+        return;
+      }
+      trackIndex = Math.min(files.length - 1, Math.max(0, Number(index) || 0));
+      if (!audio) {
+        audio = new Audio();
+        audio.preload = "metadata";
+        audio.loop = false;
+        audio.addEventListener("ended", handleTrackEnded);
+      }
+      const file = files[trackIndex];
+      currentTrackName = file.name;
+      audio.src = helpers.fileUrl(file.dir || LIBRARY_DIR, file.name);
+      audio.volume = Number(volume.value) || 0.75;
+      refreshTrackOptions();
+    }
+
+    function syncPlayUi() {
+      playBtn.textContent = isPlaying ? "❚❚" : "▶";
+      playBtn.classList.toggle("is-playing", isPlaying);
+      const hasTracks = files.length > 0;
+      playBtn.disabled = !hasTracks;
+      songBtn.disabled = !hasTracks;
+      playlistSelect.disabled = !playlists.length;
+      prevBtn.disabled = !hasTracks;
+      nextBtn.disabled = !hasTracks;
+      if (!hasTracks) {
+        seek.value = "0";
+        seek.disabled = true;
+      }
+    }
+
+    function playFiles() {
+      if (!files.length) return;
+      if (!audio) loadTrack(trackIndex);
+      void audio.play().then(() => {
+        isPlaying = true;
+        seek.disabled = false;
+        syncPlayUi();
+      }).catch(() => {
+        isPlaying = false;
+        syncPlayUi();
+      });
+    }
+
+    function pauseFiles() {
+      if (!audio) return;
+      audio.pause();
+      isPlaying = false;
+      syncPlayUi();
+    }
+
+    function stopAll() {
+      if (audio) {
+        audio.pause();
+        audio.removeAttribute("src");
+        try { audio.load(); } catch {}
+        audio = null;
+      }
+      isPlaying = false;
+      seek.value = "0";
+      seek.disabled = true;
+      syncPlayUi();
+    }
+
+    const handleTrackEnded = () => {
+      if (!audio || !files.length) return;
+      if (loopEnabled || trackIndex < files.length - 1) {
+        loadTrack((trackIndex + 1) % files.length);
+        playFiles();
+      } else {
+        isPlaying = false;
+        seek.value = "0";
+        syncPlayUi();
+      }
+    };
+
+    playBtn.addEventListener("click", () => {
+      if (isPlaying) pauseFiles();
+      else playFiles();
+    });
+    volume.addEventListener("input", () => {
+      const value = Number(volume.value) || 0;
+      if (audio) audio.volume = value;
+    });
+    playlistSelect.addEventListener("change", () => {
+      currentPlaylist = playlistSelect.value;
+      currentTrackName = "";
+      trackIndex = 0;
+      stopAll();
+      void refreshFiles();
+    });
+    songBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      setSongPanelOpen(songPanel.hidden);
+    });
+    document.addEventListener("click", (event) => {
+      if (!root.contains(event.target)) setSongPanelOpen(false);
+    });
+    prevBtn.addEventListener("click", () => {
+      if (!files.length) return;
+      const wasPlaying = isPlaying;
+      loadTrack((trackIndex - 1 + files.length) % files.length);
+      if (wasPlaying) {
+        pauseFiles();
+        playFiles();
+      }
+    });
+    nextBtn.addEventListener("click", () => {
+      if (!files.length) return;
+      const wasPlaying = isPlaying;
+      loadTrack((trackIndex + 1) % files.length);
+      if (wasPlaying) {
+        pauseFiles();
+        playFiles();
+      }
+    });
+    loopBtn.addEventListener("click", () => {
+      loopEnabled = !loopEnabled;
+      loopBtn.classList.toggle("is-active", loopEnabled);
+    });
+    seek.addEventListener("input", () => {
+      if (!audio || !Number.isFinite(audio.duration)) return;
+      audio.currentTime = (Number(seek.value) / 100) * audio.duration;
+    });
+    const timeInterval = window.setInterval(() => {
+      if (audio && Number.isFinite(audio.duration) && audio.duration > 0) {
+        seek.value = String((audio.currentTime / audio.duration) * 100);
+      }
+    }, 500);
+
+    root.appendChild(playBtn);
+    root.appendChild(playlistSelect);
+    root.appendChild(songBtn);
+    root.appendChild(songPanel);
+    root.appendChild(prevBtn);
+    root.appendChild(nextBtn);
+    root.appendChild(loopBtn);
+    root.appendChild(seek);
+    root.appendChild(volume);
+
+    void refreshPlaylists();
+    applyAlignment(config.align);
+    syncPlayUi();
+
+    return {
+      root,
+      dispose() {
+        document.removeEventListener("taro-plugin-content-updated", onContentUpdated);
+        window.clearInterval(timeInterval);
+        stopAll();
+      }
+    };
+  }
+
+  const host = window.TaroTimePluginHost;
+  if (!host || typeof host.register !== "function") {
+    console.warn("[music-player] TaroTimePluginHost is not available.");
+    return;
+  }
+
+  host.register({
+    id: "music-player",
+    name: "Music Player",
+    version: "2.4.0",
+    mount(containerEl, helpers) {
+      let config = DEFAULT_CONFIG;
+      const configUrl = helpers.assetUrl("config.json");
+      if (configUrl) {
+        fetch(configUrl)
+          .then((response) => (response.ok ? response.json() : null))
+          .catch(() => null)
+          .then((loadedConfig) => {
+            if (loadedConfig && typeof loadedConfig === "object" && !Array.isArray(loadedConfig)) {
+              config = { ...DEFAULT_CONFIG, ...loadedConfig };
+            }
+            const ui = createPlayerUi({ ...helpers, config, containerEl });
+            containerEl.appendChild(ui.root);
+            containerEl.addEventListener("remove", () => ui.dispose());
+          });
+      }
+      return null;
+    }
+  });
+})();

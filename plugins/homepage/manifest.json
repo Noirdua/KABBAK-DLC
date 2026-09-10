@@ -1,0 +1,8 @@
+{
+  "id": "homepage",
+  "name": "Homepage",
+  "version": "1.1.0",
+  "description": "Replaces the app's welcome content with your own HTML. Put your page in this plugin's index.html — editable from Settings > DLC Shop & Plugins.",
+  "entry": "homepage.js",
+  "css": ""
+}

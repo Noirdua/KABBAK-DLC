@@ -1,0 +1,157 @@
+.plugin-api-section {
+  padding: 24px 20px 48px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.urantia-shell {
+  display: grid;
+  gap: 16px;
+}
+
+.urantia-head h1 {
+  margin: 0 0 4px;
+  font-size: 28px;
+}
+
+.urantia-head p {
+  margin: 0;
+  color: var(--tt-text-muted);
+  font-size: 13px;
+}
+
+.urantia-tabs,
+.urantia-inline {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.urantia-tabs button,
+.urantia-btn {
+  border: 1px solid var(--tt-border);
+  background: var(--tt-bg-deep);
+  color: inherit;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.urantia-tabs button.is-active,
+.urantia-btn-primary {
+  background: var(--tt-accent, #6b4e71);
+  border-color: transparent;
+}
+
+.urantia-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.urantia-search {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.urantia-search input,
+.urantia-select {
+  flex: 1 1 160px;
+  min-width: 0;
+  border: 1px solid var(--tt-border);
+  background: var(--tt-bg-deep);
+  color: inherit;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+.urantia-status,
+.urantia-meta {
+  min-height: 18px;
+  color: var(--tt-text-muted);
+  font-size: 12px;
+}
+
+.urantia-status.is-error {
+  color: #fca5a5;
+}
+
+.urantia-list {
+  display: grid;
+  gap: 10px;
+}
+
+.urantia-item,
+.urantia-para {
+  border: 1px solid var(--tt-border);
+  border-radius: 12px;
+  background: var(--tt-bg-deep);
+  padding: 12px 14px;
+}
+
+.urantia-item {
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  width: 100%;
+}
+
+.urantia-item:hover {
+  border-color: var(--tt-accent, #6b4e71);
+}
+
+.urantia-item strong,
+.urantia-para strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.urantia-crumb {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 13px;
+}
+
+.urantia-crumb button {
+  background: none;
+  border: 0;
+  color: var(--tt-accent, #c4a0cc);
+  cursor: pointer;
+  padding: 0;
+}
+
+.urantia-para p {
+  margin: 8px 0 0;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.urantia-audio {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.urantia-audio audio {
+  width: 100%;
+}
+
+.urantia-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.urantia-chip {
+  border: 1px solid var(--tt-border);
+  background: transparent;
+  color: inherit;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}

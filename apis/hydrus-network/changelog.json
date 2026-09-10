@@ -1,0 +1,36 @@
+{
+  "entries": [
+    {
+      "version": "1.7.0",
+      "notes": "System predicate filters: filetype (image/video/audio/animation/pdf/archive) and inbox/archive."
+    },
+    {
+      "version": "1.6.0",
+      "notes": "Web button opens the file in the browser. Proxy now uses Hydrus session keys so the access key is sent only once and never appears in URLs."
+    },
+    {
+      "version": "1.5.0",
+      "notes": "Cards show the title tag and include a Download button for the original file."
+    },
+    {
+      "version": "1.4.0",
+      "notes": "Freeform * search returns all files (system:everything). Typed search is used as-is instead of being ANDed onto the category."
+    },
+    {
+      "version": "1.3.0",
+      "notes": "Admin settings are only Allow search plus category name and search query. Connection stays on the API."
+    },
+    {
+      "version": "1.2.0",
+      "notes": "Admin allowSearch option shows a freeform tag search bar for any Hydrus query."
+    },
+    {
+      "version": "1.1.0",
+      "notes": "Admin-configurable categories as Hydrus tag search prompts, with in-plugin filtering."
+    },
+    {
+      "version": "1.0.0",
+      "notes": "Initial Hydrus Network API plugin: connection test and client status."
+    }
+  ]
+}

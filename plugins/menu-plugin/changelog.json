@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "version": "1.8.0",
+      "date": "2026-09-01",
+      "notes": [
+        "Scriber is a known section: the menu editor recognizes the writing studio and the default menu includes it."
+      ]
+    },
+    {
+      "version": "1.7.0",
+      "date": "2026-08-31",
+      "notes": [
+        "Optional menu search bar (showSearch) that filters entries by label, id, dataset, and keywords.",
+        "Menu items and submenu children can carry search keywords, editable in the menu editor."
+      ]
+    },
+    {
+      "version": "1.6.2",
+      "date": "2026-08-26",
+      "notes": [
+        "Configured order is applied from the front of the menu so leftover default items cannot keep Admin/Settings/Profile pinned at the bottom.",
+        "LED pips no longer inherit the default Settings separator position (icon sat at the top-left)."
+      ]
+    },
+    {
+      "version": "1.6.0",
+      "date": "2026-08-26",
+      "notes": [
+        "Menu item themes: LED, wood, paper, stone, and velvet. Choose them in the menu editor."
+      ]
+    },
+    {
+      "version": "1.5.0",
+      "date": "2026-08-26",
+      "notes": [
+        "Settings, Profile, and Admin are regular reorderable menu items. They cannot be removed or disabled. The pinned SYSTEM group is gone."
+      ]
+    },
+    {
+      "version": "1.4.0",
+      "date": "2026-08-24",
+      "notes": [
+        "New option hideMenuButton: hide the 'Menu' button and use the banner title to open the navigation drawer."
+      ]
+    },
+    {
+      "version": "1.3.0",
+      "date": "2026-08-24",
+      "notes": [
+        "New config option menuTitle: set a custom banner title (blank keeps the app default)."
+      ]
+    },
+    {
+      "version": "1.2.0",
+      "date": "2026-08-22",
+      "notes": [
+        "Menu spacing presets (compact / normal / roomy).",
+        "Banner logo image support.",
+        "Configurable system header label and menu presets."
+      ]
+    }
+  ]
+}

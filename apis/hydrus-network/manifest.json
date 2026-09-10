@@ -1,0 +1,13 @@
+{
+  "id": "hydrus-network",
+  "name": "Hydrus Network",
+  "kind": "api",
+  "version": "1.7.1",
+  "description": "Connect to a Hydrus Network client API. Admins set category name + tag search, and can allow a freeform search bar.",
+  "entry": "hydrus-network.js",
+  "css": "hydrus-network.css",
+  "section": {
+    "id": "hydrus-network",
+    "label": "Hydrus Network"
+  }
+}

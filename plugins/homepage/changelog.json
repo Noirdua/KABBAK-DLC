@@ -1,0 +1,19 @@
+{
+  "entries": [
+    {
+      "version": "1.1.0",
+      "date": "2026-08-24",
+      "notes": [
+        "The built-in welcome no longer flashes while the plugin page loads.",
+        "Falls back to the built-in welcome when the plugin page cannot be loaded."
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-08-21",
+      "notes": [
+        "Initial release: replaces the app's welcome content with the plugin's index.html."
+      ]
+    }
+  ]
+}

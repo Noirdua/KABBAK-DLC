@@ -1,0 +1,209 @@
+/* layout-dock — example UI overhaul. Layout only; colors follow the active theme. */
+.layout-dock {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) 52px;
+  grid-template-areas:
+    "nav pages"
+    "hud hud";
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  background: var(--tt-page-bg);
+}
+
+.layout-dock-nav {
+  grid-area: nav;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid var(--tt-border);
+  background: var(--tt-bg);
+}
+
+.layout-dock-brand {
+  flex: 0 0 auto;
+  padding: 16px 14px 12px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: var(--tt-brand);
+}
+
+.layout-dock-menu {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.layout-dock-item,
+.layout-dock-group-toggle,
+.layout-dock-leaf {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  color: var(--tt-text);
+  cursor: pointer;
+  font: inherit;
+  padding: 8px 10px;
+  border-radius: 4px;
+}
+
+.layout-dock-group-toggle {
+  font-weight: 700;
+  color: var(--tt-text-soft);
+}
+
+.layout-dock-leaf {
+  padding-left: 22px;
+  font-size: 13px;
+}
+
+.layout-dock-item.is-active,
+.layout-dock-leaf.is-active,
+.layout-dock-group-toggle.is-active {
+  background: var(--tt-surface);
+  color: var(--tt-text-bright);
+}
+
+.layout-dock-children {
+  display: none;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0 0 6px;
+}
+
+.layout-dock-group.is-open > .layout-dock-children {
+  display: flex;
+}
+
+.layout-dock-pages {
+  grid-area: pages;
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.layout-dock-hud {
+  grid-area: hud;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  border-top: 1px solid var(--tt-border);
+  background: var(--tt-bg-deep);
+}
+
+.layout-dock-back,
+.layout-dock-home {
+  border: 1px solid var(--tt-border);
+  background: var(--tt-surface);
+  color: var(--tt-text);
+  cursor: pointer;
+  font: inherit;
+  padding: 6px 10px;
+}
+
+.layout-dock-back:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.layout-dock-status {
+  flex: 0 0 auto;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tt-text-muted);
+}
+
+.layout-dock-widgets {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.layout-dock-widgets .plugin-topbar-host {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.layout-dock,
+.layout-dock * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--tt-border-soft) var(--tt-bg-deepest);
+}
+
+.layout-dock ::-webkit-scrollbar,
+.layout-dock::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.layout-dock ::-webkit-scrollbar-track,
+.layout-dock::-webkit-scrollbar-track {
+  background: var(--tt-bg-deepest);
+}
+
+.layout-dock ::-webkit-scrollbar-thumb,
+.layout-dock::-webkit-scrollbar-thumb {
+  background: var(--tt-border-soft);
+  border: 2px solid var(--tt-bg-deepest);
+  border-radius: 8px;
+}
+
+.layout-dock ::-webkit-scrollbar-thumb:hover,
+.layout-dock::-webkit-scrollbar-thumb:hover {
+  background: var(--tt-accent-strong);
+}
+
+.layout-dock ::-webkit-scrollbar-corner,
+.layout-dock::-webkit-scrollbar-corner {
+  background: var(--tt-bg-deepest);
+}
+
+.layout-dock ::-webkit-scrollbar-button,
+.layout-dock::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+@media (max-width: 720px) {
+  .layout-dock {
+    grid-template-columns: 1fr;
+    grid-template-rows: 44px minmax(0, 1fr) 52px;
+    grid-template-areas:
+      "nav"
+      "pages"
+      "hud";
+  }
+  .layout-dock-nav {
+    flex-direction: row;
+    align-items: stretch;
+    border-right: 0;
+    border-bottom: 1px solid var(--tt-border);
+  }
+  .layout-dock-brand {
+    display: none;
+  }
+  .layout-dock-menu {
+    flex-direction: row;
+    overflow: auto;
+    padding: 4px 8px;
+  }
+  .layout-dock-group.is-open > .layout-dock-children {
+    flex-direction: row;
+  }
+  .layout-dock-leaf {
+    padding-left: 10px;
+  }
+}

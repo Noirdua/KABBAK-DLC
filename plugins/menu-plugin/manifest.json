@@ -1,0 +1,8 @@
+{
+  "id": "menu-plugin",
+  "name": "Menu Order",
+  "version": "1.8.0",
+  "description": "Customize top bar navigation: reorder items, group into submenus, assign search keywords, add a menu search bar, and apply visual themes (LED, wood, paper, stone, velvet).",
+  "entry": "menu-plugin.js",
+  "css": "menu-plugin.css"
+}
