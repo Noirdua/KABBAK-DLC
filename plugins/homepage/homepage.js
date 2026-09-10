@@ -7,15 +7,6 @@
 
   const HOMEPAGE_FILE = "index.html";
 
-  // The built-in welcome is hidden by default so it never flashes while this
-  // plugin loads. Show it again when the plugin page is unavailable.
-  function showBuiltinWelcome(container) {
-    const fallback = container.querySelector("#home-welcome-default");
-    if (fallback) {
-      fallback.hidden = false;
-    }
-  }
-
   async function applyHomepage(helpers) {
     const container = document.getElementById("home-welcome");
     if (!container) {
@@ -23,24 +14,14 @@
     }
     try {
       const url = helpers?.assetUrl(HOMEPAGE_FILE);
-      if (!url) {
-        showBuiltinWelcome(container);
-        return;
-      }
+      if (!url) return;
       const response = await fetch(url, { cache: "no-store" });
-      if (!response.ok) {
-        showBuiltinWelcome(container);
-        return;
-      }
+      if (!response.ok) return;
       const html = await response.text();
-      if (!String(html || "").trim()) {
-        showBuiltinWelcome(container);
-        return;
-      }
+      if (!String(html || "").trim()) return;
       container.innerHTML = html;
     } catch (_error) {
-      // Keep the built-in welcome content when the plugin page is unavailable.
-      showBuiltinWelcome(container);
+      // Leave the home container empty when the plugin page is unavailable.
     }
   }
 
