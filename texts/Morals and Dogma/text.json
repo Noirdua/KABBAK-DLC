@@ -1,0 +1,15 @@
+{
+  "id": "morals-and-dogma",
+  "title": "Morals and Dogma",
+  "shortTitle": "Pike",
+  "tradition": "Scottish Rite",
+  "language": "English",
+  "script": "Latin",
+  "workLabel": "Book",
+  "sectionLabel": "Degree",
+  "verseLabel": "Paragraph",
+  "input": {
+    "path": "morals-and-dogma.json",
+    "format": "structured-json"
+  }
+}

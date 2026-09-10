@@ -1,0 +1,16 @@
+{
+  "id": "cthulhu-mythos",
+  "title": "Cthulhu Mythos",
+  "shortTitle": "Lovecraft",
+  "language": "English",
+  "script": "Latin",
+  "workLabel": "Story",
+  "sectionLabel": "Part",
+  "verseLabel": "Paragraph",
+  "tradition": "Cthulhu Mythos",
+  "description": "Selected fiction by H. P. Lovecraft forming the core of the Cthulhu Mythos (public domain)",
+  "input": {
+    "path": "cthulhu-mythos.json",
+    "format": "structured-json"
+  }
+}

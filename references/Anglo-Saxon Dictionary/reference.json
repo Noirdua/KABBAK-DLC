@@ -1,0 +1,8 @@
+{
+  "id": "anglo-saxon",
+  "title": "Bosworth-Toller Anglo-Saxon Dictionary",
+  "description": "An Anglo-Saxon dictionary based on the manuscript collections of the late Joseph Bosworth, with the T. Northcote Toller supplement.",
+  "kind": "dictionary",
+  "keyScheme": "word",
+  "entriesFile": "entries.json"
+}

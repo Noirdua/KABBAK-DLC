@@ -1,0 +1,15 @@
+{
+  "id": "shakespeare",
+  "title": "The Complete Works of William Shakespeare",
+  "shortTitle": "Shakespeare",
+  "tradition": "",
+  "language": "English",
+  "script": "Latin",
+  "workLabel": "Work",
+  "sectionLabel": "Scene",
+  "verseLabel": "Speech",
+  "input": {
+    "path": "shakespeare.json",
+    "format": "structured-json"
+  }
+}

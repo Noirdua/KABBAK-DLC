@@ -1,0 +1,75 @@
+{
+  "id": "golden-dawn-cicero",
+  "name": "Golden Dawn Cicero",
+  "majors": {
+    "mode": "trump-map",
+    "cards": {
+      "0": "major/00.png",
+      "1": "major/01.png",
+      "2": "major/02.png",
+      "3": "major/03.png",
+      "4": "major/04.png",
+      "5": "major/05.png",
+      "6": "major/06.png",
+      "7": "major/07.png",
+      "8": "major/08.png",
+      "9": "major/09.png",
+      "10": "major/10.png",
+      "11": "major/11.png",
+      "12": "major/12.png",
+      "13": "major/13.png",
+      "14": [
+        "major/14.png",
+        "major/15.png"
+      ],
+      "15": "major/16.png",
+      "16": "major/17.png",
+      "17": "major/18.png",
+      "18": "major/19.png",
+      "19": "major/20.png",
+      "20": "major/21.png",
+      "21": "major/22.png"
+    }
+  },
+  "minors": {
+    "mode": "split-number-template",
+    "smalls": {
+      "template": "minor/{number}.png",
+      "suitBase": {
+        "wands": 23,
+        "cups": 33,
+        "swords": 43,
+        "disks": 53
+      },
+      "numberPad": 2
+    },
+    "courts": {
+      "template": "court/{number}.png",
+      "suitBase": {
+        "wands": 63,
+        "cups": 67,
+        "swords": 71,
+        "disks": 75
+      },
+      "rankOrder": [
+        "Princess",
+        "Prince",
+        "Queen",
+        "King"
+      ],
+      "numberPad": 2
+    }
+  },
+  "minorNameOverrides": {
+    "six of cups": "Pleasure",
+    "two of swords": "Peace"
+  },
+  "majorNameOverridesByTrump": {
+    "1": "The Magus",
+    "8": "Lust",
+    "11": "Adjustment",
+    "14": "Art",
+    "20": "Aeon",
+    "21": "Universe"
+  }
+}
