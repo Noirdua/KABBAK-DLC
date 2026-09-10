@@ -91,7 +91,7 @@
 
   // Top-level entries that are only menu groups (they have no section of their
   // own; their content lives in subpages).
-  const MENU_GROUP_IDS = new Set(["alphabet", "astronomy", "audio", "calendar", "iching", "kabbalah", "tarot"]);
+  const MENU_GROUP_IDS = new Set(["alphabet", "astronomy", "audio", "calendar", "iching", "kabbalah", "numbers", "tarot"]);
 
   function isMenuGroupId(value) {
     return MENU_GROUP_IDS.has(normalizeSectionId(value));
@@ -522,6 +522,11 @@
       const children = Array.isArray(item?.children) ? item.children : [];
       const resolvedUnit = resolveUnitById({ byId }, id);
 
+      if (isMenuGroupId(id) && !children.length) {
+        if (resolvedUnit?.element) hideUnit(resolvedUnit.element);
+        return;
+      }
+
       if (children.length) {
         const dropdown = findOrCreateDropdown({ ...item, id: resolvedUnit?.id || id });
         if (!dropdown) return;
@@ -599,6 +604,10 @@
       if (handledTopLevelIds.has(unit.id)) return;
       if (isRequiredMenuId(unit.id)) return;
       if (showUnlisted) {
+        if (isMenuGroupId(unit.id)) {
+          hideUnit(unit.element);
+          return;
+        }
         if (unit.element.classList?.contains("topbar-dropdown")) {
           const trigger = flattenDropdownUnit(unit);
           if (!trigger) return;
@@ -841,6 +850,7 @@
     const missing = [];
     topLevel.forEach((unit) => {
       if (!unit.id) return;
+      if (isMenuGroupId(unit.id)) return;
       const matches = configuredIds.has(unit.id) || configuredIds.has(displayMenuId(unit.id));
       if (!matches) {
         missing.push({

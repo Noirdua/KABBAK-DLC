@@ -151,6 +151,7 @@
 
     let categories = [];
     let allowSearch = false;
+    let collapseTags = true;
     let activeId = "";
     let extraTags = [];
     let page = 0;
@@ -270,12 +271,16 @@
     }
 
     async function openWeb(meta, button) {
-      const path = `${BASE}/_web-url?file_id=${encodeURIComponent(meta.file_id)}`;
       button.disabled = true;
       try {
-        const payload = unwrap(await helpers.requestJson("GET", path));
+        const payload = unwrap(await helpers.requestJson(
+          "GET",
+          `${BASE}/_web-url?file_id=${encodeURIComponent(meta.file_id)}`
+        ));
         const url = String(payload?.url || "").trim();
-        if (!url) throw new Error("No web URL returned.");
+        if (!url || !/^https?:\/\//i.test(url)) {
+          throw new Error("No Hydrus file URL returned.");
+        }
         window.open(url, "_blank", "noopener");
       } catch (error) {
         setStatus(error.message || "Could not open file.", "error");
@@ -304,23 +309,32 @@
           meta.width && meta.height ? `${meta.width}×${meta.height}` : "",
           meta.size != null ? `${Math.round(Number(meta.size) / 1024)} KB` : ""
         ].filter(Boolean);
-        const heading = el("strong", "", title);
-        heading.title = title;
-        card.appendChild(heading);
-        card.appendChild(el("div", "hydrus-meta", bits.join(" · ")));
+        const details = el("details", "hydrus-details");
+        if (!collapseTags) details.open = true;
+        const summary = el("summary", "hydrus-title", title);
+        summary.title = title;
+        details.appendChild(summary);
+        details.appendChild(el("div", "hydrus-meta", bits.join(" · ")));
         const tags = collectTags(meta).filter((tag) => !String(tag).toLowerCase().startsWith("title:"));
         if (tags.length) {
           const chips = el("div", "hydrus-chips");
-          tags.slice(0, 12).forEach((tag) => chips.appendChild(el("span", "hydrus-chip", tag)));
-          card.appendChild(chips);
+          tags.forEach((tag) => chips.appendChild(el("span", "hydrus-chip", tag)));
+          details.appendChild(chips);
         }
         const actionsRow = el("div", "hydrus-inline");
         const download = el("button", "hydrus-btn", "Download");
-        download.addEventListener("click", () => void downloadFile(meta, download));
+        download.addEventListener("click", (event) => {
+          event.preventDefault();
+          void downloadFile(meta, download);
+        });
         const web = el("button", "hydrus-btn", "Web");
-        web.addEventListener("click", () => void openWeb(meta, web));
+        web.addEventListener("click", (event) => {
+          event.preventDefault();
+          void openWeb(meta, web);
+        });
         actionsRow.append(download, web);
-        card.appendChild(actionsRow);
+        details.appendChild(actionsRow);
+        card.appendChild(details);
         grid.appendChild(card);
       });
       body.appendChild(grid);
@@ -401,6 +415,7 @@
       if (cancelled) return;
       categories = normalizeCategories(config.categories);
       allowSearch = Boolean(config.allowSearch);
+      collapseTags = config.collapseTags !== false;
       if (!allowSearch) extraTags = [];
       if (activeId && !categories.some((item) => item.id === activeId)) {
         activeId = "";
@@ -452,7 +467,7 @@
     id: "hydrus-network",
     name: "Hydrus Network",
     kind: "api",
-    version: "1.7.1",
+    version: "1.8.0",
     section: { id: "hydrus-network", label: "Hydrus Network" },
     mount
   });

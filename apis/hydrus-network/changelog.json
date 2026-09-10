@@ -1,6 +1,10 @@
 {
   "entries": [
     {
+      "version": "1.8.0",
+      "notes": "Cards show title with expandable details (tags, metadata, actions). Web opens the Hydrus client file URL with the access key."
+    },
+    {
       "version": "1.7.0",
       "notes": "System predicate filters: filetype (image/video/audio/animation/pdf/archive) and inbox/archive."
     },
