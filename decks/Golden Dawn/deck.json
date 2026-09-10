@@ -1,0 +1,68 @@
+{
+  "id": "golden-dawn",
+  "name": "Golden Dawn",
+  "thumbnails": {
+    "root": "thumbs",
+    "width": 240,
+    "height": 360,
+    "fit": "inside",
+    "quality": 82
+  },
+  "majors": {
+    "mode": "trump-template",
+    "template": "major/page_{number}.png",
+    "numberPad": 3
+  },
+  "minors": {
+    "mode": "split-number-template",
+    "courts": {
+      "template": "court/page_{number}.png",
+      "suitBase": {
+        "wands": 34,
+        "cups": 30,
+        "swords": 26,
+        "disks": 22
+      },
+      "rankIndexByKey": {
+        "princess": 0,
+        "king": 1,
+        "prince": 1,
+        "queen": 2,
+        "knight": 3
+      },
+      "rankOrder": [
+        "Princess",
+        "King",
+        "Queen",
+        "Knight"
+      ],
+      "numberPad": 3
+    },
+    "smalls": {
+      "template": "minor/page_{number}.png",
+      "suitBase": {
+        "wands": 38,
+        "cups": 48,
+        "swords": 58,
+        "disks": 68
+      },
+      "numberPad": 3
+    }
+  },
+  "minorNameOverrides": {
+    "prince of wands": "King of Wands",
+    "prince of cups": "King of Cups",
+    "prince of swords": "King of Swords",
+    "prince of disks": "King of Disks",
+    "six of cups": "Pleasure",
+    "two of swords": "Peace"
+  },
+  "majorNameOverridesByTrump": {
+    "1": "The Magus",
+    "8": "Lust",
+    "11": "Adjustment",
+    "14": "Art",
+    "20": "Aeon",
+    "21": "Universe"
+  }
+}

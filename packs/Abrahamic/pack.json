@@ -1,0 +1,27 @@
+{
+  "id": "abrahamic",
+  "name": "Abrahamic Texts",
+  "items": [
+    {
+      "type": "text",
+      "name": "King James Bible"
+    },
+    {
+      "type": "text",
+      "name": "Quran"
+    },
+    {
+      "type": "text",
+      "name": "Book of Mormon"
+    },
+    {
+      "type": "text",
+      "name": "Doctrine and Covenants"
+    },
+    {
+      "type": "text",
+      "name": "Pearl of Great Price"
+    }
+  ],
+  "description": "Core Abrahamic scriptures: KJV Bible, Quran, Book of Mormon, Doctrine and Covenants, Pearl of Great Price. Install together in one command."
+}

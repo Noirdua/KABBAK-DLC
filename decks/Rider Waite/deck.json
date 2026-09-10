@@ -1,0 +1,65 @@
+{
+  "id": "rider-waite",
+  "name": "Rider Waite",
+  "majors": {
+    "mode": "trump-map",
+    "cards": {
+      "0": "00-TheFool.png",
+      "1": "01-TheMagician.png",
+      "2": "02-TheHighPriestess.png",
+      "3": "03-TheEmpress.png",
+      "4": "04-TheEmperor.png",
+      "5": "05-TheHierophant.png",
+      "6": "06-TheLovers.png",
+      "7": "07-TheChariot.png",
+      "8": "08-Strength.png",
+      "9": "09-TheHermit.png",
+      "10": "10-WheelOfFortune.png",
+      "11": "11-Justice.png",
+      "12": "12-TheHangedMan.png",
+      "13": "13-Death.png",
+      "14": "14-Temperance.png",
+      "15": "15-TheDevil.png",
+      "16": "16-TheTower.png",
+      "17": "17-TheStar.png",
+      "18": "18-TheMoon.png",
+      "19": "19-TheSun.png",
+      "20": "20-Judgement.png",
+      "21": "21-TheWorld.png"
+    }
+  },
+  "minors": {
+    "mode": "suit-prefix-and-rank-order",
+    "template": "{suit}{index}.png",
+    "indexStart": 1,
+    "indexPad": 2,
+    "suitPrefix": {
+      "cups": "Cups",
+      "disks": "Pentacles",
+      "swords": "Swords",
+      "wands": "Wands"
+    },
+    "rankOrder": [
+      "Ace",
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
+      "Ten",
+      "Page",
+      "Knight",
+      "Queen",
+      "King"
+    ],
+    "rankIndexByKey": {
+      "knight": 13,
+      "queen": 12,
+      "prince": 11,
+      "princess": 10
+    }
+  }
+}

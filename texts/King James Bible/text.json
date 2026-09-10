@@ -1,0 +1,14 @@
+{
+  "workLabel": "Book",
+  "sectionLabel": "Chapter",
+  "shortTitle": "KJV+",
+  "language": "English / Greek / Hebrew",
+  "id": "kjv",
+  "verseLabel": "Verse",
+  "script": "Latin / Greek / Hebrew",
+  "input": {
+    "format": "tokenized-books",
+    "path": "kjv.json"
+  },
+  "title": "King James Bible+"
+}

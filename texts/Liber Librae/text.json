@@ -1,0 +1,15 @@
+{
+  "workLabel": "Book",
+  "verseLabel": "Verse",
+  "shortTitle": "Librae",
+  "script": "Latin",
+  "sectionLabel": "Chapter",
+  "title": "Liber Librae",
+  "id": "liber librae",
+  "input": {
+    "path": "Liber Librae.json",
+    "format": "structured-json"
+  },
+  "language": "English",
+  "tradition": ""
+}

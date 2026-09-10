@@ -1,0 +1,15 @@
+{
+  "workLabel": "Book",
+  "verseLabel": "Verse",
+  "shortTitle": "Thomas",
+  "script": "Latin",
+  "sectionLabel": "Chapter",
+  "title": "Gospel of Thomas",
+  "id": "gospel of thomas",
+  "input": {
+    "path": "Gospel of Thomas.json",
+    "format": "structured-json"
+  },
+  "language": "English",
+  "tradition": ""
+}

@@ -1,0 +1,15 @@
+{
+  "workLabel": "Book",
+  "verseLabel": "Verse",
+  "shortTitle": "JOD",
+  "script": "Latin",
+  "sectionLabel": "Chapter",
+  "title": "Journal of Discourses",
+  "id": "journal of discourses",
+  "input": {
+    "path": "Journal of Discourses.json",
+    "format": "structured-json"
+  },
+  "language": "English",
+  "tradition": ""
+}

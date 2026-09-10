@@ -1,0 +1,15 @@
+{
+  "workLabel": "Book",
+  "verseLabel": "Verse",
+  "shortTitle": "Grimm",
+  "script": "Latin",
+  "sectionLabel": "Chapter",
+  "title": "Grimm Fairytales",
+  "id": "grimm-fairytales",
+  "input": {
+    "path": "grimm-fairytales.json",
+    "format": "structured-json"
+  },
+  "language": "English",
+  "tradition": ""
+}

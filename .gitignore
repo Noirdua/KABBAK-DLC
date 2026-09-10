@@ -1,0 +1,15 @@
+node_modules/
+dist/
+build/
+.cache/
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+*.log
+*.zip
+*.exe
+*.mp4
+*.avi
+*.mov

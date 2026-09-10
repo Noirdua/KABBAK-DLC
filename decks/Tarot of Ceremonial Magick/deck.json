@@ -1,0 +1,71 @@
+{
+  "id": "ceremonial-magick",
+  "name": "Tarot of Ceremonial Magick",
+  "majors": {
+    "mode": "canonical-map",
+    "cards": {
+      "fool": "43_Fool.webp",
+      "magician": "44_Magus.webp",
+      "magus": "44_Magus.webp",
+      "wheel of fortune": "45_Fortune.webp",
+      "fortune": "45_Fortune.webp",
+      "strength": "46_Lust.webp",
+      "lust": "46_Lust.webp",
+      "hanged man": "47_Hanged Man.webp",
+      "death": "48_Death.webp",
+      "temperance": "49_Art.webp",
+      "art": "49_Art.webp",
+      "devil": "50_Devil.webp",
+      "tower": "51_Tower.webp",
+      "star": "52_Star.webp",
+      "moon": "53_Moon.webp",
+      "sun": "54_Sun.webp",
+      "high priestess": "55_High Priestess.webp",
+      "judgement": "56_Aeon.webp",
+      "judgment": "56_Aeon.webp",
+      "aeon": "56_Aeon.webp",
+      "world": "57_Universe.webp",
+      "universe": "57_Universe.webp",
+      "empress": "58_Empress.webp",
+      "emperor": "59_Emperor.webp",
+      "hierophant": "60_Hierophant.webp",
+      "lovers": "61_Lovers.webp",
+      "chariot": "62_Chariot.webp",
+      "justice": "63_Justice.webp",
+      "hermit": "64_Hermit.webp"
+    }
+  },
+  "minors": {
+    "mode": "suit-base-and-rank-order",
+    "template": "{number}_{rank} {suit}.webp",
+    "numberPad": 2,
+    "suitBase": {
+      "cups": 1,
+      "disks": 15,
+      "swords": 29,
+      "wands": 65
+    },
+    "suitLabel": {
+      "cups": "Cups",
+      "disks": "Disks",
+      "swords": "Swords",
+      "wands": "Wands"
+    },
+    "rankOrder": [
+      "Ace",
+      "Ten",
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
+      "Knight",
+      "Prince",
+      "Princess",
+      "Queen"
+    ]
+  }
+}

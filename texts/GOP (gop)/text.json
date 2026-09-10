@@ -1,0 +1,15 @@
+{
+  "workLabel": "Book",
+  "verseLabel": "Verse",
+  "shortTitle": "GOP",
+  "script": "Latin",
+  "sectionLabel": "Chapter",
+  "title": "GOP",
+  "id": "gop",
+  "input": {
+    "path": "GOP.json",
+    "format": "structured-json"
+  },
+  "language": "English",
+  "tradition": ""
+}

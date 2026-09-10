@@ -1,0 +1,15 @@
+{
+  "workLabel": "Book",
+  "verseLabel": "Verse",
+  "shortTitle": "GOP",
+  "script": "Latin",
+  "sectionLabel": "Chapter",
+  "title": "GOP",
+  "id": "gop isenberg",
+  "input": {
+    "path": "GOP Isenberg.json",
+    "format": "structured-json"
+  },
+  "language": "English",
+  "tradition": ""
+}

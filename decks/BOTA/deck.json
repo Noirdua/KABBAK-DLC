@@ -1,0 +1,57 @@
+{
+  "id": "bota",
+  "name": "B.O.T.A. Tarot",
+  "thumbnails": {
+    "root": "thumbs",
+    "width": 240,
+    "height": 360,
+    "fit": "inside",
+    "quality": 82
+  },
+  "majors": {
+    "mode": "trump-template",
+    "template": "{number}.jpg",
+    "numberPad": 2
+  },
+  "minors": {
+    "mode": "suit-base-and-rank-order",
+    "template": "{number}.jpg",
+    "numberPad": 2,
+    "suitBase": {
+      "wands": 22,
+      "cups": 36,
+      "swords": 50,
+      "disks": 64
+    },
+    "rankIndexByKey": {
+      "princess": 10,
+      "prince": 13
+    },
+    "rankOrder": [
+      "Ace",
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
+      "Ten",
+      "Page",
+      "Knight",
+      "Queen",
+      "King"
+    ]
+  },
+  "minorNameOverrides": {
+    "princess of wands": "Page of Wands",
+    "princess of cups": "Page of Cups",
+    "princess of swords": "Page of Swords",
+    "princess of disks": "Page of Disks",
+    "prince of wands": "King of Wands",
+    "prince of cups": "King of Cups",
+    "prince of swords": "King of Swords",
+    "prince of disks": "King of Disks"
+  }
+}

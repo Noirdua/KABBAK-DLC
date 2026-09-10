@@ -1,0 +1,15 @@
+{
+  "workLabel": "Book",
+  "verseLabel": "Verse",
+  "shortTitle": "Liber AL",
+  "script": "Latin",
+  "sectionLabel": "Chapter",
+  "title": "Book of the Law",
+  "id": "book of the law",
+  "input": {
+    "path": "Book of the Law.json",
+    "format": "structured-json"
+  },
+  "language": "English",
+  "tradition": ""
+}

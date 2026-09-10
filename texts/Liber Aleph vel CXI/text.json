@@ -1,0 +1,15 @@
+{
+  "workLabel": "Book",
+  "verseLabel": "Verse",
+  "shortTitle": "Aleph",
+  "script": "Latin",
+  "sectionLabel": "Chapter",
+  "title": "Liber Aleph vel CXI",
+  "id": "liber aleph vel cxi",
+  "input": {
+    "path": "Liber Aleph vel CXI.json",
+    "format": "structured-json"
+  },
+  "language": "English",
+  "tradition": ""
+}

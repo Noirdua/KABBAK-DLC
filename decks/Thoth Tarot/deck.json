@@ -1,0 +1,40 @@
+{
+  "id": "thoth",
+  "name": "Thoth Tarot",
+  "majorNameOverridesByTrump": {
+    "8": "Adjustment",
+    "VIII": "Adjustment"
+  },
+  "majors": {
+    "mode": "trump-template",
+    "template": "{number}.png",
+    "numberPad": 2
+  },
+  "minors": {
+    "mode": "suit-base-and-rank-order",
+    "template": "{number}.png",
+    "numberPad": 2,
+    "suitBase": {
+      "wands": 22,
+      "cups": 36,
+      "swords": 50,
+      "disks": 64
+    },
+    "rankOrder": [
+      "Ace",
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
+      "Ten",
+      "Princess",
+      "Prince",
+      "Queen",
+      "Knight"
+    ]
+  }
+}

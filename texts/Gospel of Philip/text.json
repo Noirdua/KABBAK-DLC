@@ -1,0 +1,13 @@
+{
+  "input": {
+    "format": "numbered-sayings",
+    "path": "gospel.txt"
+  },
+  "sectionLabel": "Saying",
+  "language": "English",
+  "workLabel": "Text",
+  "tradition": "Nag Hammadi",
+  "title": "Gospel of Philip",
+  "verseLabel": "Line",
+  "id": "gospel-of-philip"
+}

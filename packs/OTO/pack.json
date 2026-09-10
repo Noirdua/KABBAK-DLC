@@ -1,0 +1,26 @@
+{
+  "id": "OTO",
+  "name": "O.T.O. DLC Pack",
+  "items": [
+    {
+      "type": "deck",
+      "name": "Thoth Tarot"
+    },
+    {
+      "type": "text",
+      "name": "Book of Lies"
+    },
+    {
+      "type": "text",
+      "name": "liber aleph vel cxi"
+    },
+    {
+      "type": "text",
+      "name": "Liber Librae"
+    },
+    {
+      "type": "text",
+      "name": "Book of the Law"
+    }
+  ],
+  "description": "O.T.O. occult texts and Thoth Tarot deck."}

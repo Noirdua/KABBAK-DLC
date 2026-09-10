@@ -1,0 +1,14 @@
+{
+  "workLabel": "Book",
+  "sectionLabel": "Chapter",
+  "shortTitle": "D&C",
+  "language": "English",
+  "id": "doctrine and covenants",
+  "verseLabel": "Verse",
+  "script": "Latin",
+  "input": {
+    "format": "structured-json",
+    "path": "doctrine and covenants.json"
+  },
+  "title": "The Doctrine and Covenants"
+}

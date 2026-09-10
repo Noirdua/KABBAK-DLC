@@ -1,0 +1,14 @@
+{
+  "workLabel": "Book",
+  "sectionLabel": "Chapter",
+  "shortTitle": "BOM",
+  "language": "English",
+  "id": "book of mormon",
+  "verseLabel": "Verse",
+  "script": "Latin",
+  "input": {
+    "format": "structured-json",
+    "path": "book of mormon.json"
+  },
+  "title": "The Book of Mormon"
+}

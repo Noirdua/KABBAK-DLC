@@ -1,0 +1,14 @@
+{
+  "workLabel": "Book",
+  "sectionLabel": "Chapter",
+  "shortTitle": "PGP",
+  "language": "English",
+  "id": "pearl of great price",
+  "verseLabel": "Verse",
+  "script": "Latin",
+  "input": {
+    "format": "structured-json",
+    "path": "pearl of great price.json"
+  },
+  "title": "The Pearl of Great Price"
+}

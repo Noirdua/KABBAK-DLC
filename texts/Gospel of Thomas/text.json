@@ -1,0 +1,15 @@
+{
+  "workLabel": "Book",
+  "verseLabel": "Verse",
+  "shortTitle": "Thomas",
+  "script": "Latin",
+  "sectionLabel": "Chapter",
+  "title": "Gospel of Thomas",
+  "id": "gospel of thomas patterson-meyer",
+  "input": {
+    "path": "Gospel of Thomas Patterson-Meyer.json",
+    "format": "structured-json"
+  },
+  "language": "English",
+  "tradition": ""
+}

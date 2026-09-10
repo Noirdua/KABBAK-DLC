@@ -1,0 +1,2196 @@
+{
+  "schemaVersion": 1,
+  "type": "structured-text-source",
+  "title": "Gospel of Thomas",
+  "shortTitle": "Thomas",
+  "metadata": {
+    "sourceFile": "got-stephen-patterson-marvin-meyer.txt",
+    "importMode": "section-paragraph",
+    "workKey": "gospel-of-thomas",
+    "translationKey": "stephen-patterson-marvin-meyer",
+    "translator": "Stephen Patterson & Marvin Meyer",
+    "version": "Patterson-Meyer Translation",
+    "sectionAlignmentSource": "gospel-of-thomas-mark-m-mattison"
+  },
+  "works": [
+    {
+      "id": "gospel-of-thomas",
+      "title": "Gospel of Thomas",
+      "shortTitle": "Thomas",
+      "order": 1,
+      "sectionCount": 115,
+      "verseCount": 189,
+      "sections": [
+        {
+          "id": "prologue",
+          "number": 0,
+          "label": "Prologue",
+          "title": "Prologue",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Prologue:1",
+              "text": "These are the secret sayings that the living Jesus spoke and Didymos Judas Thomas recorded."
+            }
+          ]
+        },
+        {
+          "id": "1",
+          "number": 1,
+          "label": "Saying 1: True Meaning",
+          "title": "Saying 1: True Meaning",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 1:1",
+              "text": "And he said, \"Whoever discovers the interpretation of these sayings will not taste death.\""
+            }
+          ]
+        },
+        {
+          "id": "2",
+          "number": 2,
+          "label": "Saying 2: Seek and Find",
+          "title": "Saying 2: Seek and Find",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 2:1",
+              "text": "Jesus said, \"Those who seek should not stop seeking until they find. When they find, they will be disturbed. When they are disturbed, they will marvel, and will reign over all. [And after they have reigned they will rest.]\""
+            }
+          ]
+        },
+        {
+          "id": "3",
+          "number": 3,
+          "label": "Saying 3: Seeking Within",
+          "title": "Saying 3: Seeking Within",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 3:1",
+              "text": "Jesus said, \"If your leaders say to you, 'Look, the (Father's) kingdom is in the sky,' then the birds of the sky will precede you. If they say to you, 'It is in the sea,' then the fish will precede you. Rather, the (Father's) kingdom is within you and it is outside you."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 3:2",
+              "text": "When you know yourselves, then you will be known, and you will understand that you are children of the living Father. But if you do not know yourselves, then you live in poverty, and you are the poverty.\""
+            }
+          ]
+        },
+        {
+          "id": "4",
+          "number": 4,
+          "label": "Saying 4: First and Last",
+          "title": "Saying 4: First and Last",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 4:1",
+              "text": "Jesus said, \"The person old in days won't hesitate to ask a little child seven days old about the place of life, and that person will live."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 4:2",
+              "text": "For many of the first will be last, and will become a single one.\""
+            }
+          ]
+        },
+        {
+          "id": "5",
+          "number": 5,
+          "label": "Saying 5: Hidden and Revealed",
+          "title": "Saying 5: Hidden and Revealed",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 5:1",
+              "text": "Jesus said, \"Know what is in front of your face, and what is hidden from you will be disclosed to you."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 5:2",
+              "text": "For there is nothing hidden that will not be revealed. [And there is nothing buried that will not be raised.]\""
+            }
+          ]
+        },
+        {
+          "id": "6",
+          "number": 6,
+          "label": "Saying 6: Public Ritual",
+          "title": "Saying 6: Public Ritual",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 6:1",
+              "text": "His disciples asked him and said to him, \"Do you want us to fast? How should we pray? Should we give to charity? What diet should we observe?\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 6:2",
+              "text": "Jesus said, \"Don't lie, and don't do what you hate, because all things are disclosed before heaven. After all, there is nothing hidden that will not be revealed, and there is nothing covered up that will remain undisclosed.\""
+            }
+          ]
+        },
+        {
+          "id": "7",
+          "number": 7,
+          "label": "Saying 7: The Lion and the Human",
+          "title": "Saying 7: The Lion and the Human",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 7:1",
+              "text": "Jesus said, \"Lucky is the lion that the human will eat, so that the lion becomes human. And foul is the human that the lion will eat, and the lion still will become human.\""
+            }
+          ]
+        },
+        {
+          "id": "8",
+          "number": 8,
+          "label": "Saying 8: The Parable of the Fish",
+          "title": "Saying 8: The Parable of the Fish",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 8:1",
+              "text": "And he said, \"The person is like a wise fisherman who cast his net into the sea and drew it up from the sea full of little fish. Among them the wise fisherman discovered a fine large fish. He threw all the little fish back into the sea, and easily chose the large fish. Anyone here with two good ears had better listen!\""
+            }
+          ]
+        },
+        {
+          "id": "9",
+          "number": 9,
+          "label": "Saying 9: The Parable of the Sower",
+          "title": "Saying 9: The Parable of the Sower",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 9:1",
+              "text": "Jesus said, \"Look, the sower went out, took a handful (of seeds), and scattered (them). Some fell on the road, and the birds came and gathered them. Others fell on rock, and they didn't take root in the soil and didn't produce heads of grain. Others fell on thorns, and they choked the seeds and worms ate them. And others fell on good soil, and it produced a good crop: it yielded sixty per measure and one hundred twenty per measure.\""
+            }
+          ]
+        },
+        {
+          "id": "10",
+          "number": 10,
+          "label": "Saying 10: Jesus and Fire (1)",
+          "title": "Saying 10: Jesus and Fire (1)",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 10:1",
+              "text": "Jesus said, \"I have cast fire upon the world, and look, I'm guarding it until it blazes.\""
+            }
+          ]
+        },
+        {
+          "id": "11",
+          "number": 11,
+          "label": "Saying 11: Those Who Are Living Won't Die (1)",
+          "title": "Saying 11: Those Who Are Living Won't Die (1)",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 11:1",
+              "text": "Jesus said, \"This heaven will pass away, and the one above it will pass away."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 11:2",
+              "text": "The dead are not alive, and the living will not die. During the days when you ate what is dead, you made it come alive. When you are in the light, what will you do? On the day when you were one, you became two. But when you become two, what will you do?\""
+            }
+          ]
+        },
+        {
+          "id": "12",
+          "number": 12,
+          "label": "Saying 12: James the Just",
+          "title": "Saying 12: James the Just",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 12:1",
+              "text": "The disciples said to Jesus, \"We know that you are going to leave us. Who will be our leader?\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 12:2",
+              "text": "Jesus said to them, \"No matter where you are you are to go to James the Just, for whose sake heaven and earth came into being.\""
+            }
+          ]
+        },
+        {
+          "id": "13",
+          "number": 13,
+          "label": "Saying 13: Thomas' Confession",
+          "title": "Saying 13: Thomas' Confession",
+          "verseCount": 7,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 13:1",
+              "text": "Jesus said to his disciples, \"Compare me to something and tell me what I am like.\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 13:2",
+              "text": "Simon Peter said to him, \"You are like a just messenger.\""
+            },
+            {
+              "id": "3",
+              "number": 3,
+              "reference": "Saying 13:3",
+              "text": "Matthew said to him, \"You are like a wise philosopher.\""
+            },
+            {
+              "id": "4",
+              "number": 4,
+              "reference": "Saying 13:4",
+              "text": "Thomas said to him, \"Teacher, my mouth is utterly unable to say what you are like.\""
+            },
+            {
+              "id": "5",
+              "number": 5,
+              "reference": "Saying 13:5",
+              "text": "Jesus said, \"I am not your teacher. Because you have drunk, you have become intoxicated from the bubbling spring that I have tended.\""
+            },
+            {
+              "id": "6",
+              "number": 6,
+              "reference": "Saying 13:6",
+              "text": "And he took him, and withdrew, and spoke three sayings to him. When Thomas came back to his friends they asked him, \"What did Jesus say to you?\""
+            },
+            {
+              "id": "7",
+              "number": 7,
+              "reference": "Saying 13:7",
+              "text": "Thomas said to them, \"If I tell you one of the sayings he spoke to me, you will pick up rocks and stone me, and fire will come from the rocks and devour you.\""
+            }
+          ]
+        },
+        {
+          "id": "14",
+          "number": 14,
+          "label": "Saying 14: Public Ministry",
+          "title": "Saying 14: Public Ministry",
+          "verseCount": 3,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 14:1",
+              "text": "Jesus said to them, \"If you fast, you will bring sin upon yourselves, and if you pray, you will be condemned, and if you give to charity, you will harm your spirits."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 14:2",
+              "text": "When you go into any region and walk about in the countryside, when people take you in, eat what they serve you and heal the sick among them."
+            },
+            {
+              "id": "3",
+              "number": 3,
+              "reference": "Saying 14:3",
+              "text": "After all, what goes into your mouth will not defile you; rather, it's what comes out of your mouth that will defile you.\""
+            }
+          ]
+        },
+        {
+          "id": "15",
+          "number": 15,
+          "label": "Saying 15: Worship",
+          "title": "Saying 15: Worship",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 15:1",
+              "text": "Jesus said, \"When you see one who was not born of woman, fall on your faces and worship. That one is your Father.\""
+            }
+          ]
+        },
+        {
+          "id": "16",
+          "number": 16,
+          "label": "Saying 16: Not Peace, but War",
+          "title": "Saying 16: Not Peace, but War",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 16:1",
+              "text": "Jesus said, \"Perhaps people think that I have come to cast peace upon the world. They do not know that I have come to cast conflicts upon the earth: fire, sword, war."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 16:2",
+              "text": "For there will be five in a house: there'll be three against two and two against three, father against son and son against father, and they will stand alone.\""
+            }
+          ]
+        },
+        {
+          "id": "17",
+          "number": 17,
+          "label": "Saying 17: Divine Gift",
+          "title": "Saying 17: Divine Gift",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 17:1",
+              "text": "Jesus said, \"I will give you what no eye has seen, what no ear has heard, what no hand has touched, what has not arisen in the human heart.\""
+            }
+          ]
+        },
+        {
+          "id": "18",
+          "number": 18,
+          "label": "Saying 18: Beginning and End",
+          "title": "Saying 18: Beginning and End",
+          "verseCount": 3,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 18:1",
+              "text": "The disciples said to Jesus, \"Tell us, how will our end come?\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 18:2",
+              "text": "Jesus said, \"Have you found the beginning, then, that you are looking for the end? You see, the end will be where the beginning is."
+            },
+            {
+              "id": "3",
+              "number": 3,
+              "reference": "Saying 18:3",
+              "text": "Congratulations to the one who stands at the beginning: that one will know the end and will not taste death.\""
+            }
+          ]
+        },
+        {
+          "id": "19",
+          "number": 19,
+          "label": "Saying 19: Five Trees in Paradise",
+          "title": "Saying 19: Five Trees in Paradise",
+          "verseCount": 3,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 19:1",
+              "text": "Jesus said, \"Congratulations to the one who came into being before coming into being."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 19:2",
+              "text": "If you become my disciples and pay attention to my sayings, these stones will serve you."
+            },
+            {
+              "id": "3",
+              "number": 3,
+              "reference": "Saying 19:3",
+              "text": "For there are five trees in Paradise for you; they do not change, summer or winter, and their leaves do not fall. Whoever knows them will not taste death.\""
+            }
+          ]
+        },
+        {
+          "id": "20",
+          "number": 20,
+          "label": "Saying 20: The Parable of the Mustard Seed",
+          "title": "Saying 20: The Parable of the Mustard Seed",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 20:1",
+              "text": "The disciples said to Jesus, \"Tell us what Heaven's kingdom is like.\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 20:2",
+              "text": "He said to them, \"It's like a mustard seed, the smallest of all seeds, but when it falls on prepared soil, it produces a large plant and becomes a shelter for birds of the sky.\""
+            }
+          ]
+        },
+        {
+          "id": "21",
+          "number": 21,
+          "label": "Saying 21: The Parables of the Field, the Bandits, and the Reaper",
+          "title": "Saying 21: The Parables of the Field, the Bandits, and the Reaper",
+          "verseCount": 6,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 21:1",
+              "text": "Mary said to Jesus, \"What are your disciples like?\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 21:2",
+              "text": "He said, \"They are like little children living in a field that is not theirs. When the owners of the field come, they will say, 'Give us back our field.' They take off their clothes in front of them in order to give it back to them, and they return their field to them."
+            },
+            {
+              "id": "3",
+              "number": 3,
+              "reference": "Saying 21:3",
+              "text": "For this reason I say, if the owners of a house know that a thief is coming, they will be on guard before the thief arrives and will not let the thief break into their house (their domain) and steal their possessions."
+            },
+            {
+              "id": "4",
+              "number": 4,
+              "reference": "Saying 21:4",
+              "text": "As for you, then, be on guard against the world. Prepare yourselves with great strength, so the robbers can't find a way to get to you, for the trouble you expect will come."
+            },
+            {
+              "id": "5",
+              "number": 5,
+              "reference": "Saying 21:5",
+              "text": "Let there be among you a person who understands."
+            },
+            {
+              "id": "6",
+              "number": 6,
+              "reference": "Saying 21:6",
+              "text": "When the crop ripened, he came quickly carrying a sickle and harvested it. Anyone here with two good ears had better listen!\""
+            }
+          ]
+        },
+        {
+          "id": "22",
+          "number": 22,
+          "label": "Saying 22: Making the Two into One",
+          "title": "Saying 22: Making the Two into One",
+          "verseCount": 3,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 22:1",
+              "text": "Jesus saw some babies nursing. He said to his disciples, \"These nursing babies are like those who enter the (Father's) kingdom.\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 22:2",
+              "text": "They said to him, \"Then shall we enter the (Father's) kingdom as babies?\""
+            },
+            {
+              "id": "3",
+              "number": 3,
+              "reference": "Saying 22:3",
+              "text": "Jesus said to them, \"When you make the two into one, and when you make the inner like the outer and the outer like the inner, and the upper like the lower, and when you make male and female into a single one, so that the male will not be male nor the female be female, when you make eyes in place of an eye, a hand in place of a hand, a foot in place of a foot, an image in place of an image, then you will enter [the kingdom].\""
+            }
+          ]
+        },
+        {
+          "id": "23",
+          "number": 23,
+          "label": "Saying 23: Those Who are Chosen (1)",
+          "title": "Saying 23: Those Who are Chosen (1)",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 23:1",
+              "text": "Jesus said, \"I shall choose you, one from a thousand and two from ten thousand, and they will stand as a single one.\""
+            }
+          ]
+        },
+        {
+          "id": "24",
+          "number": 24,
+          "label": "Saying 24: Light",
+          "title": "Saying 24: Light",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 24:1",
+              "text": "His disciples said, \"Show us the place where you are, for we must seek it.\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 24:2",
+              "text": "He said to them, \"Anyone here with two ears had better listen! There is light within a person of light, and it shines on the whole world. If it does not shine, it is dark.\""
+            }
+          ]
+        },
+        {
+          "id": "25",
+          "number": 25,
+          "label": "Saying 25: Love and Protect",
+          "title": "Saying 25: Love and Protect",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 25:1",
+              "text": "Jesus said, \"Love your friends like your own soul, protect them like the pupil of your eye.\""
+            }
+          ]
+        },
+        {
+          "id": "26",
+          "number": 26,
+          "label": "Saying 26: Speck and Beam",
+          "title": "Saying 26: Speck and Beam",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 26:1",
+              "text": "Jesus said, \"You see the sliver in your friend's eye, but you don't see the timber in your own eye. When you take the timber out of your own eye, then you will see well enough to remove the sliver from your friend's eye.\""
+            }
+          ]
+        },
+        {
+          "id": "27",
+          "number": 27,
+          "label": "Saying 27: Fasting and Sabbath",
+          "title": "Saying 27: Fasting and Sabbath",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 27:1",
+              "text": "\"If you do not fast from the world, you will not find the (Father's) kingdom. If you do not observe the sabbath as a sabbath you will not see the Father.\""
+            }
+          ]
+        },
+        {
+          "id": "28",
+          "number": 28,
+          "label": "Saying 28: The World is Drunk",
+          "title": "Saying 28: The World is Drunk",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 28:1",
+              "text": "Jesus said, \"I took my stand in the midst of the world, and in flesh I appeared to them. I found them all drunk, and I did not find any of them thirsty. My soul ached for the children of humanity, because they are blind in their hearts and do not see, for they came into the world empty, and they also seek to depart from the world empty."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 28:2",
+              "text": "But meanwhile they are drunk. When they shake off their wine, then they will change their ways.\""
+            }
+          ]
+        },
+        {
+          "id": "29",
+          "number": 29,
+          "label": "Saying 29: Spirit and Body",
+          "title": "Saying 29: Spirit and Body",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 29:1",
+              "text": "Jesus said, \"If the flesh came into being because of spirit, that is a marvel, but if spirit came into being because of the body, that is a marvel of marvels."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 29:2",
+              "text": "Yet I marvel at how this great wealth has come to dwell in this poverty.\""
+            }
+          ]
+        },
+        {
+          "id": "30",
+          "number": 30,
+          "label": "Saying 30: Divine Presence",
+          "title": "Saying 30: Divine Presence",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 30:1",
+              "text": "Jesus said, \"Where there are three deities, they are divine. Where there are two or one, I am with that one.\""
+            }
+          ]
+        },
+        {
+          "id": "31",
+          "number": 31,
+          "label": "Saying 31: Prophet and Doctor",
+          "title": "Saying 31: Prophet and Doctor",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 31:1",
+              "text": "Jesus said, \"No prophet is welcome on his home turf; doctors don't cure those who know them.\""
+            }
+          ]
+        },
+        {
+          "id": "32",
+          "number": 32,
+          "label": "Saying 32: The Parable of the Fortified City",
+          "title": "Saying 32: The Parable of the Fortified City",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 32:1",
+              "text": "Jesus said, \"A city built on a high hill and fortified cannot fall, nor can it be hidden.\""
+            }
+          ]
+        },
+        {
+          "id": "33",
+          "number": 33,
+          "label": "Saying 33: The Parable of the Lamp",
+          "title": "Saying 33: The Parable of the Lamp",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 33:1",
+              "text": "Jesus said, \"What you will hear in your ear, in the other ear proclaim from your rooftops."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 33:2",
+              "text": "After all, no one lights a lamp and puts it under a basket, nor does one put it in a hidden place. Rather, one puts it on a lampstand so that all who come and go will see its light.\""
+            }
+          ]
+        },
+        {
+          "id": "34",
+          "number": 34,
+          "label": "Saying 34: The Parable of Those Who Can't See",
+          "title": "Saying 34: The Parable of Those Who Can't See",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 34:1",
+              "text": "Jesus said, \"If a blind person leads a blind person, both of them will fall into a hole.\""
+            }
+          ]
+        },
+        {
+          "id": "35",
+          "number": 35,
+          "label": "Saying 35: The Parable of Binding the Strong",
+          "title": "Saying 35: The Parable of Binding the Strong",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 35:1",
+              "text": "Jesus said, \"One can't enter a strong person's house and take it by force without tying his hands. Then one can loot his house.\""
+            }
+          ]
+        },
+        {
+          "id": "36",
+          "number": 36,
+          "label": "Saying 36: Anxiety",
+          "title": "Saying 36: Anxiety",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 36:1",
+              "text": "Jesus said, \"Do not fret, from morning to evening and from evening to morning, [about your food--what you're going to eat, or about your clothing--] what you are going to wear. [You're much better than the lilies, which neither card nor spin."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 36:2",
+              "text": "As for you, when you have no garment, what will you put on? Who might add to your stature? That very one will give you your garment.]\""
+            }
+          ]
+        },
+        {
+          "id": "37",
+          "number": 37,
+          "label": "Saying 37: Seeing Jesus",
+          "title": "Saying 37: Seeing Jesus",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 37:1",
+              "text": "His disciples said, \"When will you appear to us, and when will we see you?\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 37:2",
+              "text": "Jesus said, \"When you strip without being ashamed, and you take your clothes and put them under your feet like little children and trample them, then [you] will see the son of the living one and you will not be afraid.\""
+            }
+          ]
+        },
+        {
+          "id": "38",
+          "number": 38,
+          "label": "Saying 38: Finding Jesus",
+          "title": "Saying 38: Finding Jesus",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 38:1",
+              "text": "Jesus said, \"Often you have desired to hear these sayings that I am speaking to you, and you have no one else from whom to hear them. There will be days when you will seek me and you will not find me.\""
+            }
+          ]
+        },
+        {
+          "id": "39",
+          "number": 39,
+          "label": "Saying 39: The Keys of Knowledge",
+          "title": "Saying 39: The Keys of Knowledge",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 39:1",
+              "text": "Jesus said, \"The Pharisees and the scholars have taken the keys of knowledge and have hidden them. They have not entered nor have they allowed those who want to enter to do so."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 39:2",
+              "text": "As for you, be as sly as snakes and as simple as doves.\""
+            }
+          ]
+        },
+        {
+          "id": "40",
+          "number": 40,
+          "label": "Saying 40: A Grapevine",
+          "title": "Saying 40: A Grapevine",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 40:1",
+              "text": "Jesus said, \"A grapevine has been planted apart from the Father. Since it is not strong, it will be pulled up by its root and will perish.\""
+            }
+          ]
+        },
+        {
+          "id": "41",
+          "number": 41,
+          "label": "Saying 41: More and Less",
+          "title": "Saying 41: More and Less",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 41:1",
+              "text": "Jesus said, \"Whoever has something in hand will be given more, and whoever has nothing will be deprived of even the little they have.\""
+            }
+          ]
+        },
+        {
+          "id": "42",
+          "number": 42,
+          "label": "Saying 42: Passing By",
+          "title": "Saying 42: Passing By",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 42:1",
+              "text": "Jesus said, \"Be passersby.\""
+            }
+          ]
+        },
+        {
+          "id": "43",
+          "number": 43,
+          "label": "Saying 43: The Tree and the Fruit",
+          "title": "Saying 43: The Tree and the Fruit",
+          "verseCount": 3,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 43:1",
+              "text": "His disciples said to him, \"Who are you to say these things to us?\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 43:2",
+              "text": "\"You don't understand who I am from what I say to you."
+            },
+            {
+              "id": "3",
+              "number": 3,
+              "reference": "Saying 43:3",
+              "text": "Rather, you have become like the Judeans, for they love the tree but hate its fruit, or they love the fruit but hate the tree.\""
+            }
+          ]
+        },
+        {
+          "id": "44",
+          "number": 44,
+          "label": "Saying 44: Blasphemy",
+          "title": "Saying 44: Blasphemy",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 44:1",
+              "text": "Jesus said, \"Whoever blasphemes against the Father will be forgiven, and whoever blasphemes against the son will be forgiven, but whoever blasphemes against the holy spirit will not be forgiven, either on earth or in heaven.\""
+            }
+          ]
+        },
+        {
+          "id": "45",
+          "number": 45,
+          "label": "Saying 45: Good and Evil",
+          "title": "Saying 45: Good and Evil",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 45:1",
+              "text": "Jesus said, \"Grapes are not harvested from thorn trees, nor are figs gathered from thistles, for they yield no fruit."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 45:2",
+              "text": "Good persons produce good from what they've stored up; bad persons produce evil from the wickedness they've stored up in their hearts, and say evil things. For from the overflow of the heart they produce evil.\""
+            }
+          ]
+        },
+        {
+          "id": "46",
+          "number": 46,
+          "label": "Saying 46: Greater than John the Baptizer",
+          "title": "Saying 46: Greater than John the Baptizer",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 46:1",
+              "text": "Jesus said, \"From Adam to John the Baptist, among those born of women, no one is so much greater than John the Baptist that his eyes should not be averted."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 46:2",
+              "text": "But I have said that whoever among you becomes a child will recognize the (Father's) kingdom and will become greater than John.\""
+            }
+          ]
+        },
+        {
+          "id": "47",
+          "number": 47,
+          "label": "Saying 47: The Parables of Divided Loyalties, New Wine in Old Wineskins, and New Patch on Old Cloth",
+          "title": "Saying 47: The Parables of Divided Loyalties, New Wine in Old Wineskins, and New Patch on Old Cloth",
+          "verseCount": 4,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 47:1",
+              "text": "Jesus said, \"A person cannot mount two horses or bend two bows."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 47:2",
+              "text": "And a slave cannot serve two masters, otherwise that slave will honor the one and offend the other."
+            },
+            {
+              "id": "3",
+              "number": 3,
+              "reference": "Saying 47:3",
+              "text": "Nobody drinks aged wine and immediately wants to drink young wine. Young wine is not poured into old wineskins, or they might break, and aged wine is not poured into a new wineskin, or it might spoil."
+            },
+            {
+              "id": "4",
+              "number": 4,
+              "reference": "Saying 47:4",
+              "text": "An old patch is not sewn onto a new garment, since it would create a tear.\""
+            }
+          ]
+        },
+        {
+          "id": "48",
+          "number": 48,
+          "label": "Saying 48: Unity (1)",
+          "title": "Saying 48: Unity (1)",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 48:1",
+              "text": "Jesus said, \"If two make peace with each other in a single house, they will say to the mountain, 'Move from here!' and it will move.\""
+            }
+          ]
+        },
+        {
+          "id": "49",
+          "number": 49,
+          "label": "Saying 49: Those Who Are Chosen (2)",
+          "title": "Saying 49: Those Who Are Chosen (2)",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 49:1",
+              "text": "Jesus said, \"Congratulations to those who are alone and chosen, for you will find the kingdom. For you have come from it, and you will return there again.\""
+            }
+          ]
+        },
+        {
+          "id": "50",
+          "number": 50,
+          "label": "Saying 50: Our Origin and Identity",
+          "title": "Saying 50: Our Origin and Identity",
+          "verseCount": 3,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 50:1",
+              "text": "Jesus said, \"If they say to you, 'Where have you come from?' say to them, 'We have come from the light, from the place where the light came into being by itself, established [itself], and appeared in their image.'"
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 50:2",
+              "text": "If they say to you, 'Is it you?' say, 'We are its children, and we are the chosen of the living Father.'"
+            },
+            {
+              "id": "3",
+              "number": 3,
+              "reference": "Saying 50:3",
+              "text": "If they ask you, 'What is the evidence of your Father in you?' say to them, 'It is motion and rest.'\""
+            }
+          ]
+        },
+        {
+          "id": "51",
+          "number": 51,
+          "label": "Saying 51: The New World",
+          "title": "Saying 51: The New World",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 51:1",
+              "text": "His disciples said to him, \"When will the rest for the dead take place, and when will the new world come?\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 51:2",
+              "text": "He said to them, \"What you are looking forward to has come, but you don't know it.\""
+            }
+          ]
+        },
+        {
+          "id": "52",
+          "number": 52,
+          "label": "Saying 52: Twenty-Four Prophets",
+          "title": "Saying 52: Twenty-Four Prophets",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 52:1",
+              "text": "His disciples said to him, \"Twenty-four prophets have spoken in Israel, and they all spoke of you.\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 52:2",
+              "text": "He said to them, \"You have disregarded the living one who is in your presence, and have spoken of the dead.\""
+            }
+          ]
+        },
+        {
+          "id": "53",
+          "number": 53,
+          "label": "Saying 53: True Circumcision",
+          "title": "Saying 53: True Circumcision",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 53:1",
+              "text": "His disciples said to him, \"Is circumcision useful or not?\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 53:2",
+              "text": "He said to them, \"If it were useful, their father would produce children already circumcised from their mother. Rather, the true circumcision in spirit has become profitable in every respect.\""
+            }
+          ]
+        },
+        {
+          "id": "54",
+          "number": 54,
+          "label": "Saying 54: Those Who Are Poor",
+          "title": "Saying 54: Those Who Are Poor",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 54:1",
+              "text": "Jesus said, \"Congratulations to the poor, for to you belongs Heaven's kingdom.\""
+            }
+          ]
+        },
+        {
+          "id": "55",
+          "number": 55,
+          "label": "Saying 55: Discipleship (1)",
+          "title": "Saying 55: Discipleship (1)",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 55:1",
+              "text": "Jesus said, \"Whoever does not hate father and mother cannot be my disciple, and whoever does not hate brothers and sisters, and carry the cross as I do, will not be worthy of me.\""
+            }
+          ]
+        },
+        {
+          "id": "56",
+          "number": 56,
+          "label": "Saying 56: The World is a Corpse",
+          "title": "Saying 56: The World is a Corpse",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 56:1",
+              "text": "Jesus said, \"Whoever has come to know the world has discovered a carcass, and whoever has discovered a carcass, of that person the world is not worthy.\""
+            }
+          ]
+        },
+        {
+          "id": "57",
+          "number": 57,
+          "label": "Saying 57: The Parable of the Weeds",
+          "title": "Saying 57: The Parable of the Weeds",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 57:1",
+              "text": "Jesus said, \"The Father's kingdom is like a person who has [good] seed. His enemy came during the night and sowed weeds among the good seed. The person did not let the workers pull up the weeds, but said to them, 'No, otherwise you might go to pull up the weeds and pull up the wheat along with them.' For on the day of the harvest the weeds will be conspicuous, and will be pulled up and burned.\""
+            }
+          ]
+        },
+        {
+          "id": "58",
+          "number": 58,
+          "label": "Saying 58: Finding Life",
+          "title": "Saying 58: Finding Life",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 58:1",
+              "text": "Jesus said, \"Congratulations to the person who has toiled and has found life.\""
+            }
+          ]
+        },
+        {
+          "id": "59",
+          "number": 59,
+          "label": "Saying 59: The Living One",
+          "title": "Saying 59: The Living One",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 59:1",
+              "text": "Jesus said, \"Look to the living one as long as you live, otherwise you might die and then try to see the living one, and you will be unable to see.\""
+            }
+          ]
+        },
+        {
+          "id": "60",
+          "number": 60,
+          "label": "Saying 60: Don't Become a Corpse",
+          "title": "Saying 60: Don't Become a Corpse",
+          "verseCount": 3,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 60:1",
+              "text": "He saw a Samaritan carrying a lamb and going to Judea. He said to his disciples, \"that person ... around the lamb.\" They said to him, \"So that he may kill it and eat it.\" He said to them, \"He will not eat it while it is alive, but only after he has killed it and it has become a carcass.\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 60:2",
+              "text": "They said, \"Otherwise he can't do it.\""
+            },
+            {
+              "id": "3",
+              "number": 3,
+              "reference": "Saying 60:3",
+              "text": "He said to them, \"So also with you, seek for yourselves a place for rest, or you might become a carcass and be eaten.\""
+            }
+          ]
+        },
+        {
+          "id": "61",
+          "number": 61,
+          "label": "Saying 61: Jesus and Salome",
+          "title": "Saying 61: Jesus and Salome",
+          "verseCount": 5,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 61:1",
+              "text": "Jesus said, \"Two will recline on a couch; one will die, one will live.\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 61:2",
+              "text": "Salome said, \"Who are you mister? You have climbed onto my couch and eaten from my table as if you are from someone.\""
+            },
+            {
+              "id": "3",
+              "number": 3,
+              "reference": "Saying 61:3",
+              "text": "Jesus said to her, \"I am the one who comes from what is whole. I was granted from the things of my Father.\""
+            },
+            {
+              "id": "4",
+              "number": 4,
+              "reference": "Saying 61:4",
+              "text": "\"I am your disciple.\""
+            },
+            {
+              "id": "5",
+              "number": 5,
+              "reference": "Saying 61:5",
+              "text": "\"For this reason I say, if one is whole, one will be filled with light, but if one is divided, one will be filled with darkness.\""
+            }
+          ]
+        },
+        {
+          "id": "62",
+          "number": 62,
+          "label": "Saying 62: Mysteries",
+          "title": "Saying 62: Mysteries",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 62:1",
+              "text": "Jesus said, \"I disclose my mysteries to those [who are worthy] of [my] mysteries."
+            }
+          ]
+        },
+        {
+          "id": "63",
+          "number": 63,
+          "label": "Saying 63: The Parable of the Rich Fool",
+          "title": "Saying 63: The Parable of the Rich Fool",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 63:1",
+              "text": "Jesus said, \"There was a rich person who had a great deal of money. He said, 'I shall invest my money so that I may sow, reap, plant, and fill my storehouses with produce, that I may lack nothing.' These were the things he was thinking in his heart, but that very night he died. Anyone here with two ears had better listen!\""
+            }
+          ]
+        },
+        {
+          "id": "64",
+          "number": 64,
+          "label": "Saying 64: The Parable of the Dinner Party",
+          "title": "Saying 64: The Parable of the Dinner Party",
+          "verseCount": 7,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 64:1",
+              "text": "Jesus said, \"A person was receiving guests. When he had prepared the dinner, he sent his slave to invite the guests."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 64:2",
+              "text": "The slave went to the first and said to that one, 'My master invites you.' That one said, 'Some merchants owe me money; they are coming to me tonight. I have to go and give them instructions. Please excuse me from dinner.'"
+            },
+            {
+              "id": "3",
+              "number": 3,
+              "reference": "Saying 64:3",
+              "text": "The slave went to another and said to that one, 'My master has invited you.' That one said to the slave, 'I have bought a house, and I have been called away for a day. I shall have no time.'"
+            },
+            {
+              "id": "4",
+              "number": 4,
+              "reference": "Saying 64:4",
+              "text": "The slave went to another and said to that one, 'My master invites you.' That one said to the slave, 'My friend is to be married, and I am to arrange the banquet. I shall not be able to come. Please excuse me from dinner.'"
+            },
+            {
+              "id": "5",
+              "number": 5,
+              "reference": "Saying 64:5",
+              "text": "The slave went to another and said to that one, 'My master invites you.' That one said to the slave, 'I have bought an estate, and I am going to collect the rent. I shall not be able to come. Please excuse me.'"
+            },
+            {
+              "id": "6",
+              "number": 6,
+              "reference": "Saying 64:6",
+              "text": "The slave returned and said to his master, 'Those whom you invited to dinner have asked to be excused.' The master said to his slave, 'Go out on the streets and bring back whomever you find to have dinner.'"
+            },
+            {
+              "id": "7",
+              "number": 7,
+              "reference": "Saying 64:7",
+              "text": "Buyers and merchants [will] not enter the places of my Father.\""
+            }
+          ]
+        },
+        {
+          "id": "65",
+          "number": 65,
+          "label": "Saying 65: The Parable of the Sharecroppers",
+          "title": "Saying 65: The Parable of the Sharecroppers",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 65:1",
+              "text": "He said, \"A [...] person owned a vineyard and rented it to some farmers, so they could work it and he could collect its crop from them. He sent his slave so the farmers would give him the vineyard's crop. They grabbed him, beat him, and almost killed him, and the slave returned and told his master. His master said, 'Perhaps he didn't know them.' He sent another slave, and the farmers beat that one as well. Then the master sent his son and said, 'Perhaps they'll show my son some respect.' Because the farmers knew that he was the heir to the vineyard, they grabbed him and killed him. Anyone here with two ears had better listen!\""
+            }
+          ]
+        },
+        {
+          "id": "66",
+          "number": 66,
+          "label": "Saying 66: The Rejected Cornerstone",
+          "title": "Saying 66: The Rejected Cornerstone",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 66:1",
+              "text": "Jesus said, \"Show me the stone that the builders rejected: that is the keystone.\""
+            }
+          ]
+        },
+        {
+          "id": "67",
+          "number": 67,
+          "label": "Saying 67: Knowing Isn't Everything",
+          "title": "Saying 67: Knowing Isn't Everything",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 67:1",
+              "text": "Jesus said, \"Those who know all, but are lacking in themselves, are utterly lacking.\""
+            }
+          ]
+        },
+        {
+          "id": "68",
+          "number": 68,
+          "label": "Saying 68: Persecution",
+          "title": "Saying 68: Persecution",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 68:1",
+              "text": "Jesus said, \"Congratulations to you when you are hated and persecuted; and no place will be found, wherever you have been persecuted.\""
+            }
+          ]
+        },
+        {
+          "id": "69",
+          "number": 69,
+          "label": "Saying 69: Those Who Are Persecuted",
+          "title": "Saying 69: Those Who Are Persecuted",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 69:1",
+              "text": "Jesus said, \"Congratulations to those who have been persecuted in their hearts: they are the ones who have truly come to know the Father."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 69:2",
+              "text": "Congratulations to those who go hungry, so the stomach of the one in want may be filled.\""
+            }
+          ]
+        },
+        {
+          "id": "70",
+          "number": 70,
+          "label": "Saying 70: Salvation is Within",
+          "title": "Saying 70: Salvation is Within",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 70:1",
+              "text": "Jesus said, \"If you bring forth what is within you, what you have will save you. If you do not have that within you, what you do not have within you [will] kill you.\""
+            }
+          ]
+        },
+        {
+          "id": "71",
+          "number": 71,
+          "label": "Saying 71: Destroying the Temple",
+          "title": "Saying 71: Destroying the Temple",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 71:1",
+              "text": "Jesus said, \"I will destroy [this] house, and no one will be able to build it [...].\""
+            }
+          ]
+        },
+        {
+          "id": "72",
+          "number": 72,
+          "label": "Saying 72: Not a Divider",
+          "title": "Saying 72: Not a Divider",
+          "verseCount": 3,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 72:1",
+              "text": "A [person said] to him, \"Tell my brothers to divide my father's possessions with me.\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 72:2",
+              "text": "He said to the person, \"Mister, who made me a divider?\""
+            },
+            {
+              "id": "3",
+              "number": 3,
+              "reference": "Saying 72:3",
+              "text": "He turned to his disciples and said to them, \"I'm not a divider, am I?\""
+            }
+          ]
+        },
+        {
+          "id": "73",
+          "number": 73,
+          "label": "Saying 73: Workers for the Harvest",
+          "title": "Saying 73: Workers for the Harvest",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 73:1",
+              "text": "Jesus said, \"The crop is huge but the workers are few, so beg the harvest boss to dispatch workers to the fields.\""
+            }
+          ]
+        },
+        {
+          "id": "74",
+          "number": 74,
+          "label": "Saying 74: The Empty Well",
+          "title": "Saying 74: The Empty Well",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 74:1",
+              "text": "He said, \"Lord, there are many around the drinking trough, but there is nothing in the well.\""
+            }
+          ]
+        },
+        {
+          "id": "75",
+          "number": 75,
+          "label": "Saying 75: The Bridal Chamber",
+          "title": "Saying 75: The Bridal Chamber",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 75:1",
+              "text": "Jesus said, \"There are many standing at the door, but those who are alone will enter the bridal suite.\""
+            }
+          ]
+        },
+        {
+          "id": "76",
+          "number": 76,
+          "label": "Saying 76: The Parable of the Pearl",
+          "title": "Saying 76: The Parable of the Pearl",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 76:1",
+              "text": "Jesus said, \"The Father's kingdom is like a merchant who had a supply of merchandise and found a pearl. That merchant was prudent; he sold the merchandise and bought the single pearl for himself."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 76:2",
+              "text": "So also with you, seek his treasure that is unfailing, that is enduring, where no moth comes to eat and no worm destroys.\""
+            }
+          ]
+        },
+        {
+          "id": "77",
+          "number": 77,
+          "label": "Saying 77: Jesus is the All",
+          "title": "Saying 77: Jesus is the All",
+          "verseCount": 3,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 77:1",
+              "text": "Jesus said, \"I am the light that is over all things. I am all: from me all came forth, and to me all attained."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 77:2",
+              "text": "Split a piece of wood; I am there."
+            },
+            {
+              "id": "3",
+              "number": 3,
+              "reference": "Saying 77:3",
+              "text": "Lift up the stone, and you will find me there.\""
+            }
+          ]
+        },
+        {
+          "id": "78",
+          "number": 78,
+          "label": "Saying 78: Into the Desert",
+          "title": "Saying 78: Into the Desert",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 78:1",
+              "text": "Jesus said, \"Why have you come out to the countryside? To see a reed shaken by the wind? And to see a person dressed in soft clothes, [like your] rulers and your powerful ones? They are dressed in soft clothes, and they cannot understand truth.\""
+            }
+          ]
+        },
+        {
+          "id": "79",
+          "number": 79,
+          "label": "Saying 79: Listening to the Message",
+          "title": "Saying 79: Listening to the Message",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 79:1",
+              "text": "A woman in the crowd said to him, \"Lucky are the womb that bore you and the breasts that fed you.\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 79:2",
+              "text": "He said to [her], \"Lucky are those who have heard the word of the Father and have truly kept it. For there will be days when you will say, 'Lucky are the womb that has not conceived and the breasts that have not given milk.'\""
+            }
+          ]
+        },
+        {
+          "id": "80",
+          "number": 80,
+          "label": "Saying 80: The World is a Body",
+          "title": "Saying 80: The World is a Body",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 80:1",
+              "text": "Jesus said, \"Whoever has come to know the world has discovered the body, and whoever has discovered the body, of that one the world is not worthy.\""
+            }
+          ]
+        },
+        {
+          "id": "81",
+          "number": 81,
+          "label": "Saying 81: Riches and Renunciation (1)",
+          "title": "Saying 81: Riches and Renunciation (1)",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 81:1",
+              "text": "Jesus said, \"Let one who has become wealthy reign, and let one who has power renounce <it>.\""
+            }
+          ]
+        },
+        {
+          "id": "82",
+          "number": 82,
+          "label": "Saying 82: Jesus and Fire (2)",
+          "title": "Saying 82: Jesus and Fire (2)",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 82:1",
+              "text": "Jesus said, \"Whoever is near me is near the fire, and whoever is far from me is far from the (Father's) kingdom.\""
+            }
+          ]
+        },
+        {
+          "id": "83",
+          "number": 83,
+          "label": "Saying 83: Light and Images",
+          "title": "Saying 83: Light and Images",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 83:1",
+              "text": "Jesus said, \"Images are visible to people, but the light within them is hidden in the image of the Father's light. He will be disclosed, but his image is hidden by his light.\""
+            }
+          ]
+        },
+        {
+          "id": "84",
+          "number": 84,
+          "label": "Saying 84: Our Previous Images",
+          "title": "Saying 84: Our Previous Images",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 84:1",
+              "text": "Jesus said, \"When you see your likeness, you are happy. But when you see your images that came into being before you and that neither die nor become visible, how much you will have to bear!\""
+            }
+          ]
+        },
+        {
+          "id": "85",
+          "number": 85,
+          "label": "Saying 85: Adam Wasn't Worthy",
+          "title": "Saying 85: Adam Wasn't Worthy",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 85:1",
+              "text": "Jesus said, \"Adam came from great power and great wealth, but he was not worthy of you. For had he been worthy, [he would] not [have tasted] death.\""
+            }
+          ]
+        },
+        {
+          "id": "86",
+          "number": 86,
+          "label": "Saying 86: Foxes and Birds",
+          "title": "Saying 86: Foxes and Birds",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 86:1",
+              "text": "Jesus said, \"[Foxes have] their dens and birds have their nests, but human beings have no place to lay down and rest.\""
+            }
+          ]
+        },
+        {
+          "id": "87",
+          "number": 87,
+          "label": "Saying 87: Body and Soul",
+          "title": "Saying 87: Body and Soul",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 87:1",
+              "text": "Jesus said, \"How miserable is the body that depends on a body, and how miserable is the soul that depends on these two.\""
+            }
+          ]
+        },
+        {
+          "id": "88",
+          "number": 88,
+          "label": "Saying 88: Angels and Prophets",
+          "title": "Saying 88: Angels and Prophets",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 88:1",
+              "text": "Jesus said, \"The messengers and the prophets will come to you and give you what belongs to you. You, in turn, give them what you have, and say to yourselves, 'When will they come and take what belongs to them?'\""
+            }
+          ]
+        },
+        {
+          "id": "89",
+          "number": 89,
+          "label": "Saying 89: Inside and Outside",
+          "title": "Saying 89: Inside and Outside",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 89:1",
+              "text": "Jesus said, \"Why do you wash the outside of the cup? Don't you understand that the one who made the inside is also the one who made the outside?\""
+            }
+          ]
+        },
+        {
+          "id": "90",
+          "number": 90,
+          "label": "Saying 90: Jesus' Yoke is Easy",
+          "title": "Saying 90: Jesus' Yoke is Easy",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 90:1",
+              "text": "Jesus said, \"Come to me, for my yoke is comfortable and my lordship is gentle, and you will find rest for yourselves.\""
+            }
+          ]
+        },
+        {
+          "id": "91",
+          "number": 91,
+          "label": "Saying 91: Reading the Signs",
+          "title": "Saying 91: Reading the Signs",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 91:1",
+              "text": "They said to him, \"Tell us who you are so that we may believe in you.\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 91:2",
+              "text": "He said to them, \"You examine the face of heaven and earth, but you have not come to know the one who is in your presence, and you do not know how to examine the present moment.\""
+            }
+          ]
+        },
+        {
+          "id": "92",
+          "number": 92,
+          "label": "Saying 92: Look and Find",
+          "title": "Saying 92: Look and Find",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 92:1",
+              "text": "Jesus said, \"Seek and you will find."
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 92:2",
+              "text": "In the past, however, I did not tell you the things about which you asked me then. Now I am willing to tell them, but you are not seeking them.\""
+            }
+          ]
+        },
+        {
+          "id": "93",
+          "number": 93,
+          "label": "Saying 93: Don't Throw Pearls to Pigs",
+          "title": "Saying 93: Don't Throw Pearls to Pigs",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 93:1",
+              "text": "\"Don't give what is holy to dogs, for they might throw them upon the manure pile. Don't throw pearls [to] pigs, or they might ... it [...].\""
+            }
+          ]
+        },
+        {
+          "id": "94",
+          "number": 94,
+          "label": "Saying 94: Knock and It Will Be Opened",
+          "title": "Saying 94: Knock and It Will Be Opened",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 94:1",
+              "text": "Jesus [said], \"One who seeks will find, and for [one who knocks] it will be opened.\""
+            }
+          ]
+        },
+        {
+          "id": "95",
+          "number": 95,
+          "label": "Saying 95: Giving Money",
+          "title": "Saying 95: Giving Money",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 95:1",
+              "text": "[Jesus said], \"If you have money, don't lend it at interest. Rather, give [it] to someone from whom you won't get it back.\""
+            }
+          ]
+        },
+        {
+          "id": "96",
+          "number": 96,
+          "label": "Saying 96: The Parable of the Yeast",
+          "title": "Saying 96: The Parable of the Yeast",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 96:1",
+              "text": "Jesus [said], \"The Father's kingdom is like [a] woman. She took a little leaven, [hid] it in dough, and made it into large loaves of bread. Anyone here with two ears had better listen!\""
+            }
+          ]
+        },
+        {
+          "id": "97",
+          "number": 97,
+          "label": "Saying 97: The Parable of the Jar of Flour",
+          "title": "Saying 97: The Parable of the Jar of Flour",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 97:1",
+              "text": "Jesus said, \"The [Father's] kingdom is like a woman who was carrying a [jar] full of meal. While she was walking along [a] distant road, the handle of the jar broke and the meal spilled behind her [along] the road. She didn't know it; she hadn't noticed a problem. When she reached her house, she put the jar down and discovered that it was empty.\""
+            }
+          ]
+        },
+        {
+          "id": "98",
+          "number": 98,
+          "label": "Saying 98: The Parable of the Assassin",
+          "title": "Saying 98: The Parable of the Assassin",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 98:1",
+              "text": "Jesus said, \"The Father's kingdom is like a person who wanted to kill someone powerful. While still at home he drew his sword and thrust it into the wall to find out whether his hand would go in. Then he killed the powerful one.\""
+            }
+          ]
+        },
+        {
+          "id": "99",
+          "number": 99,
+          "label": "Saying 99: Jesus' True Family",
+          "title": "Saying 99: Jesus' True Family",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 99:1",
+              "text": "The disciples said to him, \"Your brothers and your mother are standing outside.\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 99:2",
+              "text": "He said to them, \"Those here who do what my Father wants are my brothers and my mother. They are the ones who will enter my Father's kingdom.\""
+            }
+          ]
+        },
+        {
+          "id": "100",
+          "number": 100,
+          "label": "Saying 100: Give to Caesar What Belongs to Caesar",
+          "title": "Saying 100: Give to Caesar What Belongs to Caesar",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 100:1",
+              "text": "They showed Jesus a gold coin and said to him, \"The Roman emperor's people demand taxes from us.\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 100:2",
+              "text": "He said to them, \"Give the emperor what belongs to the emperor, give God what belongs to God, and give me what is mine.\""
+            }
+          ]
+        },
+        {
+          "id": "101",
+          "number": 101,
+          "label": "Saying 101: Discipleship (2)",
+          "title": "Saying 101: Discipleship (2)",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 101:1",
+              "text": "\"Whoever does not hate [father] and mother as I do cannot be my [disciple], and whoever does [not] love [father and] mother as I do cannot be my [disciple]. For my mother [...], but my true [mother] gave me life.\""
+            }
+          ]
+        },
+        {
+          "id": "102",
+          "number": 102,
+          "label": "Saying 102: The Dog in the Feeding Trough",
+          "title": "Saying 102: The Dog in the Feeding Trough",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 102:1",
+              "text": "Jesus said, \"Damn the Pharisees! They are like a dog sleeping in the cattle manger: the dog neither eats nor [lets] the cattle eat.\""
+            }
+          ]
+        },
+        {
+          "id": "103",
+          "number": 103,
+          "label": "Saying 103: The Parable of the Bandits",
+          "title": "Saying 103: The Parable of the Bandits",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 103:1",
+              "text": "Jesus said, \"Congratulations to those who know where the rebels are going to attack. [They] can get going, collect their imperial resources, and be prepared before the rebels arrive.\""
+            }
+          ]
+        },
+        {
+          "id": "104",
+          "number": 104,
+          "label": "Saying 104: Prayer and Fasting",
+          "title": "Saying 104: Prayer and Fasting",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 104:1",
+              "text": "They said to Jesus, \"Come, let us pray today, and let us fast.\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 104:2",
+              "text": "Jesus said, \"What sin have I committed, or how have I been undone? Rather, when the groom leaves the bridal suite, then let people fast and pray.\""
+            }
+          ]
+        },
+        {
+          "id": "105",
+          "number": 105,
+          "label": "Saying 105: Knowing Father and Mother",
+          "title": "Saying 105: Knowing Father and Mother",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 105:1",
+              "text": "Jesus said, \"Whoever knows the father and the mother will be called the child of a whore.\""
+            }
+          ]
+        },
+        {
+          "id": "106",
+          "number": 106,
+          "label": "Saying 106: Unity (2)",
+          "title": "Saying 106: Unity (2)",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 106:1",
+              "text": "Jesus said, \"When you make the two into one, you will become children of Adam, and when you say, 'Mountain, move from here!' it will move.\""
+            }
+          ]
+        },
+        {
+          "id": "107",
+          "number": 107,
+          "label": "Saying 107: The Parable of the Lost Sheep",
+          "title": "Saying 107: The Parable of the Lost Sheep",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 107:1",
+              "text": "Jesus said, \"The (Father's) kingdom is like a shepherd who had a hundred sheep. One of them, the largest, went astray. He left the ninety-nine and looked for the one until he found it. After he had toiled, he said to the sheep, 'I love you more than the ninety-nine.'\""
+            }
+          ]
+        },
+        {
+          "id": "108",
+          "number": 108,
+          "label": "Saying 108: Becoming Like Jesus",
+          "title": "Saying 108: Becoming Like Jesus",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 108:1",
+              "text": "Jesus said, \"Whoever drinks from my mouth will become like me; I myself shall become that person, and the hidden things will be revealed to him.\""
+            }
+          ]
+        },
+        {
+          "id": "109",
+          "number": 109,
+          "label": "Saying 109: The Parable of the Hidden Treasure",
+          "title": "Saying 109: The Parable of the Hidden Treasure",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 109:1",
+              "text": "Jesus said, \"The (Father's) kingdom is like a person who had a treasure hidden in his field but did not know it. And [when] he died he left it to his [son]. The son [did] not know about it either. He took over the field and sold it. The buyer went plowing, [discovered] the treasure, and began to lend money at interest to whomever he wished.\""
+            }
+          ]
+        },
+        {
+          "id": "110",
+          "number": 110,
+          "label": "Saying 110: Riches and Renunciation (2)",
+          "title": "Saying 110: Riches and Renunciation (2)",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 110:1",
+              "text": "Jesus said, \"Let one who has found the world, and has become wealthy, renounce the world.\""
+            }
+          ]
+        },
+        {
+          "id": "111",
+          "number": 111,
+          "label": "Saying 111: Those Who are Living Won't Die (2)",
+          "title": "Saying 111: Those Who are Living Won't Die (2)",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 111:1",
+              "text": "Jesus said, \"The heavens and the earth will roll up in your presence, and whoever is living from the living one will not see death.\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 111:2",
+              "text": "Does not Jesus say, \"Those who have found themselves, of them the world is not worthy\"?"
+            }
+          ]
+        },
+        {
+          "id": "112",
+          "number": 112,
+          "label": "Saying 112: Flesh and Soul",
+          "title": "Saying 112: Flesh and Soul",
+          "verseCount": 1,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 112:1",
+              "text": "Jesus said, \"Damn the flesh that depends on the soul. Damn the soul that depends on the flesh.\""
+            }
+          ]
+        },
+        {
+          "id": "113",
+          "number": 113,
+          "label": "Saying 113: The Kingdom is Already Present",
+          "title": "Saying 113: The Kingdom is Already Present",
+          "verseCount": 2,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 113:1",
+              "text": "His disciples said to him, \"When will the kingdom come?\""
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 113:2",
+              "text": "\"It will not come by watching for it. It will not be said, 'Look, here!' or 'Look, there!' Rather, the Father's kingdom is spread out upon the earth, and people don't see it.\""
+            }
+          ]
+        },
+        {
+          "id": "114",
+          "number": 114,
+          "label": "Saying 114: Peter and Mary",
+          "title": "Saying 114: Peter and Mary",
+          "verseCount": 3,
+          "verses": [
+            {
+              "id": "1",
+              "number": 1,
+              "reference": "Saying 114:1",
+              "text": "[Saying probably added to the original collection at a later date:]"
+            },
+            {
+              "id": "2",
+              "number": 2,
+              "reference": "Saying 114:2",
+              "text": "Simon Peter said to them, \"Make Mary leave us, for females don't deserve life.\""
+            },
+            {
+              "id": "3",
+              "number": 3,
+              "reference": "Saying 114:3",
+              "text": "Jesus said, \"Look, I will guide her to make her male, so that she too may become a living spirit resembling you males. For every female who makes herself male will enter the kingdom of Heaven.\""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

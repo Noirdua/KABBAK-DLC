@@ -1,0 +1,15 @@
+{
+  "workLabel": "Book",
+  "verseLabel": "Verse",
+  "shortTitle": "Lies",
+  "script": "Latin",
+  "sectionLabel": "Chapter",
+  "title": "Book of Lies",
+  "id": "book of lies",
+  "input": {
+    "path": "Book of Lies.json",
+    "format": "structured-json"
+  },
+  "language": "English",
+  "tradition": ""
+}

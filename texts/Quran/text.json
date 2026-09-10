@@ -1,0 +1,14 @@
+{
+  "script": "Latin",
+  "input": {
+    "path": "quran.json",
+    "format": "structured-json"
+  },
+  "title": "Quran",
+  "workLabel": "Book",
+  "language": "English",
+  "shortTitle": "Quran",
+  "id": "quran",
+  "verseLabel": "Verse",
+  "sectionLabel": "Chapter"
+}
