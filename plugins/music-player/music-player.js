@@ -270,7 +270,9 @@
       }
       const file = files[trackIndex];
       currentTrackName = file.name;
-      audio.src = helpers.fileUrl(file.dir || LIBRARY_DIR, file.name);
+      const trackDir = String(file.dir || LIBRARY_DIR).trim() || LIBRARY_DIR;
+      const trackName = String(file.name || "").trim();
+      audio.src = trackName ? helpers.fileUrl(trackDir, trackName) : "";
       audio.volume = Number(volume.value) || 0.75;
       refreshTrackOptions();
     }
