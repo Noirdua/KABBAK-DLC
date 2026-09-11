@@ -888,7 +888,7 @@
   }
 
   function getLinkReport(config) {
-    const { topLevel, byId } = collectAllUnits();
+    const { topLevel, subpages, byId } = collectAllUnits();
     const configuredIds = collectConfigIds(config || {});
 
     // Anything the app offers but the menu doesn't include. Only top-level
