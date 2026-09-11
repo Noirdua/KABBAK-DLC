@@ -74,7 +74,20 @@
         const items = ui.listNav().filter((item) => !item.hidden);
         menuEl.innerHTML = "";
         items.forEach((item) => {
-          if (item.type === "search") return;
+          if (item.type === "search") {
+            const wrap = document.createElement("label");
+            wrap.className = "layout-dock-search";
+            const input = document.createElement("input");
+            input.type = "search";
+            input.placeholder = item.label || "Search menu…";
+            input.value = String(window.TaroTimeMenuPlugin?.getConfig?.()?.lastSearchQuery || "");
+            input.addEventListener("input", () => {
+              window.TaroTimeMenuPlugin?.applySearchFilter?.(input.value);
+            });
+            wrap.appendChild(input);
+            menuEl.appendChild(wrap);
+            return;
+          }
           if (item.type === "header") {
             const heading = document.createElement("div");
             heading.className = "layout-dock-heading";

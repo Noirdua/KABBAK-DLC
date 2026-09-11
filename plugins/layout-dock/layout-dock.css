@@ -40,6 +40,21 @@
   gap: 2px;
 }
 
+.layout-dock-search {
+  padding: 4px 6px 10px;
+}
+
+.layout-dock-search input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px 8px;
+  border: 1px solid var(--tt-border);
+  border-radius: 6px;
+  background: var(--tt-bg-deep);
+  color: var(--tt-text);
+  font: inherit;
+}
+
 .layout-dock-heading {
   padding: 12px 10px 4px;
   color: var(--tt-text-muted);

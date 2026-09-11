@@ -741,8 +741,21 @@
     return parts.join(" ").toLowerCase();
   }
 
+  let lastSearchQuery = "";
+
+  function navItemMatchesQuery(item, query, keywordIndex) {
+    if (!query) return true;
+    if (item?.type === "search") return true;
+    if (item?.type === "header") return false;
+    const keywords = item?.id ? keywordIndex.get(item.id) || "" : "";
+    const text = [item?.label || "", item?.id || "", keywords].join(" ").toLowerCase();
+    if (text.includes(query)) return true;
+    return (Array.isArray(item?.children) ? item.children : []).some((child) => navItemMatchesQuery(child, query, keywordIndex));
+  }
+
   function applySearchFilter(query) {
     const normalized = String(query || "").trim().toLowerCase();
+    lastSearchQuery = normalized;
     if (!normalized) {
       applyMenu(lastConfig || DEFAULT_CONFIG);
       return;
@@ -790,6 +803,7 @@
         hideUnit(unit.element);
       }
     });
+    document.dispatchEvent(new CustomEvent("taro-menu-updated"));
   }
 
   function ensureSearchBar(show, placeholder) {
@@ -829,14 +843,23 @@
 
   // --- Link report (for the menu editor) -------------------------------------
 
+  function isPluginOwnedMenuId(id) {
+    const value = String(id || "").trim();
+    return value === SEARCH_MENU_ID || value.startsWith("mp-menu-");
+  }
+
   function collectConfigIds(config) {
     const ids = new Set();
+    const addId = (raw, type) => {
+      if (type === "header" || type === "search") return;
+      const id = String(raw || "").trim();
+      if (!id || id === "undefined" || isPluginOwnedMenuId(id)) return;
+      ids.add(id);
+    };
     (Array.isArray(config?.items) ? config.items : []).forEach((item) => {
-      const id = String(item?.id || "").trim();
-      if (id && id !== "undefined") ids.add(id);
+      addId(item?.id, item?.type);
       (Array.isArray(item?.children) ? item.children : []).forEach((child) => {
-        const childId = String(child?.id || "").trim();
-        if (childId && childId !== "undefined") ids.add(childId);
+        addId(child?.id, child?.type);
       });
     });
     return ids;
@@ -867,9 +890,10 @@
     // Anything the config references that doesn't exist in the app.
     const broken = [];
     configuredIds.forEach((id) => {
+      if (isPluginOwnedMenuId(id)) return;
       if (resolveUnitById({ byId }, id)) return;
       const section = normalizeSectionId(id);
-      if (SECTION_DATASETS[section]) return; // valid custom section link
+      if (SECTION_DATASETS[section]) return;
       broken.push({ id: displayMenuId(id) });
     });
 
@@ -1010,13 +1034,24 @@
         });
       });
     }
-    return items;
+    if (!lastSearchQuery) return items;
+    const keywordIndex = buildKeywordIndex(config);
+    return items
+      .map((item) => {
+        if (item.type === "search") return item;
+        if (!navItemMatchesQuery(item, lastSearchQuery, keywordIndex)) return null;
+        const children = (item.children || []).filter((child) => navItemMatchesQuery(child, lastSearchQuery, keywordIndex));
+        if (children.length) return { ...item, children };
+        return item;
+      })
+      .filter(Boolean);
   }
 
   window.TaroTimeMenuPlugin = {
     getTopbarUnits: () => collectAllUnits().topLevel,
     getAllUnits: collectAllUnits,
     getNavItems,
+    applySearchFilter,
     getSectionDatasets: () => ({ ...SECTION_DATASETS }),
     getLinkReport,
     resolveMenuId,
