@@ -16,7 +16,10 @@
     playlists: []
   };
 
-  const AUDIO_EXTENSIONS = new Set([".mp3", ".ogg", ".wav", ".webm", ".m4a"]);
+  const AUDIO_EXTENSIONS = new Set([
+    ".mp3", ".ogg", ".oga", ".wav", ".webm", ".weba", ".m4a", ".m4b", ".mp4",
+    ".flac", ".aac", ".opus", ".aiff", ".aif", ".wma", ".alac", ".amr", ".wv"
+  ]);
 
   function displayName(folder) {
     return String(folder || "")
