@@ -1,0 +1,12 @@
+{
+  "entries": [
+    {
+      "version": "1.0.0",
+      "date": "2026-09-11",
+      "notes": [
+        "New Journal page: the notebook (dream/waking entries, scenes, quick notes, PDF export) as its own section.",
+        "Moved out of the Profile into a standalone page; open it from the Journal card or the top menu."
+      ]
+    }
+  ]
+}

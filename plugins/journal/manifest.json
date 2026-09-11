@@ -1,0 +1,13 @@
+{
+  "id": "journal",
+  "name": "Journal",
+  "kind": "gui",
+  "version": "1.0.0",
+  "description": "Personal journal: dream and waking entries with scenes, quick notes, and PDF export.",
+  "entry": "journal.js",
+  "css": "journal.css",
+  "section": {
+    "id": "journal",
+    "label": "Journal"
+  }
+}
