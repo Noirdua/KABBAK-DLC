@@ -287,9 +287,13 @@
         const nodes = [{ id: "hub", kind: "hub", label: "KABBAK", kicker: "menu" }];
         const edges = [];
         navItems().forEach((item) => {
-          const node = navNodeFromItem(item, "hub");
-          nodes.push(node);
-          edges.push({ from: "hub", to: node.id });
+          const children = (item.children || []).filter((child) => !child.hidden && child.type !== "search");
+          const leaves = children.length ? children : [item];
+          leaves.forEach((leaf) => {
+            const node = navNodeFromItem(leaf, "hub");
+            nodes.push(node);
+            edges.push({ from: "hub", to: node.id });
+          });
         });
         return { nodes: uniqueById(nodes), edges };
       }

@@ -122,7 +122,7 @@
           const group = document.createElement("div");
           group.className = "layout-dock-group";
           const childActive = children.some((child) => isActiveId(child.id, active));
-          if (childActive) group.classList.add("is-open");
+          group.classList.add("is-open");
           const toggle = document.createElement("button");
           toggle.type = "button";
           toggle.className = "layout-dock-group-toggle";

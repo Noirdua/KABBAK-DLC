@@ -926,21 +926,35 @@
     return { missing, broken };
   }
 
-  async function loadAndApply(helpers) {
+  async function loadAndApply(helpers, nextConfig) {
     let config = DEFAULT_CONFIG;
+    if (nextConfig && typeof nextConfig === "object" && !Array.isArray(nextConfig)) {
+      config = { ...DEFAULT_CONFIG, ...nextConfig };
+      applyMenu(config);
+      return;
+    }
     try {
-      const url = helpers?.assetUrl("config.json");
-      if (url) {
-        const response = await fetch(url, { cache: "no-store" });
-        if (response.ok) {
-          const loaded = await response.json();
-          if (loaded && typeof loaded === "object" && !Array.isArray(loaded)) {
-            config = { ...DEFAULT_CONFIG, ...loaded };
-          }
-        }
+      const payload = await window.TarotDataService?.requestJson?.(
+        "GET",
+        window.TarotDataService.buildApiUrl("/api/v1/plugins/menu-plugin/config")
+      );
+      const loaded = payload?.config;
+      if (loaded && typeof loaded === "object" && !Array.isArray(loaded)) {
+        config = { ...DEFAULT_CONFIG, ...loaded };
       }
     } catch (_error) {
-      // Keep defaults if config is unavailable.
+      try {
+        const url = helpers?.assetUrl("config.json");
+        if (url) {
+          const response = await fetch(url, { cache: "no-store" });
+          if (response.ok) {
+            const loaded = await response.json();
+            if (loaded && typeof loaded === "object" && !Array.isArray(loaded)) {
+              config = { ...DEFAULT_CONFIG, ...loaded };
+            }
+          }
+        }
+      } catch (_ignored) {}
     }
     applyMenu(config);
   }
@@ -954,7 +968,7 @@
 
   document.addEventListener("taro-plugin-config-updated", (event) => {
     if (String(event?.detail?.pluginName || "") === "menu-plugin" && lastHelpers) {
-      void loadAndApply(lastHelpers);
+      void loadAndApply(lastHelpers, event?.detail?.config);
     }
   });
 
@@ -1022,11 +1036,22 @@
     const resolved = resolveUnitById(units, item?.id);
     const id = resolved?.id || String(item?.id || "").trim();
     if (!id) return null;
-    if (isMenuGroupId(id) && !(Array.isArray(item?.children) && item.children.length)) return null;
     const hidden = item?.enabled === false && !isRequiredMenuId(id);
-    const children = (Array.isArray(item?.children) ? item.children : [])
+    let children = (Array.isArray(item?.children) ? item.children : [])
       .map((child) => navItemFromConfig(child, units))
       .filter(Boolean);
+    if (!children.length && resolved?.element) {
+      const buttons = resolved.element.querySelectorAll?.(":scope > .topbar-dropdown-menu > button")
+        || resolved.element.querySelectorAll?.(".topbar-dropdown-menu button")
+        || [];
+      children = [...buttons].map((button) => ({
+        id: String(button.id || "").trim(),
+        label: stripDropdownSuffix(button.textContent || button.id),
+        hidden: Boolean(button.hidden) || button.classList.contains("mp-hidden"),
+        children: []
+      })).filter((child) => child.id);
+    }
+    if (isMenuGroupId(id) && !children.length) return null;
     return {
       id,
       label: stripDropdownSuffix(item?.label || resolved?.label || id),
