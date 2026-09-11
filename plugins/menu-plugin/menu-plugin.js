@@ -645,6 +645,21 @@
       place(requiredUnit.element);
     });
 
+    const tarotUnit = byId.get("open-tarot");
+    const tarotChildIds = ["open-tarot-cards", "open-tarot-spread", "open-tarot-frame", "open-tarot-house"];
+    const tarotAvailable = window.TarotAppConfig?.hasTarotAccess?.() === true
+      || window.TarotAppConfig?.hasAdminApiManagementAccess?.() === true;
+    if (tarotUnit && tarotAvailable && !handledTopLevelIds.has("open-tarot")
+      && !tarotChildIds.some((id) => handledTopLevelIds.has(id))) {
+      handledTopLevelIds.add("open-tarot");
+      reveal(tarotUnit.element);
+      tarotChildIds.forEach((id) => {
+        const child = byId.get(id);
+        if (child?.element) reveal(child.element);
+      });
+      place(tarotUnit.element);
+    }
+
     if (placed.length) {
       const frag = document.createDocumentFragment();
       placed.forEach((element) => frag.appendChild(element));
@@ -879,19 +894,23 @@
     // Anything the app offers but the menu doesn't include. Only top-level
     // entries are reported: subpages only exist when an admin groups them.
     const missing = [];
-    topLevel.forEach((unit) => {
-      if (!unit.id) return;
-      if (isMenuGroupId(unit.id)) return;
-      const matches = configuredIds.has(unit.id) || configuredIds.has(displayMenuId(unit.id));
-      if (!matches) {
-        missing.push({
-          id: unit.id,
-          displayId: displayMenuId(unit.id),
-          label: unit.label || unit.id,
-          isSubpage: unit.isSubpage,
-          dataset: datasetForId(unit.id)
-        });
-      }
+    const isConfigured = (id) => configuredIds.has(id) || configuredIds.has(displayMenuId(id));
+    const addMissing = (unit) => {
+      if (!unit?.id || isPluginOwnedMenuId(unit.id) || isConfigured(unit.id)) return;
+      missing.push({
+        id: unit.id,
+        displayId: displayMenuId(unit.id),
+        label: unit.label || unit.id,
+        isSubpage: unit.isSubpage,
+        dataset: datasetForId(unit.id)
+      });
+    };
+    topLevel.forEach(addMissing);
+    subpages.forEach((unit) => {
+      const parentTrigger = unit.parentDropdownEl?.querySelector(":scope > button.settings-trigger");
+      const parentId = String(parentTrigger?.id || "").trim();
+      if (parentId && isConfigured(parentId)) return;
+      addMissing(unit);
     });
 
     // Anything the config references that doesn't exist in the app.
@@ -927,6 +946,9 @@
   }
 
   document.addEventListener("taro-plugins-ready", () => {
+    if (lastHelpers) applyMenu(lastConfig || DEFAULT_CONFIG);
+  });
+  document.addEventListener("connection:access-updated", () => {
     if (lastHelpers) applyMenu(lastConfig || DEFAULT_CONFIG);
   });
 
