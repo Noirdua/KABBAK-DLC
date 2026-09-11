@@ -74,7 +74,15 @@
         const items = ui.listNav().filter((item) => !item.hidden);
         menuEl.innerHTML = "";
         items.forEach((item) => {
-          const children = (item.children || []).filter((child) => !child.hidden);
+          if (item.type === "search") return;
+          if (item.type === "header") {
+            const heading = document.createElement("div");
+            heading.className = "layout-dock-heading";
+            heading.textContent = item.label || "";
+            menuEl.appendChild(heading);
+            return;
+          }
+          const children = (item.children || []).filter((child) => !child.hidden && child.type !== "search");
           if (!children.length) {
             const button = document.createElement("button");
             button.type = "button";
@@ -120,8 +128,10 @@
       renderNav();
       const stop = ui.onSectionChange(renderNav);
       document.addEventListener("taro-plugins-ready", renderNav);
+      document.addEventListener("taro-menu-updated", renderNav);
       return () => {
         document.removeEventListener("taro-plugins-ready", renderNav);
+        document.removeEventListener("taro-menu-updated", renderNav);
         if (typeof stop === "function") stop();
       };
     }

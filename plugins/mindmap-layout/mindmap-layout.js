@@ -266,7 +266,7 @@
       }
 
       function navItems() {
-        return ui.listNav().filter((item) => !item.hidden);
+        return ui.listNav().filter((item) => !item.hidden && item.type !== "search" && item.type !== "header");
       }
 
       function navNodeFromItem(item, parentId) {
@@ -1098,17 +1098,20 @@
 
       const onResize = () => renderGraph();
       window.addEventListener("resize", onResize);
-      document.addEventListener("taro-plugins-ready", () => {
+      const refreshMenu = () => {
         if (current().type === "menu") void showFrame();
-      });
-      document.addEventListener("connection:access-updated", () => {
-        if (current().type === "menu") void showFrame();
-      });
+      };
+      document.addEventListener("taro-plugins-ready", refreshMenu);
+      document.addEventListener("taro-menu-updated", refreshMenu);
+      document.addEventListener("connection:access-updated", refreshMenu);
       void showFrame();
       applyView();
 
       return () => {
         window.removeEventListener("resize", onResize);
+        document.removeEventListener("taro-plugins-ready", refreshMenu);
+        document.removeEventListener("taro-menu-updated", refreshMenu);
+        document.removeEventListener("connection:access-updated", refreshMenu);
       };
     }
   });

@@ -662,6 +662,7 @@
     applyMenuButtonMode(config.hideMenuButton === true);
 
     lastConfig = config;
+    document.dispatchEvent(new CustomEvent("taro-menu-updated"));
 
     const searchPlaced = placed.includes(searchWrapEl);
     const wantSearch = config.showSearch === true || searchPlaced
@@ -946,9 +947,76 @@
     }
   });
 
+  function navItemFromConfig(item, units) {
+    if (item?.type === "header") {
+      return {
+        id: "",
+        label: String(item.label || "").trim(),
+        hidden: false,
+        type: "header",
+        children: []
+      };
+    }
+    if (item?.type === "search" || String(item?.id || "") === SEARCH_MENU_ID) {
+      return {
+        id: SEARCH_MENU_ID,
+        label: String(item.label || "Search").trim(),
+        hidden: false,
+        type: "search",
+        children: []
+      };
+    }
+    const resolved = resolveUnitById(units, item?.id);
+    const id = resolved?.id || String(item?.id || "").trim();
+    if (!id) return null;
+    if (isMenuGroupId(id) && !(Array.isArray(item?.children) && item.children.length)) return null;
+    const hidden = item?.enabled === false && !isRequiredMenuId(id);
+    const children = (Array.isArray(item?.children) ? item.children : [])
+      .map((child) => navItemFromConfig(child, units))
+      .filter(Boolean);
+    return {
+      id,
+      label: stripDropdownSuffix(item?.label || resolved?.label || id),
+      hidden,
+      children
+    };
+  }
+
+  function getNavItems() {
+    const config = lastConfig || DEFAULT_CONFIG;
+    const units = collectAllUnits();
+    const items = [];
+    const seen = new Set();
+    (Array.isArray(config.items) ? config.items : []).forEach((item) => {
+      const nav = navItemFromConfig(item, units);
+      if (!nav) return;
+      if (nav.id) seen.add(nav.id);
+      items.push(nav);
+    });
+    REQUIRED_MENU_ORDER.forEach((id) => {
+      if (seen.has(id)) return;
+      const unit = units.byId.get(id) || resolveUnitById(units, id);
+      if (!unit) return;
+      items.push({ id, label: unit.label || id, hidden: false, children: [] });
+    });
+    if (config.showUnlisted === true) {
+      units.topLevel.forEach((unit) => {
+        if (!unit.id || seen.has(unit.id) || isMenuGroupId(unit.id) || isRequiredMenuId(unit.id)) return;
+        items.push({
+          id: unit.id,
+          label: unit.label || unit.id,
+          hidden: Boolean(unit.element?.hidden),
+          children: []
+        });
+      });
+    }
+    return items;
+  }
+
   window.TaroTimeMenuPlugin = {
     getTopbarUnits: () => collectAllUnits().topLevel,
     getAllUnits: collectAllUnits,
+    getNavItems,
     getSectionDatasets: () => ({ ...SECTION_DATASETS }),
     getLinkReport,
     resolveMenuId,
