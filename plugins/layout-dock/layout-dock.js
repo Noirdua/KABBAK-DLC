@@ -59,6 +59,7 @@
         </div>
       `;
 
+      const navEl = shellEl.querySelector(".layout-dock-nav");
       const menuEl = shellEl.querySelector(".layout-dock-menu");
       const pagesEl = shellEl.querySelector(".layout-dock-pages");
       const widgetsEl = shellEl.querySelector(".layout-dock-widgets");
@@ -69,25 +70,37 @@
       ui.attachPages(pagesEl);
       ui.attachWidgets(widgetsEl);
 
+      function ensureDockSearch(item) {
+        let wrap = navEl.querySelector(".layout-dock-search");
+        if (!item) {
+          if (wrap) wrap.hidden = true;
+          return;
+        }
+        if (!wrap) {
+          wrap = document.createElement("label");
+          wrap.className = "layout-dock-search";
+          const input = document.createElement("input");
+          input.type = "search";
+          input.addEventListener("input", () => {
+            window.TaroTimeMenuPlugin?.applySearchFilter?.(input.value);
+          });
+          wrap.appendChild(input);
+          navEl.insertBefore(wrap, menuEl);
+        }
+        wrap.hidden = false;
+        const input = wrap.querySelector("input");
+        if (input && document.activeElement !== input) {
+          input.placeholder = item.label || "Search menu…";
+        }
+      }
+
       function renderNav() {
         const active = ui.getActiveSection();
         const items = ui.listNav().filter((item) => !item.hidden);
+        ensureDockSearch(items.find((item) => item.type === "search") || null);
         menuEl.innerHTML = "";
         items.forEach((item) => {
-          if (item.type === "search") {
-            const wrap = document.createElement("label");
-            wrap.className = "layout-dock-search";
-            const input = document.createElement("input");
-            input.type = "search";
-            input.placeholder = item.label || "Search menu…";
-            input.value = String(window.TaroTimeMenuPlugin?.getConfig?.()?.lastSearchQuery || "");
-            input.addEventListener("input", () => {
-              window.TaroTimeMenuPlugin?.applySearchFilter?.(input.value);
-            });
-            wrap.appendChild(input);
-            menuEl.appendChild(wrap);
-            return;
-          }
+          if (item.type === "search") return;
           if (item.type === "header") {
             const heading = document.createElement("div");
             heading.className = "layout-dock-heading";

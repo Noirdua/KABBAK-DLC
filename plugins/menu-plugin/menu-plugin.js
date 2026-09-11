@@ -673,7 +673,14 @@
         actions.appendChild(searchWrapEl);
       }
     }
-    const query = String(searchInput()?.value || "").trim();
+    const input = searchInput();
+    if (input && lastSearchQuery && document.activeElement !== input) {
+      input.value = lastSearchQuery;
+    }
+    if (input && document.activeElement === input) {
+      return;
+    }
+    const query = String(input?.value || lastSearchQuery || "").trim();
     if (query) {
       applySearchFilter(query);
     }
