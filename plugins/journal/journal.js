@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  const PROFILE_SCRIPT = "app/ui-profile.js?v=20260911-journal";
+  const PROFILE_SCRIPT = "app/ui-profile.js?v=20260911-journal-overlay";
 
   function showMessage(root, message) {
     root.innerHTML = "";
