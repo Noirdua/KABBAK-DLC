@@ -1,6 +1,7 @@
 {
   "id": "layout-default",
   "name": "Default Layout",
+  "kind": "gui",
   "version": "1.0.0",
   "description": "Official built-in chrome: top bar navigation and original page layout. Select this to leave Dock Layout or Mindmap Layout.",
   "entry": "layout-default.js",
