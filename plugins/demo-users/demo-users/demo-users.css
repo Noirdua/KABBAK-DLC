@@ -1,8 +1,53 @@
 /* demo-users.css — Demo Users plugin styling. */
 
-.demo-users-admin-card {
+.demo-users-panel-body {
   display: grid;
+  gap: 12px;
+}
+
+.demo-users-create {
+  padding: 2px 0;
+}
+
+.demo-users-form-actions {
+  grid-column: 1 / -1;
+}
+
+.demo-users-list {
+  display: grid;
+  gap: 8px;
+}
+
+.demo-users-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+  border: 1px solid var(--tt-border);
+  border-radius: 10px;
+  background: var(--tt-bg-deep);
+}
+
+.demo-users-row-main {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.demo-users-row-actions {
+  display: flex;
+  flex-wrap: wrap;
   gap: 6px;
+}
+
+.demo-users-status-expired {
+  color: #fca5a5;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .demo-users-key {

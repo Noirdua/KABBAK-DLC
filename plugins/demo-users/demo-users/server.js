@@ -1,12 +1,14 @@
 "use strict";
 
 // Demo Users plugin — server routes.
-// Contributes the shared demo account endpoints under
+// Manages any number of demo accounts. Each is a *hidden* managed API client
+// (so it never shows in Admin → Users) with an optional trial expiry. Routes:
 //   /api/v1/plugins/demo-users/server/...
-// so the demo feature lives entirely in this plugin instead of the API core.
+//
+// "Reset password" is the key rotation endpoint: the API key is the credential.
 
-const DEMO_CLIENT_ID = "cli_demo";
-const DEMO_CLIENT_ACCESS_LEVEL = "premium";
+const DEMO_ID_PREFIX = "cli_demo";
+const DEMO_ACCESS_LEVEL = "premium";
 
 module.exports = function register(router, ctx) {
   const registry = ctx.requireApi("src/services/api-client-registry");
@@ -16,7 +18,7 @@ module.exports = function register(router, ctx) {
     ADMIN_API_MANAGEMENT_CAPABILITY,
     requireApiClientCapability
   } = ctx.requireApi("src/middleware/api-client-capability");
-  const { createNotFoundError } = ctx;
+  const { createNotFoundError, createHttpError } = ctx;
 
   const adminOnly = requireApiClientCapability({
     capabilityName: "adminApiManagement",
@@ -26,39 +28,78 @@ module.exports = function register(router, ctx) {
     errorMessage: "This route requires the admin role or api:admin scope."
   });
 
-  function accessLevelRank(accessLevel) {
-    const { ACCESS_LEVELS } = ctx.requireApi("src/config/api-access");
-    const index = ACCESS_LEVELS.indexOf(String(accessLevel || ""));
-    return index < 0 ? -1 : index;
+  function nowMs() {
+    return Date.now();
   }
 
-  function findDemoClient() {
-    return registry.readManagedApiClients().find((client) => client.id === DEMO_CLIENT_ID) || null;
+  function generateDemoId(existing) {
+    let id = "";
+    do {
+      id = `${DEMO_ID_PREFIX}_${Math.random().toString(36).slice(2, 10)}`;
+    } while (existing.some((client) => client.id === id));
+    return id;
   }
 
-  function ensureDemoClient() {
-    const existing = findDemoClient();
-    if (existing) {
-      if (accessLevelRank(existing.accessLevel) < accessLevelRank(DEMO_CLIENT_ACCESS_LEVEL)) {
-        const result = registry.upsertManagedApiClient({
-          ...existing,
-          accessLevel: DEMO_CLIENT_ACCESS_LEVEL
-        }, { mergeExisting: true });
-        return { created: false, upgraded: true, client: result.client };
+  function listDemoClients() {
+    return registry.readManagedApiClients().filter((client) => (
+      client.hidden === true && String(client.id || "").startsWith(DEMO_ID_PREFIX)
+    ));
+  }
+
+  function findDemoClient(id) {
+    const wanted = String(id || "").trim();
+    return listDemoClients().find((client) => client.id === wanted) || null;
+  }
+
+  function summarize(client) {
+    return {
+      id: client.id,
+      name: client.name || client.id,
+      accessLevel: client.accessLevel,
+      roles: Array.isArray(client.roles) ? client.roles : [],
+      scopes: Array.isArray(client.scopes) ? client.scopes : [],
+      expiresAt: String(client.expiresAt || ""),
+      expired: registry.isClientExpired(client),
+      keyPreview: client.key ? `${String(client.key).slice(0, 10)}…` : ""
+    };
+  }
+
+  function computeExpiresAt(body, existing) {
+    if (body && Object.prototype.hasOwnProperty.call(body, "expiresAt")) {
+      const raw = String(body.expiresAt || "").trim();
+      if (!raw) return "";
+      const parsed = Date.parse(raw);
+      if (!Number.isFinite(parsed)) {
+        throw createHttpError(400, "invalid_expiry", "expiresAt must be a valid date.");
       }
-      return { created: false, client: existing };
+      return new Date(parsed).toISOString();
     }
-
-    const existingClients = registry.readManagedApiClients();
-    const apiKey = registry.generateManagedApiClientKey(existingClients);
-    const result = registry.upsertManagedApiClient({
-      id: DEMO_CLIENT_ID,
-      key: apiKey,
-      name: "Demo User",
-      accessLevel: DEMO_CLIENT_ACCESS_LEVEL
-    }, {});
-    return { created: true, client: result.client };
+    if (body && Object.prototype.hasOwnProperty.call(body, "ttlDays")) {
+      const days = Number(body.ttlDays);
+      if (!Number.isFinite(days) || days <= 0) {
+        return "";
+      }
+      return new Date(nowMs() + days * 24 * 60 * 60 * 1000).toISOString();
+    }
+    return String(existing?.expiresAt || "");
   }
+
+  function normalizeAccessLevel(value, fallback) {
+    const level = String(value || "").trim();
+    if (!level) return fallback;
+    const { ACCESS_LEVELS } = ctx.requireApi("src/config/api-access");
+    if (!ACCESS_LEVELS.includes(level)) {
+      throw createHttpError(400, "invalid_access_level", `Unknown access level '${level}'.`);
+    }
+    return level;
+  }
+
+  function normalizeList(value, fallback) {
+    if (!Array.isArray(value)) return fallback;
+    return value.map((entry) => String(entry || "").trim()).filter(Boolean);
+  }
+
+  // --- Public: gate demo login ---------------------------------------------
 
   function isDemoAccessAllowed(request) {
     const raw = String(process.env.KABBAK_DEMO_ACCESS || "").trim().toLowerCase();
@@ -69,11 +110,19 @@ module.exports = function register(router, ctx) {
     return ip === "127.0.0.1" || ip === "::1" || ip.endsWith("127.0.0.1");
   }
 
-  // Public: connection-gate demo info. Off loopback unless KABBAK_DEMO_ACCESS=1.
   router.get("/demo-access", (request, response) => {
     response.setHeader("Cache-Control", "no-store");
-    const demoClient = findDemoClient();
-    if (!demoClient || !isDemoAccessAllowed(request)) {
+    if (!isDemoAccessAllowed(request)) {
+      response.json({ enabled: false });
+      return;
+    }
+
+    const wantedId = String(request.query?.id || "").trim();
+    const active = listDemoClients().filter((client) => !registry.isClientExpired(client));
+    const demoClient = (wantedId ? active.find((client) => client.id === wantedId) : null)
+      || active[0]
+      || null;
+    if (!demoClient) {
       response.json({ enabled: false });
       return;
     }
@@ -88,67 +137,95 @@ module.exports = function register(router, ctx) {
       id: demoClient.id,
       name: demoClient.name,
       accessLevel: demoClient.accessLevel,
+      expiresAt: String(demoClient.expiresAt || ""),
       apiKey: String(demoClient.key || ""),
       apiBaseUrl
     });
   });
 
-  // Admin: read the shared demo key (for handing out).
-  router.get("/admin/demo-key", requireApiKey, adminOnly, (request, response) => {
-    const demoClient = findDemoClient();
+  // --- Admin: manage demo accounts -----------------------------------------
+
+  router.get("/admin/demo-accounts", requireApiKey, adminOnly, (request, response) => {
+    const accounts = listDemoClients().map(summarize);
+    response.apiSuccess({ count: accounts.length, accounts });
+  });
+
+  router.get("/admin/demo-accounts/:id/key", requireApiKey, adminOnly, (request, response) => {
+    const demoClient = findDemoClient(request.params.id);
     if (!demoClient) {
-      throw createNotFoundError("demo_client_not_found", "No demo user configured.");
+      throw createNotFoundError("demo_account_not_found", "Demo account not found.");
     }
-    response.apiSuccess({
-      id: demoClient.id,
-      name: demoClient.name,
-      accessLevel: demoClient.accessLevel,
-      apiKey: String(demoClient.key || "")
-    });
+    response.apiSuccess({ ...summarize(demoClient), apiKey: String(demoClient.key || "") });
   });
 
-  // Admin: create the demo user if missing (idempotent).
-  router.post("/admin/demo-user", requireApiKey, adminOnly, (request, response) => {
-    const result = ensureDemoClient();
-    response.apiSuccess({
-      created: result.created,
-      upgraded: Boolean(result.upgraded),
-      id: result.client?.id || "",
-      name: result.client?.name || "",
-      accessLevel: result.client?.accessLevel || "",
-      apiKey: result.created ? String(result.client?.key || "") : ""
-    });
+  router.post("/admin/demo-accounts", requireApiKey, adminOnly, (request, response) => {
+    const body = request.body && typeof request.body === "object" ? request.body : {};
+    const name = String(body.name || "").trim() || "Demo account";
+    const existing = registry.readManagedApiClients();
+    const id = generateDemoId(existing);
+    const key = registry.generateManagedApiClientKey(existing);
+    const accessLevel = normalizeAccessLevel(body.accessLevel, DEMO_ACCESS_LEVEL);
+    const expiresAt = computeExpiresAt(body, null);
+
+    const result = registry.upsertManagedApiClient({
+      id,
+      key,
+      name,
+      hidden: true,
+      accessLevel,
+      roles: normalizeList(body.roles, undefined),
+      scopes: normalizeList(body.scopes, undefined),
+      expiresAt
+    }, { mergeExisting: false });
+
+    response.status(201).apiSuccess({ ...summarize(result.client), apiKey: String(result.client?.key || "") });
   });
 
-  // Admin: rotate the demo key.
-  router.post("/admin/demo-user/rotate-key", requireApiKey, adminOnly, (request, response) => {
-    const demoClient = findDemoClient();
+  router.patch("/admin/demo-accounts/:id", requireApiKey, adminOnly, (request, response) => {
+    const demoClient = findDemoClient(request.params.id);
     if (!demoClient) {
-      throw createNotFoundError("demo_client_not_found", "No demo user configured.");
+      throw createNotFoundError("demo_account_not_found", "Demo account not found.");
+    }
+    const body = request.body && typeof request.body === "object" ? request.body : {};
+    const accessLevel = normalizeAccessLevel(body.accessLevel, demoClient.accessLevel);
+    const expiresAt = computeExpiresAt(body, demoClient);
+
+    const result = registry.upsertManagedApiClient({
+      ...demoClient,
+      name: String(body.name || "").trim() || demoClient.name,
+      hidden: true,
+      accessLevel,
+      roles: normalizeList(body.roles, demoClient.roles),
+      scopes: normalizeList(body.scopes, demoClient.scopes),
+      expiresAt
+    }, { mergeExisting: true });
+
+    response.apiSuccess(summarize(result.client));
+  });
+
+  // "Reset password": issue a fresh demo key.
+  router.post("/admin/demo-accounts/:id/rotate-key", requireApiKey, adminOnly, (request, response) => {
+    const demoClient = findDemoClient(request.params.id);
+    if (!demoClient) {
+      throw createNotFoundError("demo_account_not_found", "Demo account not found.");
     }
     const result = registry.rotateManagedApiClientKey(demoClient.id);
-    response.apiSuccess({
-      rotated: true,
-      id: demoClient.id,
-      apiKey: String(result.client?.key || "")
-    });
+    response.apiSuccess({ ...summarize(result.client), apiKey: String(result.client?.key || "") });
   });
 
-  // Admin: wipe the demo profile.
-  router.post("/admin/demo-user/reset-profile", requireApiKey, adminOnly, (request, response) => {
-    const demoClient = findDemoClient();
+  router.post("/admin/demo-accounts/:id/reset-profile", requireApiKey, adminOnly, (request, response) => {
+    const demoClient = findDemoClient(request.params.id);
     if (!demoClient) {
-      throw createNotFoundError("demo_client_not_found", "No demo user configured.");
+      throw createNotFoundError("demo_account_not_found", "Demo account not found.");
     }
     const reset = resetProfile(demoClient.id);
     response.apiSuccess({ reset, id: demoClient.id });
   });
 
-  // Admin: remove the demo user.
-  router.delete("/admin/demo-user", requireApiKey, adminOnly, (request, response) => {
-    const demoClient = findDemoClient();
+  router.delete("/admin/demo-accounts/:id", requireApiKey, adminOnly, (request, response) => {
+    const demoClient = findDemoClient(request.params.id);
     if (!demoClient) {
-      throw createNotFoundError("demo_client_not_found", "No demo user configured.");
+      throw createNotFoundError("demo_account_not_found", "Demo account not found.");
     }
     const result = registry.removeManagedApiClient(demoClient.id);
     response.apiSuccess({ removed: result.removed, id: demoClient.id });

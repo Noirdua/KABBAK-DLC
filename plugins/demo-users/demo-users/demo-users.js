@@ -1,7 +1,7 @@
 /* demo-users.js — DLC plugin (GUI side).
- * Provides the shared-demo login on the connection gate and the demo account
- * management card in Admin → Users. All server work lives in this plugin's
- * server.js (mounted at /api/v1/plugins/demo-users/server/...).
+ * Gate demo login + a full Demo Users manager in Admin (create/switch multiple
+ * demo accounts, access level, roles/scopes, trial expiry, reset key/profile,
+ * delete, reveal key). All server work is in this plugin's server.js.
  */
 (function () {
   "use strict";
@@ -35,6 +35,13 @@
     return payload && typeof payload === "object" && "data" in payload ? payload.data : payload;
   }
 
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text != null) node.textContent = text;
+    return node;
+  }
+
   function apiBaseFromInput(raw) {
     let value = String(raw || "").trim().replace(/\/+$/, "");
     if (!value || !/^https?:\/\//i.test(value)) {
@@ -44,6 +51,52 @@
       value += "/api/v1";
     }
     return value;
+  }
+
+  function parseListInput(value) {
+    return String(value || "")
+      .split(",")
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+  }
+
+  function formatExpiry(account) {
+    if (!account.expiresAt) return "No expiry";
+    const when = new Date(account.expiresAt);
+    if (Number.isNaN(when.getTime())) return "No expiry";
+    return account.expired ? `Expired ${when.toLocaleString()}` : `Expires ${when.toLocaleString()}`;
+  }
+
+  // --- Key reveal -----------------------------------------------------------
+
+  function showKeyOnce(key, label) {
+    if (!key) return;
+    const overlayApi = window.TaroOverlay;
+    if (!overlayApi?.open) {
+      window.alert(`${label}: ${key}`);
+      return;
+    }
+    const body = el("div", "demo-users-key");
+    body.append(
+      el("p", "settings-field-hint", "Copy this key now — it is shown once."),
+      el("code", "demo-users-key-code", key)
+    );
+    overlayApi.open({
+      title: label,
+      body,
+      size: "small",
+      actions: [
+        {
+          label: "Copy",
+          primary: true,
+          closeOnClick: false,
+          onClick: () => {
+            navigator.clipboard?.writeText?.(key).catch(() => {});
+          }
+        },
+        { label: "Close" }
+      ]
+    });
   }
 
   // --- Connection gate demo box ---------------------------------------------
@@ -67,18 +120,21 @@
     if (!fields || !fields.parentElement) {
       return null;
     }
-    gateBoxEl = document.createElement("div");
+    gateBoxEl = el("div", "connection-gate-demo");
     gateBoxEl.id = "demo-users-gate-box";
-    gateBoxEl.className = "connection-gate-demo";
     gateBoxEl.hidden = true;
-    gateBoxEl.innerHTML = [
-      '<div class="connection-gate-demo-row">',
-      '  <strong>Try the shared demo user</strong>',
-      '  <button id="demo-users-gate-use" class="connection-gate-demo-btn" type="button">Use Demo Access</button>',
-      "</div>",
-      '<div id="demo-users-gate-details" class="connection-gate-demo-details" aria-live="polite"></div>'
-    ].join("");
-    gateBoxEl.querySelector("#demo-users-gate-use").addEventListener("click", useDemoAccess);
+
+    const row = el("div", "connection-gate-demo-row");
+    row.appendChild(el("strong", "", "Try a demo account"));
+    const useBtn = el("button", "connection-gate-demo-btn", "Use Demo Access");
+    useBtn.type = "button";
+    useBtn.addEventListener("click", useDemoAccess);
+    row.appendChild(useBtn);
+    const details = el("div", "connection-gate-demo-details");
+    details.id = "demo-users-gate-details";
+    details.setAttribute("aria-live", "polite");
+    gateBoxEl.append(row, details);
+
     fields.insertAdjacentElement("afterend", gateBoxEl);
     return gateBoxEl;
   }
@@ -93,22 +149,20 @@
     const details = box.querySelector("#demo-users-gate-details");
     if (details) {
       const keyPreview = demo.apiKey ? `${String(demo.apiKey).slice(0, 10)}…` : "(no key needed)";
-      details.textContent = `${demo.name || "Demo User"} (${demo.id}) · ${demo.apiBaseUrl} · ${keyPreview}`;
+      const expiry = demo.expiresAt ? ` · until ${new Date(demo.expiresAt).toLocaleDateString()}` : "";
+      details.textContent = `${demo.name || "Demo"} (${demo.id}) · ${demo.apiBaseUrl} · ${keyPreview}${expiry}`;
     }
   }
 
   async function refreshGateBox() {
     const box = ensureGateBox();
-    if (!box) {
-      return;
-    }
+    if (!box) return;
     const candidates = candidateApiBases();
     if (!candidates.length) {
       demoCache = { baseUrl: "", value: undefined };
       applyGateBox(box);
       return;
     }
-
     for (const baseUrl of candidates) {
       if (demoCache.baseUrl === baseUrl && demoCache.value !== undefined) {
         applyGateBox(box);
@@ -133,21 +187,12 @@
 
   function useDemoAccess() {
     const demo = demoCache.value;
-    if (!demo || demo.enabled !== true) {
-      return;
-    }
+    if (!demo || demo.enabled !== true) return;
     const baseEl = document.getElementById("connection-gate-base-url");
     const keyEl = document.getElementById("connection-gate-api-key");
-    if (baseEl) {
-      baseEl.value = String(demo.apiBaseUrl || "");
-    }
-    if (keyEl) {
-      keyEl.value = String(demo.apiKey || "");
-    }
-    const connect = document.getElementById("connection-gate-connect");
-    if (connect) {
-      connect.click();
-    }
+    if (baseEl) baseEl.value = String(demo.apiBaseUrl || "");
+    if (keyEl) keyEl.value = String(demo.apiKey || "");
+    document.getElementById("connection-gate-connect")?.click();
   }
 
   function bindGate() {
@@ -156,9 +201,7 @@
     if (baseEl && !baseEl._demoUsersBound) {
       baseEl._demoUsersBound = true;
       baseEl.addEventListener("input", () => {
-        if (gateRefreshTimer) {
-          window.clearTimeout(gateRefreshTimer);
-        }
+        if (gateRefreshTimer) window.clearTimeout(gateRefreshTimer);
         gateRefreshTimer = window.setTimeout(() => {
           gateRefreshTimer = null;
           void refreshGateBox();
@@ -168,164 +211,221 @@
     void refreshGateBox();
   }
 
-  // --- Admin → Users demo management card -----------------------------------
+  // --- Admin: full Demo Users manager ---------------------------------------
 
-  function showKeyOnce(key, label) {
-    if (!key) {
-      return;
-    }
-    const overlayApi = window.TaroOverlay;
-    if (!overlayApi?.open) {
-      window.alert(`${label}: ${key}`);
-      return;
-    }
-    const body = document.createElement("div");
-    body.className = "demo-users-key";
-    const hint = document.createElement("p");
-    hint.className = "settings-field-hint";
-    hint.textContent = "Copy this key now — it is shown once.";
-    const code = document.createElement("code");
-    code.className = "demo-users-key-code";
-    code.textContent = key;
-    body.append(hint, code);
-    overlayApi.open({
-      title: label,
-      body,
-      size: "small",
-      actions: [
-        {
-          label: "Copy",
-          primary: true,
-          closeOnClick: false,
-          onClick: () => {
-            navigator.clipboard?.writeText?.(key).catch(() => {});
-          }
-        },
-        { label: "Close" }
-      ]
-    });
-  }
+  let accessLevels = ["basic", "premium"];
 
-  function makeButton(label, onClick) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "dlc-shop-btn";
-    button.textContent = label;
-    button.addEventListener("click", () => void onClick(button));
-    return button;
-  }
-
-  async function loadDemoState() {
+  async function loadAccessLevels() {
     try {
-      const client = await requestJson("GET", "/admin/demo-key");
-      return client || null;
+      const svc = service();
+      const payload = await svc?.requestJson?.("GET", svc.buildApiUrl("/api/v1/admin/access-levels"));
+      const list = Array.isArray(payload?.accessLevels) ? payload.accessLevels : [];
+      const ids = list.map((entry) => String(entry?.id || entry?.accessLevel || "").trim()).filter(Boolean);
+      if (ids.length) accessLevels = ids;
     } catch (_error) {
-      return null;
+      // keep defaults
     }
   }
 
-  async function renderAdminCard(card) {
-    card.replaceChildren();
-    const demoClient = await loadDemoState();
+  function buildCreateForm(onCreated) {
+    const form = el("div", "settings-grid demo-users-create");
+    const fields = {};
 
-    const head = document.createElement("strong");
-    head.textContent = demoClient
-      ? `Demo user (${demoClient.id})`
-      : "Demo user (not configured)";
-    const hint = document.createElement("span");
-    hint.className = "settings-field-hint";
-    hint.textContent = demoClient
-      ? "Share the demo key; everyone shares one demo profile. Reset it whenever it gets messy."
-      : "Create a shared demo account that visitors can use from the connection gate.";
+    const addField = (labelText, name, options = {}) => {
+      const label = el("label", "settings-field", labelText);
+      let input;
+      if (options.select) {
+        input = el("select");
+        options.select.forEach((value) => {
+          const opt = el("option", "", value);
+          opt.value = value;
+          input.appendChild(opt);
+        });
+      } else {
+        input = el("input");
+        input.type = options.type || "text";
+        if (options.placeholder) input.placeholder = options.placeholder;
+      }
+      input.id = `demo-users-field-${name}`;
+      label.appendChild(input);
+      form.appendChild(label);
+      fields[name] = input;
+      return input;
+    };
 
-    const actions = document.createElement("div");
-    actions.className = "admin-client-actions";
+    addField("Name", "name", { placeholder: "e.g. 3-day trial" });
+    const levelSelect = addField("Access level", "accessLevel", { select: accessLevels });
+    levelSelect.value = accessLevels.includes("premium") ? "premium" : accessLevels[0];
+    addField("Roles (comma-separated, blank = access default)", "roles", { placeholder: "reader" });
+    addField("Scopes (comma-separated, blank = access default)", "scopes", { placeholder: "api:read" });
+    addField("Trial days (blank = no expiry)", "ttlDays", { type: "number", placeholder: "3" });
 
-    if (!demoClient) {
-      actions.appendChild(makeButton("Create Demo User", async (button) => {
-        button.disabled = true;
-        try {
-          const result = await requestJson("POST", "/admin/demo-user");
-          showKeyOnce(result?.apiKey, "Demo user");
-          await renderAdminCard(card);
-        } catch (error) {
-          window.alert(`Could not create demo user. ${error?.message || ""}`);
-        } finally {
-          button.disabled = false;
-        }
-      }));
-    } else {
-      actions.appendChild(makeButton("Copy Demo Key", async () => {
-        const result = await requestJson("GET", "/admin/demo-key");
-        showKeyOnce(result?.apiKey, "Demo user");
-      }));
-      actions.appendChild(makeButton("Reset Demo Key", async (button) => {
-        if (!window.confirm("Reset the demo key? Everyone using the current demo key will be disconnected.")) return;
-        button.disabled = true;
-        try {
-          const result = await requestJson("POST", "/admin/demo-user/rotate-key");
-          showKeyOnce(result?.apiKey, "New demo");
-        } finally {
-          button.disabled = false;
-        }
-      }));
-      actions.appendChild(makeButton("Reset Demo Profile", async (button) => {
-        if (!window.confirm("Reset the shared demo profile? Its notes, quiz progress, and settings will be wiped.")) return;
-        button.disabled = true;
-        try {
-          await requestJson("POST", "/admin/demo-user/reset-profile");
-        } finally {
-          button.disabled = false;
-        }
-      }));
-      actions.appendChild(makeButton("Delete Demo User", async (button) => {
-        if (!window.confirm("Delete the demo user? The shared demo key stops working immediately.")) return;
-        button.disabled = true;
-        try {
-          await requestJson("DELETE", "/admin/demo-user");
-          await renderAdminCard(card);
-        } finally {
-          button.disabled = false;
-        }
-      }));
-    }
-
-    card.append(head, hint, actions);
-  }
-
-  function ensureAdminCard() {
-    const table = document.getElementById("admin-clients-table");
-    if (!table) {
-      return;
-    }
-    if (table.querySelector("#demo-users-admin-card")) {
-      return;
-    }
-    const card = document.createElement("div");
-    card.id = "demo-users-admin-card";
-    card.className = "admin-client-row demo-users-admin-card";
-    table.prepend(card);
-    void renderAdminCard(card);
-  }
-
-  function observeAdminTable() {
-    const table = document.getElementById("admin-clients-table");
-    if (!table || table._demoUsersObserver) {
-      return;
-    }
-    const observer = new MutationObserver(() => {
-      if (!table.querySelector("#demo-users-admin-card")) {
-        ensureAdminCard();
+    const actions = el("div", "demo-users-form-actions");
+    const createBtn = el("button", "settings-button-primary", "Create Demo Account");
+    createBtn.type = "button";
+    createBtn.addEventListener("click", async () => {
+      createBtn.disabled = true;
+      try {
+        const ttl = String(fields.ttlDays.value || "").trim();
+        const payload = {
+          name: String(fields.name.value || "").trim() || "Demo account",
+          accessLevel: String(fields.accessLevel.value || "").trim(),
+          roles: parseListInput(fields.roles.value),
+          scopes: parseListInput(fields.scopes.value)
+        };
+        if (ttl) payload.ttlDays = Number(ttl);
+        const result = await requestJson("POST", "/admin/demo-accounts", payload);
+        showKeyOnce(result?.apiKey, "New demo key");
+        onCreated?.();
+      } catch (error) {
+        window.alert(`Could not create demo account. ${error?.message || ""}`);
+      } finally {
+        createBtn.disabled = false;
       }
     });
-    observer.observe(table, { childList: true });
-    table._demoUsersObserver = observer;
-    ensureAdminCard();
+    actions.appendChild(createBtn);
+    form.appendChild(actions);
+    return form;
+  }
+
+  function buildAccountRow(account, onChanged) {
+    const row = el("div", "demo-users-row");
+
+    const info = el("div", "demo-users-row-main");
+    info.appendChild(el("strong", "", account.name || account.id));
+    const meta = el("span", "settings-field-hint", [
+      `id ${account.id}`,
+      account.accessLevel,
+      account.roles?.length ? `roles: ${account.roles.join(", ")}` : "roles: default",
+      account.scopes?.length ? `scopes: ${account.scopes.join(", ")}` : "scopes: default",
+      formatExpiry(account)
+    ].join(" · "));
+    info.appendChild(meta);
+    if (account.expired) {
+      info.appendChild(el("span", "demo-users-status-expired", "Expired"));
+    }
+    row.appendChild(info);
+
+    const actions = el("div", "demo-users-row-actions");
+    const addAction = (label, handler, opts = {}) => {
+      const btn = el("button", `dlc-shop-btn${opts.danger ? " is-danger" : ""}`, label);
+      btn.type = "button";
+      btn.addEventListener("click", () => void handler(btn));
+      actions.appendChild(btn);
+    };
+
+    addAction("Reveal key", async () => {
+      const result = await requestJson("GET", `/admin/demo-accounts/${encodeURIComponent(account.id)}/key`);
+      showKeyOnce(result?.apiKey, account.name || account.id);
+    });
+    addAction("Reset password", async (btn) => {
+      if (!window.confirm(`Reset the demo key for "${account.name}"? The old key stops working immediately.`)) return;
+      btn.disabled = true;
+      try {
+        const result = await requestJson("POST", `/admin/demo-accounts/${encodeURIComponent(account.id)}/rotate-key`);
+        showKeyOnce(result?.apiKey, account.name || account.id);
+        onChanged?.();
+      } finally {
+        btn.disabled = false;
+      }
+    });
+    addAction("Edit", () => {
+      const level = window.prompt(`Access level for "${account.name}" (${accessLevels.join(", ")}):`, account.accessLevel);
+      if (level === null) return;
+      const days = window.prompt("Trial days from now (blank = no expiry):", "");
+      const payload = { accessLevel: String(level || "").trim() };
+      if (days !== null && String(days).trim()) payload.ttlDays = Number(days);
+      void requestJson("PATCH", `/admin/demo-accounts/${encodeURIComponent(account.id)}`, payload)
+        .then(() => onChanged?.())
+        .catch((error) => window.alert(`Could not update. ${error?.message || ""}`));
+    });
+    addAction("Reset profile", async (btn) => {
+      if (!window.confirm(`Reset the shared profile for "${account.name}"?`)) return;
+      btn.disabled = true;
+      try {
+        await requestJson("POST", `/admin/demo-accounts/${encodeURIComponent(account.id)}/reset-profile`);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+    addAction("Delete", async (btn) => {
+      if (!window.confirm(`Delete demo account "${account.name}"? Its key stops working immediately.`)) return;
+      btn.disabled = true;
+      try {
+        await requestJson("DELETE", `/admin/demo-accounts/${encodeURIComponent(account.id)}`);
+        onChanged?.();
+      } finally {
+        btn.disabled = false;
+      }
+    }, { danger: true });
+
+    row.appendChild(actions);
+    return row;
+  }
+
+  async function renderPanel(bodyEl) {
+    bodyEl.replaceChildren();
+    let accounts = [];
+    try {
+      const payload = await requestJson("GET", "/admin/demo-accounts");
+      accounts = Array.isArray(payload?.accounts) ? payload.accounts : [];
+    } catch (error) {
+      bodyEl.appendChild(el("span", "settings-field-hint", `Could not load demo accounts. ${error?.message || ""}`));
+      return;
+    }
+
+    const reload = () => void renderPanel(bodyEl);
+    bodyEl.appendChild(buildCreateForm(reload));
+
+    const listEl = el("div", "demo-users-list");
+    if (!accounts.length) {
+      listEl.appendChild(el("span", "settings-field-hint", "No demo accounts yet. Create one above."));
+    } else {
+      accounts
+        .slice()
+        .sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")))
+        .forEach((account) => listEl.appendChild(buildAccountRow(account, reload)));
+    }
+    bodyEl.appendChild(listEl);
+  }
+
+  function ensureAdminPanel() {
+    const table = document.getElementById("admin-clients-table");
+    if (!table || document.getElementById("demo-users-admin-panel")) {
+      return;
+    }
+    const usersPanel = table.closest(".settings-panel");
+    if (!usersPanel || !usersPanel.parentElement) {
+      return;
+    }
+
+    const panel = el("div", "settings-panel settings-panel-wide");
+    panel.id = "demo-users-admin-panel";
+    const head = el("div", "settings-panel-head");
+    head.appendChild(el("strong", "", "Demo Users"));
+    head.appendChild(el("span", "", "Shared demo accounts for the connection gate. Hidden from the normal Users list; each can have its own access level, roles, scopes, and a trial expiry."));
+    const body = el("div", "demo-users-panel-body");
+    panel.append(head, body);
+    usersPanel.insertAdjacentElement("afterend", panel);
+
+    void loadAccessLevels().then(() => renderPanel(body));
+  }
+
+  function observeAdmin() {
+    const target = document.getElementById("admin-section") || document.body;
+    if (!target || target._demoUsersObserver) {
+      ensureAdminPanel();
+      return;
+    }
+    const observer = new MutationObserver(() => ensureAdminPanel());
+    observer.observe(target, { childList: true, subtree: true });
+    target._demoUsersObserver = observer;
+    ensureAdminPanel();
   }
 
   function boot() {
     bindGate();
-    observeAdminTable();
+    observeAdmin();
   }
 
   if (document.readyState === "loading") {
@@ -333,7 +433,6 @@
   } else {
     boot();
   }
-  // The gate can appear later (connection lost); keep it wired.
   document.addEventListener("connection:access-updated", bindGate);
 
   const host = window.TaroTimePluginHost;
@@ -342,7 +441,7 @@
       id: "demo-users",
       name: "Demo Users",
       kind: "gui",
-      version: "1.0.0",
+      version: "1.1.0",
       mount() {
         boot();
       }
