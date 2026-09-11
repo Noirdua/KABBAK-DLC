@@ -1,6 +1,15 @@
 {
   "entries": [
     {
+      "version": "2.5.0",
+      "date": "2026-09-11",
+      "notes": [
+        "Ships blank: no bundled sample track.",
+        "Accepts more audio formats (flac, aac, opus, aiff, wma, m4b, and more).",
+        "Clearer empty-state hints pointing to the DLC Shop; docs updated to the library/playlists model."
+      ]
+    },
+    {
       "version": "2.4.0",
       "date": "2026-08-26",
       "notes": [

@@ -1,10 +1,11 @@
 /* music-player.js — DLC plugin: playlist player for the top bar.
- * Plays admin-uploaded audio files only. Every folder inside the plugin is a
- * playlist; the playlist select picks the folder and playback follows its
- * configured order (config.playlistOrder, top first).
+ * Plays uploaded audio files only. Every song lives in one shared `library/`
+ * folder; playlists (config.playlists) are ordered checklists of library
+ * tracks. Manage songs and playlists in Settings → DLC Shop & Plugins → Music
+ * Player.
  * config.json: {
  *   "align": "left" | "center" | "right",
- *   "playlistOrder": { "<folder>": ["track-a.mp3", "track-b.mp3"] }
+ *   "playlists": [{ "id": "chill", "name": "Chill", "tracks": ["song.mp3"] }]
  * }
  */
 (function () {
@@ -235,7 +236,9 @@
       if (!files.length) {
         const empty = document.createElement("div");
         empty.className = "mp-tracks-empty";
-        empty.textContent = currentPlaylist ? "No songs in this playlist." : "No playlists yet.";
+        empty.textContent = currentPlaylist
+          ? "No songs in this playlist. Add and tick songs in Settings → DLC Shop."
+          : "No playlists yet. Upload songs in Settings → DLC Shop.";
         songPanel.appendChild(empty);
         songBtn.textContent = "Songs";
         return;
@@ -427,7 +430,7 @@
   host.register({
     id: "music-player",
     name: "Music Player",
-    version: "2.4.0",
+    version: "2.5.0",
     mount(containerEl, helpers) {
       let config = DEFAULT_CONFIG;
       const configUrl = helpers.assetUrl("config.json");
