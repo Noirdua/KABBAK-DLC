@@ -1,14 +1,11 @@
-/* journal.js — DLC plugin: personal journal page.
- * The notebook UI (entries, scenes, quick notes, PDF export) is provided by
- * the app's profile module; this plugin mounts it as its own top-level page.
- */
+/* journal.js — DLC plugin: personal journal page. */
 (function () {
   "use strict";
 
-  const PROFILE_SCRIPT = "app/ui-profile.js?v=20260911-journal-overlay";
+  const PROFILE_SCRIPT = "app/ui-profile.js?v=20260912-journal-home";
 
   function showMessage(root, message) {
-    root.innerHTML = "";
+    root.replaceChildren();
     const box = document.createElement("div");
     box.className = "journal-message";
     box.textContent = message;
@@ -21,36 +18,57 @@
     }
     try {
       await window.TarotLazySections?.loadScript?.(PROFILE_SCRIPT);
-    } catch (_error) {
-      // Fall through to the availability check below.
-    }
+    } catch (_error) {}
     return window.ProfileUi || null;
+  }
+
+  function renderLanding(root, onPick) {
+    root.replaceChildren();
+    const wrap = document.createElement("div");
+    wrap.className = "journal-landing";
+    [
+      { id: "diary", label: "Diary" },
+      { id: "note", label: "Note" }
+    ].forEach((choice) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "journal-landing-btn";
+      button.textContent = choice.label;
+      button.addEventListener("click", () => onPick(choice.id));
+      wrap.appendChild(button);
+    });
+    root.appendChild(wrap);
   }
 
   function mount(root, helpers) {
     let unmountJournal = null;
-    let activating = false;
 
-    async function activate() {
-      if (unmountJournal || activating) return;
-      activating = true;
+    function showLanding() {
+      if (typeof unmountJournal === "function") {
+        unmountJournal();
+      }
+      unmountJournal = null;
+      renderLanding(root, showMode);
+    }
+
+    async function showMode(mode) {
+      root.replaceChildren();
       const ui = await ensureProfileUi();
-      activating = false;
       if (!ui || typeof ui.mountJournal !== "function") {
         showMessage(root, "Journal could not start — the profile module did not load.");
         return;
       }
-      unmountJournal = ui.mountJournal(root, helpers) || null;
+      unmountJournal = ui.mountJournal(root, helpers, { mode, onBack: showLanding }) || null;
     }
 
     const onSection = (event) => {
-      if (String(event?.detail?.activeSection || "") === "journal") {
-        void activate();
+      if (String(event?.detail?.activeSection || "") === "journal" && !unmountJournal && !root.querySelector(".journal-landing")) {
+        showLanding();
       }
     };
     document.addEventListener("section:changed", onSection);
     if (String(helpers?.ui?.getActiveSection?.() || "") === "journal") {
-      void activate();
+      showLanding();
     }
 
     return () => {
@@ -72,7 +90,7 @@
     id: "journal",
     name: "Journal",
     kind: "gui",
-    version: "1.0.0",
+    version: "1.1.0",
     section: { id: "journal", label: "Journal" },
     mount
   });
