@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  const PROFILE_SCRIPT = "app/ui-profile.js?v=20260912-journal-home";
+  const PROFILE_SCRIPT = "app/ui-profile.js?v=20260912-dream-symbols";
 
   function showMessage(root, message) {
     root.replaceChildren();

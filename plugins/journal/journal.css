@@ -64,6 +64,32 @@
   display: none;
 }
 
+.journal-view-diary #profile-note-new {
+  display: none !important;
+}
+
+.journal-diary-history {
+  margin-top: 20px;
+  padding-top: 8px;
+  border-top: 1px solid var(--tt-border);
+}
+
+.journal-diary-history summary {
+  cursor: pointer;
+  color: var(--tt-text-muted);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  list-style: none;
+}
+
+.journal-diary-history summary::-webkit-details-marker {
+  display: none;
+}
+
+.journal-diary-history-body {
+  margin-top: 10px;
+}
+
 .journal-message {
   padding: 24px;
   color: var(--tt-text-muted);
