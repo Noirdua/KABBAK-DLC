@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  const PROFILE_SCRIPT = "app/ui-profile.js?v=20260913-interpret";
+  const PROFILE_SCRIPT = "app/ui-profile.js?v=20260913-syn-match";
 
   function showMessage(root, message) {
     root.replaceChildren();
