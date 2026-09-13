@@ -82,6 +82,31 @@
   list-style: none;
 }
 
+.journal-diary-history summary::before {
+  content: "▸ ";
+}
+
+.journal-diary-history[open] summary::before {
+  content: "▾ ";
+}
+
+.journal-history-detail {
+  display: grid;
+  gap: 12px;
+}
+
+.journal-history-passage {
+  display: grid;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--tt-border);
+}
+
+.journal-history-passage p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
 .journal-diary-history summary::-webkit-details-marker {
   display: none;
 }
