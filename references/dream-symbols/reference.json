@@ -1,0 +1,126 @@
+{
+  "id": "dream-symbols",
+  "title": "Dream Symbols",
+  "description": "Symbolic Dream Interpretation",
+  "kind": "dictionary",
+  "keyScheme": "word",
+  "entriesFile": "entries.json",
+  "fieldConfig": {
+    "slug": {
+      "label": "Slug",
+      "visible": false,
+      "list": false
+    },
+    "keyword": {
+      "label": "Keyword",
+      "visible": true,
+      "list": true
+    },
+    "icon": {
+      "label": "Icon",
+      "visible": true,
+      "list": true
+    },
+    "category": {
+      "label": "Category",
+      "visible": true,
+      "list": true
+    },
+    "summary": {
+      "label": "Summary",
+      "visible": true,
+      "list": true
+    },
+    "date": {
+      "label": "Date",
+      "visible": false,
+      "list": false
+    },
+    "url": {
+      "label": "Source",
+      "visible": false,
+      "list": false
+    },
+    "whatYourDream": {
+      "label": "What your dream is telling you",
+      "visible": true,
+      "list": false
+    },
+    "theScience": {
+      "label": "The science",
+      "visible": true,
+      "list": false
+    },
+    "psychology": {
+      "label": "Psychology",
+      "visible": true,
+      "list": false
+    },
+    "shadowQuestion": {
+      "label": "Shadow question",
+      "visible": true,
+      "list": false
+    },
+    "scenarioMatrix": {
+      "label": "Scenario matrix",
+      "visible": true,
+      "list": false,
+      "columns": {
+        "happens": {
+          "label": "Happens",
+          "visible": true
+        },
+        "feel": {
+          "label": "Feel",
+          "visible": true
+        },
+        "meaning": {
+          "label": "Meaning",
+          "visible": true
+        }
+      }
+    },
+    "spiritualRemedies": {
+      "label": "Spiritual remedies",
+      "visible": true,
+      "list": false,
+      "columns": {
+        "type": {
+          "label": "Type",
+          "visible": true
+        },
+        "recommendation": {
+          "label": "Recommendation",
+          "visible": true
+        },
+        "why": {
+          "label": "Why",
+          "visible": true
+        }
+      }
+    },
+    "id": {
+      "label": "Id",
+      "visible": true,
+      "list": false
+    },
+    "title": {
+      "label": "Title",
+      "visible": true,
+      "list": true
+    },
+    "body": {
+      "label": "Body",
+      "visible": true,
+      "list": true
+    }
+  },
+  "listOrder": [
+    "keyword",
+    "icon",
+    "category",
+    "summary",
+    "title",
+    "body"
+  ]
+}
