@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  const PROFILE_SCRIPT = "app/ui-profile.js?v=20260913-match-score";
+  const PROFILE_SCRIPT = "app/ui-profile.js?v=20260913-decan-detail";
 
   function showMessage(root, message) {
     root.replaceChildren();
