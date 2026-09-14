@@ -76,7 +76,7 @@
     "tarot": "Tarot menu",
     "tarot-cards": "Tarot — card dataset",
     "tarot-spread": "Tarot — draw spread",
-    "tarot-frame": "Tarot — frame",
+    "tarot-frame": "Frame",
     "zodiac": "Astrology — zodiac",
     "admin": "Admin panel"
   };
