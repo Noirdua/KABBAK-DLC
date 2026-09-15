@@ -1,0 +1,108 @@
+.newsletter-panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.newsletter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.newsletter-field input[type="text"],
+.newsletter-field textarea,
+.newsletter-field input[type="datetime-local"] {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--tt-border, #3f3f46);
+  background: var(--tt-surface, #18181b);
+  color: var(--tt-text, #f4f4f5);
+  font: inherit;
+}
+
+.newsletter-mode,
+.newsletter-toolbar,
+.newsletter-options,
+.dlc-shop-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.newsletter-toolbar {
+  margin: 8px 0;
+}
+
+.newsletter-mode .is-active {
+  border-color: var(--tt-accent, #6366f1);
+  background: color-mix(in srgb, var(--tt-accent, #6366f1) 22%, transparent);
+  color: var(--tt-text-bright, #fff);
+}
+
+.newsletter-body {
+  min-height: 220px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--tt-border, #3f3f46);
+  background: #fff;
+  color: #111;
+  overflow: auto;
+}
+
+.newsletter-html {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--tt-border, #3f3f46);
+  background: var(--tt-bg-deep, #111118);
+  color: var(--tt-text, #f4f4f5);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+}
+
+.newsletter-preview {
+  width: 100%;
+  min-height: 320px;
+  border: 1px solid var(--tt-border, #3f3f46);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.newsletter-status {
+  min-height: 16px;
+  font-size: 12px;
+}
+
+.newsletter-history-head {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--tt-border, #3f3f46);
+}
+
+.newsletter-history {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.newsletter-history-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--tt-border, #3f3f46);
+  background: var(--tt-bg-deep, #111118);
+}
+
+.newsletter-history-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}

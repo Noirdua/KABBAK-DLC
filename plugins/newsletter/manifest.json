@@ -1,0 +1,12 @@
+{
+  "id": "newsletter",
+  "name": "Newsletter",
+  "kind": "gui",
+  "version": "1.0.0",
+  "description": "Compose rich HTML newsletters and send them to everyone, selected users, or whole tiers. Delivered to KABBAK inboxes.",
+  "entry": "newsletter.js",
+  "css": "newsletter.css",
+  "server": {
+    "entry": "server.js"
+  }
+}
