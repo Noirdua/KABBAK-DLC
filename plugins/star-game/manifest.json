@@ -1,0 +1,12 @@
+{
+  "id": "star-game",
+  "name": "The Star Game",
+  "kind": "gui",
+  "version": "1.0.0",
+  "description": "Seven-board septenary strategy game. Pieces transform as they move; the first to hold Mira's triangle with three alpha pieces wins.",
+  "entry": "star-game.js",
+  "css": "star-game.css",
+  "server": {
+    "entry": "server.js"
+  }
+}
