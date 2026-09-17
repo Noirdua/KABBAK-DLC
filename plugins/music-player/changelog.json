@@ -1,6 +1,14 @@
 {
   "entries": [
     {
+      "version": "2.5.1",
+      "date": "2026-09-17",
+      "notes": [
+        "Playlists and alignment now load from the saved config through the config API (the widget previously read the stock checkout config.json, so saved playlists never appeared).",
+        "The player now releases its timer and document listeners when the widget is unmounted."
+      ]
+    },
+    {
       "version": "2.5.0",
       "date": "2026-09-11",
       "notes": [

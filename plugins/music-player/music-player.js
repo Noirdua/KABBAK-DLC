@@ -34,6 +34,38 @@
     return AUDIO_EXTENSIONS.has(`.${name.split(".").pop()}`);
   }
 
+  // Config is operator data written by the settings UI to storage/plugin-data,
+  // so read it through the config API (redacted) rather than the stock
+  // config.json asset, which is only the checkout copy.
+  async function loadPluginConfig(helpers) {
+    const pluginName = helpers?.pluginName || "music-player";
+    if (typeof helpers?.requestJson === "function") {
+      try {
+        const payload = await helpers.requestJson(
+          "GET",
+          `/api/v1/plugins/${encodeURIComponent(pluginName)}/config`
+        );
+        const loaded = payload?.config;
+        if (loaded && typeof loaded === "object" && !Array.isArray(loaded)) {
+          return { ...DEFAULT_CONFIG, ...loaded };
+        }
+      } catch (_error) {}
+    }
+    try {
+      const url = helpers?.assetUrl?.("config.json");
+      if (url) {
+        const response = await fetch(url, { cache: "no-store" });
+        if (response.ok) {
+          const loaded = await response.json();
+          if (loaded && typeof loaded === "object" && !Array.isArray(loaded)) {
+            return { ...DEFAULT_CONFIG, ...loaded };
+          }
+        }
+      }
+    } catch (_error) {}
+    return { ...DEFAULT_CONFIG };
+  }
+
   function createPlayerUi(helpers) {
     const root = document.createElement("div");
     root.className = "mp-root";
@@ -142,20 +174,8 @@
     }
 
     async function refreshFromConfig() {
-      let nextConfig = DEFAULT_CONFIG;
-      try {
-        const url = helpers.assetUrl("config.json");
-        if (url) {
-          const response = await fetch(url, { cache: "no-store" });
-          if (response.ok) {
-            const loaded = await response.json();
-            if (loaded && typeof loaded === "object" && !Array.isArray(loaded)) {
-              nextConfig = { ...DEFAULT_CONFIG, ...loaded };
-            }
-          }
-        }
-      } catch (_error) {}
-      config = { ...DEFAULT_CONFIG, ...nextConfig };
+      const loaded = await loadPluginConfig(helpers);
+      config = { ...DEFAULT_CONFIG, ...loaded };
       applyAlignment(config.align);
       await refreshFiles();
     }
@@ -362,9 +382,10 @@
       event.stopPropagation();
       setSongPanelOpen(songPanel.hidden);
     });
-    document.addEventListener("click", (event) => {
+    const onDocumentClick = (event) => {
       if (!root.contains(event.target)) setSongPanelOpen(false);
-    });
+    };
+    document.addEventListener("click", onDocumentClick);
     prevBtn.addEventListener("click", () => {
       if (!files.length) return;
       const wasPlaying = isPlaying;
@@ -415,6 +436,7 @@
       root,
       dispose() {
         document.removeEventListener("taro-plugin-content-updated", onContentUpdated);
+        document.removeEventListener("click", onDocumentClick);
         window.clearInterval(timeInterval);
         stopAll();
       }
@@ -430,24 +452,24 @@
   host.register({
     id: "music-player",
     name: "Music Player",
-    version: "2.5.0",
+    version: "2.5.1",
     mount(containerEl, helpers) {
-      let config = DEFAULT_CONFIG;
-      const configUrl = helpers.assetUrl("config.json");
-      if (configUrl) {
-        fetch(configUrl)
-          .then((response) => (response.ok ? response.json() : null))
-          .catch(() => null)
-          .then((loadedConfig) => {
-            if (loadedConfig && typeof loadedConfig === "object" && !Array.isArray(loadedConfig)) {
-              config = { ...DEFAULT_CONFIG, ...loadedConfig };
-            }
-            const ui = createPlayerUi({ ...helpers, config, containerEl });
-            containerEl.appendChild(ui.root);
-            containerEl.addEventListener("remove", () => ui.dispose());
-          });
-      }
-      return null;
+      let ui = null;
+      let disposed = false;
+      const init = async () => {
+        const config = await loadPluginConfig(helpers);
+        if (disposed) return;
+        ui = createPlayerUi({ ...helpers, config, containerEl });
+        containerEl.appendChild(ui.root);
+      };
+      void init();
+      // The host calls this on unmount. Returning it is what actually disposes
+      // the timer and document listeners; the old code relied on a "remove"
+      // event the host never fires.
+      return () => {
+        disposed = true;
+        if (ui) ui.dispose();
+      };
     }
   });
 })();
