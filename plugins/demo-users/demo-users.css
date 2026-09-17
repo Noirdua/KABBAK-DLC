@@ -36,6 +36,32 @@
   min-width: 0;
 }
 
+.demo-users-row-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.demo-users-kind {
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.demo-users-kind-demo {
+  color: var(--tt-accent-soft);
+  background: color-mix(in srgb, var(--tt-accent) 20%, transparent);
+}
+
+.demo-users-kind-trial {
+  color: #fcd34d;
+  background: rgba(252, 211, 77, 0.16);
+}
+
 .demo-users-row-actions {
   display: flex;
   flex-wrap: wrap;

@@ -1,16 +1,43 @@
 "use strict";
 
 // Demo Users plugin — server routes.
-// Manages any number of demo accounts. Each is a *hidden* managed API client
-// (so it never shows in Admin → Users) with an optional trial expiry. Routes:
-//   /api/v1/plugins/demo-users/server/...
+// Manages two kinds of *hidden* managed API client (never shown in Admin →
+// Users), both with an optional expiry:
+//   demo  (cli_demo_*)  — shared accounts the connection-gate demo button uses.
+//   trial (cli_trial_*) — individually issued, time-limited accounts to hand out.
+// Routes live under /api/v1/plugins/demo-users/server/...
 //
 // "Reset password" is the key rotation endpoint: the API key is the credential.
 
 const crypto = require("node:crypto");
 
 const DEMO_ID_PREFIX = "cli_demo";
-const DEMO_ACCESS_LEVEL = "premium";
+const TRIAL_ID_PREFIX = "cli_trial";
+const KINDS = Object.freeze(["demo", "trial"]);
+const DEFAULT_ACCESS_LEVEL = "premium";
+const DEFAULT_TRIAL_DAYS = 14;
+
+// Operator settings stored in the plugin's config.json (Admin → DLC → Demo
+// Users → Settings). Legacy keys (defaultAccessLevel/defaultTtlDays/maxAccounts)
+// are still read for compatibility.
+const DEFAULT_SETTINGS = Object.freeze({
+  enabled: true,
+  allowRemote: false,
+  demoAccessLevel: DEFAULT_ACCESS_LEVEL,
+  trialAccessLevel: DEFAULT_ACCESS_LEVEL,
+  defaultTrialDays: DEFAULT_TRIAL_DAYS,
+  maxDemoAccounts: 0,
+  maxTrialAccounts: 0,
+  gateAccountId: ""
+});
+
+function clampInt(value, min, max, fallback) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) {
+    return fallback;
+  }
+  return Math.max(min, Math.min(max, Math.trunc(number)));
+}
 
 module.exports = function register(router, ctx) {
   const registry = ctx.requireApi("src/services/api-client-registry");
@@ -35,24 +62,76 @@ module.exports = function register(router, ctx) {
     return Date.now();
   }
 
-  function isDemoClientId(id) {
-    const value = String(id || "");
-    return value === DEMO_ID_PREFIX || value.startsWith(`${DEMO_ID_PREFIX}_`);
+  function normalizeSettings(raw) {
+    const source = raw && typeof raw === "object" && !Array.isArray(raw) ? raw : {};
+    const legacyLevel = String(source.defaultAccessLevel || "").trim();
+    const demoAccessLevel = String(source.demoAccessLevel || "").trim() || legacyLevel || DEFAULT_SETTINGS.demoAccessLevel;
+    // The old `defaultTtlDays` described demos (0 meant "no expiry"); only carry
+    // it over when it expressed a real trial length, else use the trial default.
+    const legacyTrialDays = Number(source.defaultTtlDays);
+    const trialDaysSource = source.defaultTrialDays !== undefined
+      ? source.defaultTrialDays
+      : (Number.isFinite(legacyTrialDays) && legacyTrialDays > 0 ? legacyTrialDays : undefined);
+    return {
+      enabled: source.enabled === undefined ? DEFAULT_SETTINGS.enabled : source.enabled === true,
+      allowRemote: source.allowRemote === true,
+      demoAccessLevel,
+      trialAccessLevel: String(source.trialAccessLevel || "").trim() || demoAccessLevel,
+      defaultTrialDays: clampInt(trialDaysSource, 0, 3650, DEFAULT_SETTINGS.defaultTrialDays),
+      maxDemoAccounts: clampInt(
+        source.maxDemoAccounts !== undefined ? source.maxDemoAccounts : source.maxAccounts,
+        0,
+        1000,
+        DEFAULT_SETTINGS.maxDemoAccounts
+      ),
+      maxTrialAccounts: clampInt(source.maxTrialAccounts, 0, 1000, DEFAULT_SETTINGS.maxTrialAccounts),
+      gateAccountId: String(source.gateAccountId || "").trim()
+    };
   }
 
-  function generateDemoId(existing) {
+  function readSettings() {
+    return normalizeSettings(ctx.readConfig());
+  }
+
+  function kindOfClientId(id) {
+    const value = String(id || "");
+    if (value === TRIAL_ID_PREFIX || value.startsWith(`${TRIAL_ID_PREFIX}_`)) return "trial";
+    if (value === DEMO_ID_PREFIX || value.startsWith(`${DEMO_ID_PREFIX}_`)) return "demo";
+    return "";
+  }
+
+  function prefixForKind(kind) {
+    return kind === "trial" ? TRIAL_ID_PREFIX : DEMO_ID_PREFIX;
+  }
+
+  function normalizeKind(value, fallback) {
+    const kind = String(value || "").trim().toLowerCase();
+    if (!kind) return fallback;
+    if (!KINDS.includes(kind)) {
+      throw createHttpError(400, "invalid_kind", `Unknown account kind '${kind}'.`);
+    }
+    return kind;
+  }
+
+  function generateAccountId(existing, kind) {
     const taken = new Set(
       (Array.isArray(existing) ? existing : []).map((client) => client?.id).filter(Boolean)
     );
+    const prefix = prefixForKind(kind);
     let id = "";
     do {
-      id = `${DEMO_ID_PREFIX}_${crypto.randomBytes(8).toString("hex")}`;
+      id = `${prefix}_${crypto.randomBytes(8).toString("hex")}`;
     } while (taken.has(id));
     return id;
   }
 
-  function listDemoClients() {
-    return registry.readManagedApiClients().filter((client) => isDemoClientId(client.id));
+  function listDemoClients(kind) {
+    const wanted = String(kind || "").trim();
+    return registry.readManagedApiClients().filter((client) => {
+      const clientKind = kindOfClientId(client.id);
+      if (!clientKind) return false;
+      return wanted ? clientKind === wanted : true;
+    });
   }
 
   function findDemoClient(id) {
@@ -63,6 +142,7 @@ module.exports = function register(router, ctx) {
   function summarize(client) {
     return {
       id: client.id,
+      kind: kindOfClientId(client.id),
       name: client.name || client.id,
       accessLevel: client.accessLevel,
       roles: Array.isArray(client.roles) ? client.roles : [],
@@ -73,7 +153,7 @@ module.exports = function register(router, ctx) {
     };
   }
 
-  function computeExpiresAt(body, existing) {
+  function computeExpiresAt(body, existing, defaultTtlDays = 0) {
     if (body && Object.prototype.hasOwnProperty.call(body, "expiresAt")) {
       const raw = String(body.expiresAt || "").trim();
       if (!raw) return "";
@@ -89,6 +169,10 @@ module.exports = function register(router, ctx) {
         return "";
       }
       return new Date(nowMs() + days * 24 * 60 * 60 * 1000).toISOString();
+    }
+    // New accounts fall back to the operator's default trial length.
+    if (!existing && defaultTtlDays > 0) {
+      return new Date(nowMs() + defaultTtlDays * 24 * 60 * 60 * 1000).toISOString();
     }
     return String(existing?.expiresAt || "");
   }
@@ -121,9 +205,15 @@ module.exports = function register(router, ctx) {
     return `${proto}://${host}`;
   }
 
-  function isDemoAccessAllowed(request) {
+  function isDemoAccessAllowed(request, settings) {
+    if (!settings.enabled) {
+      return false;
+    }
     const raw = String(process.env.KABBAK_DEMO_ACCESS || "").trim().toLowerCase();
     if (["1", "true", "yes", "on"].includes(raw)) {
+      return true;
+    }
+    if (settings.allowRemote) {
       return true;
     }
     return isLoopbackOrPrivateIp(request.ip || request.socket?.remoteAddress);
@@ -131,13 +221,15 @@ module.exports = function register(router, ctx) {
 
   router.get("/demo-access", (request, response) => {
     response.setHeader("Cache-Control", "no-store");
-    if (!isDemoAccessAllowed(request)) {
+    const settings = readSettings();
+    if (!isDemoAccessAllowed(request, settings)) {
       response.json({ enabled: false });
       return;
     }
 
-    const wantedId = String(request.query?.id || "").trim();
-    const active = listDemoClients().filter((client) => !registry.isClientExpired(client));
+    const wantedId = String(request.query?.id || settings.gateAccountId || "").trim();
+    // Only shared demo accounts feed the gate; trials are handed out directly.
+    const active = listDemoClients("demo").filter((client) => !registry.isClientExpired(client));
     const demoClient = (wantedId ? active.find((client) => client.id === wantedId) : null)
       || active[0]
       || null;
@@ -157,8 +249,29 @@ module.exports = function register(router, ctx) {
     });
   });
 
+  // Readable by any authenticated key (no secrets), writable by admins only.
+  router.get("/admin/settings", requireApiKey, (_request, response) => {
+    response.apiSuccess({ settings: readSettings() });
+  });
+
+  router.post("/admin/settings", requireApiKey, adminOnly, (request, response) => {
+    const body = request.body && typeof request.body === "object" ? request.body : {};
+    const incoming = body.settings && typeof body.settings === "object" && !Array.isArray(body.settings)
+      ? body.settings
+      : body;
+    const next = normalizeSettings(incoming);
+    // Validate the access levels against the live registry before persisting.
+    normalizeAccessLevel(next.demoAccessLevel, DEFAULT_SETTINGS.demoAccessLevel);
+    normalizeAccessLevel(next.trialAccessLevel, DEFAULT_SETTINGS.demoAccessLevel);
+    const merged = { ...(ctx.readConfig() || {}), ...next };
+    const saved = ctx.writeConfig(merged);
+    response.apiSuccess({ settings: normalizeSettings(saved) });
+  });
+
   router.get("/admin/demo-accounts", requireApiKey, adminOnly, (request, response) => {
-    const accounts = listDemoClients().map(summarize);
+    const wanted = String(request.query?.kind || "").trim();
+    const kind = wanted ? normalizeKind(wanted, "") : "";
+    const accounts = listDemoClients(kind || undefined).map(summarize);
     response.apiSuccess({ count: accounts.length, accounts });
   });
 
@@ -172,12 +285,22 @@ module.exports = function register(router, ctx) {
 
   router.post("/admin/demo-accounts", requireApiKey, adminOnly, (request, response) => {
     const body = request.body && typeof request.body === "object" ? request.body : {};
-    const name = String(body.name || "").trim() || "Demo account";
+    const settings = readSettings();
+    const kind = normalizeKind(body.kind, "demo");
+    const current = listDemoClients(kind);
+    const cap = kind === "trial" ? settings.maxTrialAccounts : settings.maxDemoAccounts;
+    if (cap > 0 && current.length >= cap) {
+      const label = kind === "trial" ? "Trial" : "Demo";
+      throw createHttpError(409, "demo_account_limit", `${label} account limit reached (${cap}).`);
+    }
+    const name = String(body.name || "").trim() || (kind === "trial" ? "Trial account" : "Demo account");
     const existing = registry.readManagedApiClients();
-    const id = generateDemoId(existing);
+    const id = generateAccountId(existing, kind);
     const key = registry.generateManagedApiClientKey(existing);
-    const accessLevel = normalizeAccessLevel(body.accessLevel, DEMO_ACCESS_LEVEL);
-    const expiresAt = computeExpiresAt(body, null);
+    const fallbackLevel = kind === "trial" ? settings.trialAccessLevel : settings.demoAccessLevel;
+    const accessLevel = normalizeAccessLevel(body.accessLevel, fallbackLevel);
+    const defaultTtlDays = kind === "trial" ? settings.defaultTrialDays : 0;
+    const expiresAt = computeExpiresAt(body, null, defaultTtlDays);
 
     const result = registry.upsertManagedApiClient({
       id,
@@ -200,7 +323,7 @@ module.exports = function register(router, ctx) {
     }
     const body = request.body && typeof request.body === "object" ? request.body : {};
     const accessLevel = normalizeAccessLevel(body.accessLevel, demoClient.accessLevel);
-    const expiresAt = computeExpiresAt(body, demoClient);
+    const expiresAt = computeExpiresAt(body, demoClient, 0);
 
     const result = registry.upsertManagedApiClient({
       ...demoClient,

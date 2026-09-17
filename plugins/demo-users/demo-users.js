@@ -1,7 +1,8 @@
 /* demo-users.js — DLC plugin (GUI side).
- * Gate demo login + a full Demo Users manager in Admin (create/switch multiple
- * demo accounts, access level, roles/scopes, trial expiry, reset key/profile,
- * delete, reveal key). All server work is in this plugin's server.js.
+ * Gate demo login + a Demo & Trial Accounts manager in Admin. Demo accounts are
+ * shared connection-gate logins; trial accounts are individually issued with an
+ * expiry. Both support access level, roles/scopes, reset key/profile, delete,
+ * and reveal key. All server work is in this plugin's server.js.
  */
 (function () {
   "use strict";
@@ -236,8 +237,9 @@
       let input;
       if (options.select) {
         input = el("select");
-        options.select.forEach((value) => {
-          const opt = el("option", "", value);
+        options.select.forEach((entry) => {
+          const value = typeof entry === "string" ? entry : entry.value;
+          const opt = el("option", "", typeof entry === "string" ? entry : entry.label);
           opt.value = value;
           input.appendChild(opt);
         });
@@ -253,34 +255,44 @@
       return input;
     };
 
-    addField("Name", "name", { placeholder: "e.g. 3-day trial" });
+    const kindSelect = addField("Kind", "kind", {
+      select: [
+        { value: "trial", label: "Trial — hand out to one person" },
+        { value: "demo", label: "Demo — shared connection-gate account" }
+      ]
+    });
+    kindSelect.value = "trial";
+
+    addField("Name", "name", { placeholder: "e.g. Ada 2-week trial" });
     const levelSelect = addField("Access level", "accessLevel", { select: accessLevels });
     levelSelect.value = accessLevels.includes("premium") ? "premium" : accessLevels[0];
     addField("Roles (comma-separated, blank = access default)", "roles", { placeholder: "reader" });
     addField("Scopes (comma-separated, blank = access default)", "scopes", { placeholder: "api:read" });
-    addField("Trial days (blank = no expiry)", "ttlDays", { type: "number", placeholder: "3" });
+    addField("Trial days (blank = kind default)", "ttlDays", { type: "number", placeholder: "14" });
 
     const actions = el("div", "demo-users-form-actions");
-    const createBtn = el("button", "settings-button-primary", "Create Demo Account");
+    const createBtn = el("button", "settings-button-primary", "Create Account");
     createBtn.type = "button";
     createBtn.addEventListener("click", async () => {
       createBtn.disabled = true;
       try {
+        const kind = String(fields.kind.value || "trial").trim();
         const ttl = String(fields.ttlDays.value || "").trim();
         const roles = parseListInput(fields.roles.value);
         const scopes = parseListInput(fields.scopes.value);
         const payload = {
-          name: String(fields.name.value || "").trim() || "Demo account",
+          kind,
+          name: String(fields.name.value || "").trim() || (kind === "trial" ? "Trial account" : "Demo account"),
           accessLevel: String(fields.accessLevel.value || "").trim()
         };
         if (roles.length) payload.roles = roles;
         if (scopes.length) payload.scopes = scopes;
         if (ttl) payload.ttlDays = Number(ttl);
         const result = await requestJson("POST", "/admin/demo-accounts", payload);
-        showKeyOnce(result?.apiKey, "New demo key");
+        showKeyOnce(result?.apiKey, kind === "trial" ? "New trial key" : "New demo key");
         onCreated?.();
       } catch (error) {
-        window.alert(`Could not create demo account. ${error?.message || ""}`);
+        window.alert(`Could not create account. ${error?.message || ""}`);
       } finally {
         createBtn.disabled = false;
       }
@@ -293,8 +305,12 @@
   function buildAccountRow(account, onChanged) {
     const row = el("div", "demo-users-row");
 
+    const kind = account.kind === "trial" ? "trial" : "demo";
     const info = el("div", "demo-users-row-main");
-    info.appendChild(el("strong", "", account.name || account.id));
+    const titleRow = el("div", "demo-users-row-title");
+    titleRow.appendChild(el("strong", "", account.name || account.id));
+    titleRow.appendChild(el("span", `demo-users-kind demo-users-kind-${kind}`, kind === "trial" ? "Trial" : "Demo"));
+    info.appendChild(titleRow);
     const meta = el("span", "settings-field-hint", [
       `id ${account.id}`,
       account.accessLevel,
@@ -321,7 +337,7 @@
       showKeyOnce(result?.apiKey, account.name || account.id);
     });
     addAction("Reset password", async (btn) => {
-      if (!window.confirm(`Reset the demo key for "${account.name}"? The old key stops working immediately.`)) return;
+      if (!window.confirm(`Reset the key for "${account.name}"? The old key stops working immediately.`)) return;
       btn.disabled = true;
       try {
         const result = await requestJson("POST", `/admin/demo-accounts/${encodeURIComponent(account.id)}/rotate-key`);
@@ -342,7 +358,7 @@
         .catch((error) => window.alert(`Could not update. ${error?.message || ""}`));
     });
     addAction("Reset profile", async (btn) => {
-      if (!window.confirm(`Reset the shared profile for "${account.name}"?`)) return;
+      if (!window.confirm(`Reset the profile for "${account.name}"?`)) return;
       btn.disabled = true;
       try {
         await requestJson("POST", `/admin/demo-accounts/${encodeURIComponent(account.id)}/reset-profile`);
@@ -351,7 +367,7 @@
       }
     });
     addAction("Delete", async (btn) => {
-      if (!window.confirm(`Delete demo account "${account.name}"? Its key stops working immediately.`)) return;
+      if (!window.confirm(`Delete account "${account.name}"? Its key stops working immediately.`)) return;
       btn.disabled = true;
       try {
         await requestJson("DELETE", `/admin/demo-accounts/${encodeURIComponent(account.id)}`);
@@ -381,11 +397,15 @@
 
     const listEl = el("div", "demo-users-list");
     if (!accounts.length) {
-      listEl.appendChild(el("span", "settings-field-hint", "No demo accounts yet. Create one above."));
+      listEl.appendChild(el("span", "settings-field-hint", "No demo or trial accounts yet. Create one above."));
     } else {
       accounts
         .slice()
-        .sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")))
+        .sort((a, b) => {
+          const rank = (entry) => (entry.kind === "trial" ? 0 : 1);
+          if (rank(a) !== rank(b)) return rank(a) - rank(b);
+          return String(a.name || "").localeCompare(String(b.name || ""));
+        })
         .forEach((account) => listEl.appendChild(buildAccountRow(account, reload)));
     }
     bodyEl.appendChild(listEl);
@@ -404,8 +424,8 @@
     const panel = el("div", "settings-panel settings-panel-wide");
     panel.id = "demo-users-admin-panel";
     const head = el("div", "settings-panel-head");
-    head.appendChild(el("strong", "", "Demo Users"));
-    head.appendChild(el("span", "", "Shared demo accounts for the connection gate. Hidden from the normal Users list; each can have its own access level, roles, scopes, and a trial expiry."));
+    head.appendChild(el("strong", "", "Demo & Trial Accounts"));
+    head.appendChild(el("span", "", "Shared demo accounts for the connection gate, plus individually issued trial accounts you can hand out (for example two-week trials). Both are hidden from the normal Users list and can carry their own access level, roles, scopes, and expiry."));
     const body = el("div", "demo-users-panel-body");
     panel.append(head, body);
     usersPanel.insertAdjacentElement("afterend", panel);
@@ -443,7 +463,7 @@
       id: "demo-users",
       name: "Demo Users",
       kind: "gui",
-      version: "1.1.0",
+      version: "1.2.0",
       mount() {
         boot();
       }
