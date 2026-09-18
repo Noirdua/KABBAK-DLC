@@ -1,6 +1,13 @@
 {
   "entries": [
     {
+      "version": "2.5.2",
+      "date": "2026-09-18",
+      "notes": [
+        "New playlists and saved song lists now appear in the player right after saving in the DLC Shop, without reloading the page."
+      ]
+    },
+    {
       "version": "2.5.1",
       "date": "2026-09-17",
       "notes": [

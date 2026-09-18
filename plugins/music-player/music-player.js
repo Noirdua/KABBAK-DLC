@@ -177,13 +177,15 @@
       const loaded = await loadPluginConfig(helpers);
       config = { ...DEFAULT_CONFIG, ...loaded };
       applyAlignment(config.align);
-      await refreshFiles();
+      // Rebuild the playlist list from the reloaded config before refreshing
+      // tracks; refreshing them in parallel reads the stale config and leaves
+      // newly created playlists/saved songs missing until a full remount.
+      await refreshPlaylists();
     }
 
     const onContentUpdated = (event) => {
       if (String(event?.detail?.pluginName || "") === "music-player") {
         void refreshFromConfig();
-        void refreshPlaylists();
       }
     };
     document.addEventListener("taro-plugin-content-updated", onContentUpdated);

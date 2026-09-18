@@ -1,7 +1,7 @@
 {
   "id": "music-player",
   "name": "Music Player",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "description": "Top-bar playlist player. Songs upload once to a shared library; playlists are checklists of those tracks.",
   "entry": "music-player.js",
   "css": "music-player.css"
