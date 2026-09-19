@@ -37,6 +37,28 @@
         "Native content surfaces: borderless tappable rows with chevrons, card panels, rounded borderless buttons, filled inputs, and native sheet/overlay styling.",
         "Desktop pane toggles are hidden on phones; the header back button handles drill-down."
       ]
+    },
+    {
+      "version": "1.1.1",
+      "date": "2026-09-19",
+      "notes": [
+        "The bottom rail now follows finger swipes: it is dragged with pointer events (with light momentum) instead of relying on WebView overflow scrolling, and its buttons are built once so a drag is never cancelled or reset."
+      ]
+    },
+    {
+      "version": "1.1.2",
+      "date": "2026-09-19",
+      "notes": [
+        "Rail swiping on touch devices now uses touch events (with light momentum and click suppression after a drag). The shell column is pinned to the viewport so the rail really overflows and can scroll."
+      ]
+    },
+    {
+      "version": "1.2.0",
+      "date": "2026-09-19",
+      "notes": [
+        "Native Android-style action buttons across phone pages (filled/tonal, 44px, no borders, press feedback, primary/danger variants).",
+        "Word Lookup polish: single-column controls, segmented tool modes, full-width Options, larger result card, 6-column tappable keyboard with 3-column actions, and native match cards."
+      ]
     }
   ]
 }

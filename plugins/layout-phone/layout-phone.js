@@ -7,6 +7,8 @@
     return;
   }
 
+  const PHONE_VERSION = "1.2.0";
+
   // Bottom rail is a horizontal scroller; "More" stays pinned on the right.
   const RAIL_ITEMS = [
     { id: "home", label: "Home", icon: "home", section: "home", navId: "open-home" },
@@ -127,7 +129,7 @@
   host.register({
     id: "layout-phone",
     name: "Phone Layout",
-    version: "1.1.0",
+    version: PHONE_VERSION,
     role: "skin",
     bundled: document.documentElement.getAttribute("data-kabbak-native") === "1",
     mount(shellEl, helpers) {
@@ -245,6 +247,10 @@
           rowEl.appendChild(segEl);
           sheetOptionsEl.appendChild(rowEl);
         });
+        const versionEl = document.createElement("div");
+        versionEl.className = "layout-phone-options-version";
+        versionEl.textContent = `Phone layout ${PHONE_VERSION}`;
+        sheetOptionsEl.appendChild(versionEl);
       }
 
       ui.attachPages(pagesEl);
@@ -357,23 +363,44 @@
         renderOptions();
       }
 
+      let railSignature = "";
+      let lastRailId = "";
+
+      function centerRailItem(button) {
+        if (!button) return;
+        const target = Math.max(0, button.offsetLeft - (railEl.clientWidth - button.offsetWidth) / 2);
+        if (typeof railEl.scrollTo === "function") {
+          railEl.scrollTo({ left: target, behavior: "smooth" });
+        } else {
+          railEl.scrollLeft = target;
+        }
+      }
+
       function renderRail() {
-        const section = ui.getActiveSection();
-        const activeId = railIdForSection(section);
-        railEl.innerHTML = "";
-        visibleRailItems().forEach((item) => {
-          const button = document.createElement("button");
-          button.type = "button";
-          button.className = "layout-phone-rail-item";
-          button.dataset.id = item.id;
-          button.classList.toggle("is-active", item.id === activeId);
-          button.innerHTML = `${iconSvg(item.icon)}<span>${item.label}</span>`;
-          button.addEventListener("click", () => openSection(item.section));
-          railEl.appendChild(button);
+        const items = visibleRailItems();
+        const signature = items.map((item) => item.id).join(",");
+        // Build the buttons once. Rebuilding on every chrome render would cancel
+        // an in-progress touch drag and reset the scroll position.
+        if (signature !== railSignature) {
+          railSignature = signature;
+          railEl.innerHTML = "";
+          items.forEach((item) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "layout-phone-rail-item";
+            button.dataset.id = item.id;
+            button.innerHTML = `${iconSvg(item.icon)}<span>${item.label}</span>`;
+            button.addEventListener("click", () => openSection(item.section));
+            railEl.appendChild(button);
+          });
+        }
+        const activeId = railIdForSection(ui.getActiveSection());
+        railEl.querySelectorAll(".layout-phone-rail-item").forEach((button) => {
+          button.classList.toggle("is-active", button.dataset.id === activeId);
         });
-        const activeButton = railEl.querySelector(".layout-phone-rail-item.is-active");
-        if (activeButton) {
-          railEl.scrollLeft = activeButton.offsetLeft - (railEl.clientWidth - activeButton.offsetWidth) / 2;
+        if (activeId && activeId !== lastRailId) {
+          lastRailId = activeId;
+          centerRailItem(railEl.querySelector(".layout-phone-rail-item.is-active"));
         }
       }
 
@@ -415,6 +442,131 @@
         renderChrome();
       });
 
+      // Drag scrolling for the rail. Native overflow scrolling is unreliable
+      // inside the Android WebView for a strip of buttons, so the rail is
+      // scrolled directly. Touch events drive touch devices (most reliable
+      // there); pointer events cover mouse/pen.
+      let railDrag = null;
+      let railMomentum = 0;
+      let suppressRailClick = false;
+
+      function stopRailMomentum() {
+        if (railMomentum) {
+          window.cancelAnimationFrame(railMomentum);
+          railMomentum = 0;
+        }
+      }
+
+      function startRailMomentum(velocity) {
+        stopRailMomentum();
+        let speed = Math.max(-3, Math.min(3, Number(velocity) || 0));
+        let last = window.performance.now();
+        const step = (now) => {
+          const dt = Math.min(now - last, 32);
+          last = now;
+          speed *= Math.pow(0.94, dt / 16);
+          if (Math.abs(speed) < 0.02) {
+            railMomentum = 0;
+            return;
+          }
+          const max = Math.max(0, railEl.scrollWidth - railEl.clientWidth);
+          railEl.scrollLeft = Math.max(0, Math.min(max, railEl.scrollLeft - speed * dt));
+          railMomentum = window.requestAnimationFrame(step);
+        };
+        railMomentum = window.requestAnimationFrame(step);
+      }
+
+      function beginRailDrag(x, y, pointerId) {
+        stopRailMomentum();
+        railDrag = {
+          pointerId: pointerId == null ? null : pointerId,
+          startX: x,
+          startY: y,
+          startLeft: railEl.scrollLeft,
+          lastX: x,
+          lastT: window.performance.now(),
+          velocity: 0,
+          moved: false
+        };
+      }
+
+      function moveRailDrag(x, y, event) {
+        if (!railDrag) return;
+        const dx = x - railDrag.startX;
+        const dy = y - railDrag.startY;
+        if (!railDrag.moved) {
+          if (Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(dy)) return;
+          railDrag.moved = true;
+          if (railDrag.pointerId != null) {
+            try { railEl.setPointerCapture(railDrag.pointerId); } catch (_error) {}
+          }
+        }
+        const now = window.performance.now();
+        const dt = now - railDrag.lastT;
+        if (dt > 0) {
+          railDrag.velocity = (x - railDrag.lastX) / dt;
+        }
+        railDrag.lastX = x;
+        railDrag.lastT = now;
+        railEl.scrollLeft = railDrag.startLeft - dx;
+        if (event && event.cancelable) {
+          event.preventDefault();
+        }
+      }
+
+      function endRailDrag() {
+        if (!railDrag) return;
+        const drag = railDrag;
+        railDrag = null;
+        if (drag.pointerId != null) {
+          try { railEl.releasePointerCapture(drag.pointerId); } catch (_error) {}
+        }
+        if (!drag.moved) return;
+        suppressRailClick = true;
+        window.setTimeout(() => { suppressRailClick = false; }, 600);
+        startRailMomentum(drag.velocity);
+      }
+
+      railEl.addEventListener("pointerdown", (event) => {
+        if (event.pointerType === "touch") return;
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+        beginRailDrag(event.clientX, event.clientY, event.pointerId);
+      });
+
+      railEl.addEventListener("pointermove", (event) => {
+        if (!railDrag || railDrag.pointerId !== event.pointerId) return;
+        moveRailDrag(event.clientX, event.clientY, event);
+      });
+
+      railEl.addEventListener("pointerup", (event) => {
+        if (railDrag && railDrag.pointerId === event.pointerId) endRailDrag();
+      });
+
+      railEl.addEventListener("pointercancel", (event) => {
+        if (railDrag && railDrag.pointerId === event.pointerId) endRailDrag();
+      });
+
+      railEl.addEventListener("touchstart", (event) => {
+        if (event.touches.length !== 1) return;
+        beginRailDrag(event.touches[0].clientX, event.touches[0].clientY, null);
+      }, { passive: true });
+
+      railEl.addEventListener("touchmove", (event) => {
+        if (!railDrag || event.touches.length !== 1) return;
+        moveRailDrag(event.touches[0].clientX, event.touches[0].clientY, event);
+      }, { passive: false });
+
+      railEl.addEventListener("touchend", endRailDrag);
+      railEl.addEventListener("touchcancel", endRailDrag);
+
+      railEl.addEventListener("click", (event) => {
+        if (suppressRailClick) {
+          event.preventDefault();
+          event.stopPropagation();
+          suppressRailClick = false;
+        }
+      }, true);
+
       renderChrome();
       // List/detail panes collapse via classes from the core chrome; watch them
       // so the header back/label tracks drill-down without a section change.
@@ -435,6 +587,7 @@
       return () => {
         layoutObserver.disconnect();
         if (chromeFrame) window.cancelAnimationFrame(chromeFrame);
+        stopRailMomentum();
         document.documentElement.classList.remove(
           "kabbak-phone-split",
           "kabbak-phone-compact",

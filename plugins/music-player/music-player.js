@@ -7,6 +7,10 @@
  *   "align": "left" | "center" | "right",
  *   "playlists": [{ "id": "chill", "name": "Chill", "tracks": ["song.mp3"] }]
  * }
+ *
+ * On phones (native shell or the layout-phone skin) the widget collapses to a
+ * mini player in the app bar; tapping it slides up a full-screen sheet with
+ * large transport controls, seek/volume, playlist picker and the track list.
  */
 (function () {
   "use strict";
@@ -32,6 +36,25 @@
     const name = String(file?.name || "").toLowerCase();
     if (!name || name.startsWith(".")) return false;
     return AUDIO_EXTENSIONS.has(`.${name.split(".").pop()}`);
+  }
+
+  function isPhoneHost() {
+    try {
+      if (document.documentElement.getAttribute("data-kabbak-native") === "1") return true;
+      const skin = String(window.localStorage?.getItem("kabbak-active-skin") || "").trim();
+      if (skin === "layout-phone") return true;
+      return document.documentElement.getAttribute("data-plugin-skin") === "layout-phone";
+    } catch (_error) {
+      return false;
+    }
+  }
+
+  function formatTime(value) {
+    if (!Number.isFinite(value) || value < 0) return "0:00";
+    const total = Math.floor(value);
+    const minutes = Math.floor(total / 60);
+    const seconds = total % 60;
+    return `${minutes}:${String(seconds).padStart(2, "0")}`;
   }
 
   // Config is operator data written by the settings UI to storage/plugin-data,
@@ -67,6 +90,7 @@
   }
 
   function createPlayerUi(helpers) {
+    const isPhone = helpers.isPhone === true;
     const root = document.createElement("div");
     root.className = "mp-root";
     root.setAttribute("role", "group");
@@ -82,8 +106,14 @@
     let isPlaying = false;
     let loopEnabled = false;
 
+    // Phone-only elements, assigned when the sheet is built.
+    let sheetEl = null;
+    let miniEl = null;
+    let miniLabelEl = null;
+
     // Horizontal placement of the whole widget inside the top bar.
     function applyAlignment(align) {
+      if (isPhone) return;
       const host = helpers.containerEl;
       if (!host) return;
       const normalized = String(align || "center").trim().toLowerCase();
@@ -248,9 +278,34 @@
     volume.value = "0.75";
     volume.setAttribute("aria-label", "Volume");
 
+    const nowTitle = document.createElement("div");
+    nowTitle.className = "mp-now-title";
+    const nowSub = document.createElement("div");
+    nowSub.className = "mp-now-sub";
+    const timeCur = document.createElement("span");
+    timeCur.className = "mp-time";
+    timeCur.textContent = "0:00";
+    const timeTotal = document.createElement("span");
+    timeTotal.className = "mp-time";
+    timeTotal.textContent = "0:00";
+
     function setSongPanelOpen(open) {
+      if (isPhone) {
+        songBtn.setAttribute("aria-expanded", "true");
+        return;
+      }
       songPanel.hidden = !open;
       songBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    function renderNowPlaying() {
+      const current = files[trackIndex];
+      const list = playlists.find((entry) => entry.id === currentPlaylist);
+      const title = current ? current.name.replace(/\.[^.]+$/, "") : "No track";
+      nowTitle.textContent = title;
+      nowSub.textContent = list?.name || "";
+      if (miniLabelEl) miniLabelEl.textContent = current ? title : "Music";
+      if (miniEl) miniEl.classList.toggle("is-playing", isPlaying);
     }
 
     function refreshTrackOptions() {
@@ -263,6 +318,7 @@
           : "No playlists yet. Upload songs in Settings → DLC Shop.";
         songPanel.appendChild(empty);
         songBtn.textContent = "Songs";
+        renderNowPlaying();
         return;
       }
       files.forEach((file, index) => {
@@ -281,6 +337,7 @@
       });
       const current = files[trackIndex];
       songBtn.textContent = current ? current.name.replace(/\.[^.]+$/, "") : "Songs";
+      renderNowPlaying();
     }
 
     function loadTrack(index) {
@@ -295,6 +352,11 @@
         audio.preload = "metadata";
         audio.loop = false;
         audio.addEventListener("ended", handleTrackEnded);
+        audio.addEventListener("loadedmetadata", () => {
+          if (isPhone) {
+            timeTotal.textContent = formatTime(audio.duration);
+          }
+        });
       }
       const file = files[trackIndex];
       currentTrackName = file.name;
@@ -302,6 +364,10 @@
       const trackName = String(file.name || "").trim();
       audio.src = trackName ? helpers.fileUrl(trackDir, trackName) : "";
       audio.volume = Number(volume.value) || 0.75;
+      if (isPhone) {
+        timeCur.textContent = "0:00";
+        timeTotal.textContent = "0:00";
+      }
       refreshTrackOptions();
     }
 
@@ -318,6 +384,7 @@
         seek.value = "0";
         seek.disabled = true;
       }
+      renderNowPlaying();
     }
 
     function playFiles() {
@@ -350,6 +417,10 @@
       isPlaying = false;
       seek.value = "0";
       seek.disabled = true;
+      if (isPhone) {
+        timeCur.textContent = "0:00";
+        timeTotal.textContent = "0:00";
+      }
       syncPlayUi();
     }
 
@@ -385,6 +456,7 @@
       setSongPanelOpen(songPanel.hidden);
     });
     const onDocumentClick = (event) => {
+      if (isPhone) return;
       if (!root.contains(event.target)) setSongPanelOpen(false);
     };
     document.addEventListener("click", onDocumentClick);
@@ -417,18 +489,133 @@
     const timeInterval = window.setInterval(() => {
       if (audio && Number.isFinite(audio.duration) && audio.duration > 0) {
         seek.value = String((audio.currentTime / audio.duration) * 100);
+        if (isPhone) {
+          timeCur.textContent = formatTime(audio.currentTime);
+          timeTotal.textContent = formatTime(audio.duration);
+        }
       }
     }, 500);
 
-    root.appendChild(playBtn);
-    root.appendChild(playlistSelect);
-    root.appendChild(songBtn);
-    root.appendChild(songPanel);
-    root.appendChild(prevBtn);
-    root.appendChild(nextBtn);
-    root.appendChild(loopBtn);
-    root.appendChild(seek);
-    root.appendChild(volume);
+    function buildPhoneUi() {
+      root.classList.add("mp-root--phone");
+
+      miniEl = document.createElement("button");
+      miniEl.type = "button";
+      miniEl.className = "mp-mini";
+      miniEl.setAttribute("aria-label", "Open music player");
+      miniEl.innerHTML = `
+        <span class="mp-mini-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M9 18V6.4l9.5-1.9V16"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16" cy="16" r="2.5"/></svg>
+        </span>
+        <span class="mp-mini-label">Music</span>
+      `;
+      miniLabelEl = miniEl.querySelector(".mp-mini-label");
+
+      sheetEl = document.createElement("div");
+      sheetEl.className = "mp-sheet";
+      sheetEl.hidden = true;
+
+      const backdrop = document.createElement("button");
+      backdrop.type = "button";
+      backdrop.className = "mp-sheet-backdrop";
+      backdrop.setAttribute("aria-label", "Close music player");
+
+      const panel = document.createElement("div");
+      panel.className = "mp-sheet-panel";
+      panel.setAttribute("role", "dialog");
+      panel.setAttribute("aria-label", "Music player");
+
+      const handle = document.createElement("div");
+      handle.className = "mp-sheet-handle";
+
+      const head = document.createElement("div");
+      head.className = "mp-sheet-head";
+      const now = document.createElement("div");
+      now.className = "mp-now";
+      now.appendChild(nowTitle);
+      now.appendChild(nowSub);
+      const closeBtn = document.createElement("button");
+      closeBtn.type = "button";
+      closeBtn.className = "mp-sheet-close";
+      closeBtn.setAttribute("aria-label", "Close");
+      closeBtn.textContent = "×";
+      head.appendChild(now);
+      head.appendChild(closeBtn);
+
+      const seekRow = document.createElement("div");
+      seekRow.className = "mp-seek-row";
+      seekRow.appendChild(timeCur);
+      seekRow.appendChild(seek);
+      seekRow.appendChild(timeTotal);
+
+      const transport = document.createElement("div");
+      transport.className = "mp-transport";
+      transport.appendChild(prevBtn);
+      transport.appendChild(playBtn);
+      transport.appendChild(nextBtn);
+      transport.appendChild(loopBtn);
+
+      const metaRow = document.createElement("div");
+      metaRow.className = "mp-meta-row";
+      metaRow.appendChild(playlistSelect);
+      metaRow.appendChild(volume);
+
+      const controls = document.createElement("div");
+      controls.className = "mp-controls";
+      controls.appendChild(seekRow);
+      controls.appendChild(transport);
+      controls.appendChild(metaRow);
+
+      const tracks = document.createElement("div");
+      tracks.className = "mp-sheet-tracks";
+      songPanel.hidden = false;
+      tracks.appendChild(songPanel);
+
+      panel.appendChild(handle);
+      panel.appendChild(head);
+      panel.appendChild(controls);
+      panel.appendChild(tracks);
+      sheetEl.appendChild(backdrop);
+      sheetEl.appendChild(panel);
+
+      const setOpen = (open) => {
+        sheetEl.hidden = !open;
+        root.classList.toggle("is-sheet-open", open);
+        document.documentElement.classList.toggle("kabbak-mp-sheet-open", open);
+        if (open) {
+          miniEl.setAttribute("aria-expanded", "true");
+        } else {
+          miniEl.removeAttribute("aria-expanded");
+        }
+      };
+      miniEl.addEventListener("click", () => setOpen(sheetEl.hidden));
+      closeBtn.addEventListener("click", () => setOpen(false));
+      backdrop.addEventListener("click", () => setOpen(false));
+      sheetEl._mpClose = () => setOpen(false);
+
+      root.appendChild(miniEl);
+      // The app bar clips and creates a containing block for fixed children, so
+      // the sheet lives on <body> instead of inside the widget.
+      document.body.appendChild(sheetEl);
+    }
+
+    function buildDesktopUi() {
+      root.appendChild(playBtn);
+      root.appendChild(playlistSelect);
+      root.appendChild(songBtn);
+      root.appendChild(songPanel);
+      root.appendChild(prevBtn);
+      root.appendChild(nextBtn);
+      root.appendChild(loopBtn);
+      root.appendChild(seek);
+      root.appendChild(volume);
+    }
+
+    if (isPhone) {
+      buildPhoneUi();
+    } else {
+      buildDesktopUi();
+    }
 
     void refreshPlaylists();
     applyAlignment(config.align);
@@ -440,6 +627,11 @@
         document.removeEventListener("taro-plugin-content-updated", onContentUpdated);
         document.removeEventListener("click", onDocumentClick);
         window.clearInterval(timeInterval);
+        document.documentElement.classList.remove("kabbak-mp-sheet-open");
+        if (sheetEl) {
+          sheetEl.remove();
+          sheetEl = null;
+        }
         stopAll();
       }
     };
@@ -454,14 +646,15 @@
   host.register({
     id: "music-player",
     name: "Music Player",
-    version: "2.5.1",
+    version: "2.6.0",
     mount(containerEl, helpers) {
+      const isPhone = isPhoneHost();
       let ui = null;
       let disposed = false;
       const init = async () => {
         const config = await loadPluginConfig(helpers);
         if (disposed) return;
-        ui = createPlayerUi({ ...helpers, config, containerEl });
+        ui = createPlayerUi({ ...helpers, config, containerEl, isPhone });
         containerEl.appendChild(ui.root);
       };
       void init();

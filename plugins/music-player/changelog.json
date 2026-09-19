@@ -1,6 +1,13 @@
 {
   "entries": [
     {
+      "version": "2.6.0",
+      "date": "2026-09-19",
+      "notes": [
+        "Phone layout: the widget collapses to a mini player in the app bar that opens a slide-up sheet with large native transport controls, seek/time, volume, playlist picker, and the track list. Desktop is unchanged."
+      ]
+    },
+    {
       "version": "2.5.2",
       "date": "2026-09-18",
       "notes": [

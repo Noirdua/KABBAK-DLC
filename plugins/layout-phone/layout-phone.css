@@ -54,6 +54,7 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
 
 .layout-phone {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr) auto;
   width: 100%;
   height: 100dvh;
@@ -186,6 +187,8 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
 .layout-phone-rail-wrap {
   position: relative;
   z-index: 3;
+  min-width: 0;
+  max-width: 100%;
   display: flex;
   align-items: stretch;
   border-top: 1px solid var(--tt-border);
@@ -197,23 +200,28 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
 }
 
 .layout-phone-rail {
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   min-width: 0;
   display: flex;
   gap: 2px;
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
   scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
   padding: 6px calc(8px + env(safe-area-inset-left, 0px)) 6px calc(8px + env(safe-area-inset-right, 0px));
 }
 
 .layout-phone-rail-item,
 .layout-phone-rail-more {
   flex: 0 0 auto;
-  scroll-snap-align: center;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -452,6 +460,12 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
   color: #111114;
 }
 
+.layout-phone-options-version {
+  font-size: 11px;
+  color: var(--tt-text-dim);
+  text-align: right;
+}
+
 /* Lock the page behind the sheet. */
 html.kabbak-phone-sheet-open,
 html.kabbak-phone-sheet-open body {
@@ -587,13 +601,23 @@ html[data-plugin-skin="layout-phone"] input[type="url"],
 html[data-plugin-skin="layout-phone"] input[type="email"],
 html[data-plugin-skin="layout-phone"] input[type="password"],
 html[data-plugin-skin="layout-phone"] input[type="number"],
-html[data-plugin-skin="layout-phone"] select,
 html[data-plugin-skin="layout-phone"] textarea {
   border-radius: 14px;
   border: 1px solid var(--tt-border);
-  background: var(--tt-bg-deep);
+  background-color: var(--tt-bg-deep);
   min-height: 46px;
   padding: 10px 13px;
+  color: var(--tt-text);
+}
+
+/* Keep the native-looking arrow: use background-color, not the shorthand, and
+   leave room on the right. */
+html[data-plugin-skin="layout-phone"] select {
+  border-radius: 14px;
+  border: 1px solid var(--tt-border);
+  background-color: var(--tt-bg-deep);
+  min-height: 46px;
+  padding: 10px 36px 10px 13px;
   color: var(--tt-text);
 }
 
@@ -602,6 +626,190 @@ html[data-plugin-skin="layout-phone"] select:focus,
 html[data-plugin-skin="layout-phone"] textarea:focus {
   outline: none;
   border-color: var(--tt-brand);
+}
+
+/* --- Native action buttons ------------------------------------------------ */
+
+html[data-plugin-skin="layout-phone"] .layout-phone-pages button[class*="btn"]:not(.list-item):not(.cube-rotation-btn) {
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--tt-surface);
+  color: var(--tt-text);
+  font-family: var(--phone-font);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.1;
+  cursor: pointer;
+  box-shadow: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.08s ease, background 0.15s ease, opacity 0.15s ease;
+}
+
+html[data-plugin-skin="layout-phone"] .layout-phone-pages button[class*="btn"]:not(.list-item):not(.cube-rotation-btn):active {
+  transform: scale(0.97);
+  opacity: 0.88;
+}
+
+html[data-plugin-skin="layout-phone"] .layout-phone-pages button[class*="btn"]:disabled {
+  opacity: 0.45;
+  transform: none;
+}
+
+html[data-plugin-skin="layout-phone"] .layout-phone-pages button[class*="primary"] {
+  background: var(--tt-brand);
+  color: #111114;
+}
+
+html[data-plugin-skin="layout-phone"] .layout-phone-pages button[class*="danger"] {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+/* --- Word Lookup (Alphabet → Word) ---------------------------------------- */
+
+html[data-plugin-skin="layout-phone"] .alpha-lookup-shell {
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-gematria-card {
+  gap: 14px;
+  padding: 14px;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-gematria-toolbar {
+  display: grid;
+  justify-content: stretch;
+  gap: 10px;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-script-field {
+  justify-content: space-between;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-script-field select {
+  flex: 1 1 auto;
+  margin-left: 10px;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-tool-mode-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-tool-mode-option {
+  min-height: 46px;
+  justify-content: center;
+  text-align: center;
+  padding: 10px 12px;
+  border: 1px solid var(--tt-border);
+  border-radius: 14px;
+  background: var(--tt-bg-deep);
+  color: var(--tt-text-soft);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-tool-mode-option:has(input:checked) {
+  border-color: var(--tt-brand);
+  background: var(--tt-brand);
+  color: #111114;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-gematria-options-btn {
+  width: 100%;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-gematria-controls {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-gematria-input {
+  min-height: 108px;
+  border-radius: 14px;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-gematria-result {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--tt-surface);
+  font-size: 18px;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-gematria-breakdown {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-gematria-reverse-cipher-option {
+  min-height: 44px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-gematria-keyboard {
+  border: 0;
+  border-radius: 18px;
+  padding: 12px;
+  gap: 10px;
+}
+
+/* 9 tiny columns are unusable on a phone; 6 larger keys are tappable. */
+html[data-plugin-skin="layout-phone"] .alpha-gematria-keyboard-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-gematria-keyboard-key {
+  min-height: 44px;
+  padding: 8px 4px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--tt-surface);
+  color: var(--tt-text);
+  font-size: 17px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-gematria-keyboard-key:active {
+  background: var(--tt-brand);
+  color: #111114;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-gematria-keyboard-actions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-gematria-keyboard-action {
+  min-height: 44px;
+  padding: 8px 6px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--tt-surface);
+  color: var(--tt-text);
+  font-size: 13px;
+  font-weight: 600;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-gematria-keyboard-action[aria-pressed="true"] {
+  background: var(--tt-brand);
+  color: #111114;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-gematria-match {
+  border: 0;
+  border-radius: 16px;
+  background: var(--tt-surface);
 }
 
 /* The core inline pane toggles belong to the desktop chrome; the header back
