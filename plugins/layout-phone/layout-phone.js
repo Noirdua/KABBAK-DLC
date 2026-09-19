@@ -7,13 +7,61 @@
     return;
   }
 
-  const TAB_DEFS = [
-    { id: "home", label: "Home", icon: "home", section: "home", navIds: ["open-home", "open-home-menu"] },
-    { id: "tarot", label: "Tarot", icon: "tarot", section: "tarot", navIds: ["open-tarot"] },
-    { id: "calendar", label: "Calendar", icon: "calendar", section: "planner", navIds: ["open-calendar"] },
-    { id: "more", label: "More", icon: "more", section: "", navIds: [] },
-    { id: "you", label: "You", icon: "you", section: "", navIds: ["open-profile", "open-settings"] }
+  // Bottom rail is a horizontal scroller; "More" stays pinned on the right.
+  const RAIL_ITEMS = [
+    { id: "home", label: "Home", icon: "home", section: "home", navId: "open-home" },
+    { id: "tarot", label: "Tarot", icon: "tarot", section: "tarot", navId: "open-tarot-cards" },
+    { id: "calendar", label: "Calendar", icon: "calendar", section: "planner", navId: "open-calendar" },
+    { id: "kabbalah", label: "Kabbalah", icon: "kabbalah", section: "kabbalah", navId: "open-kabbalah-sephirot" },
+    { id: "iching", label: "I Ching", icon: "iching", section: "iching", navId: "open-iching-hexagrams" },
+    { id: "planets", label: "Planets", icon: "planet", section: "planets", navId: "open-planets" },
+    { id: "alphabet", label: "Alphabet", icon: "alphabet", section: "alphabet", navId: "open-alphabet-word" },
+    { id: "numbers", label: "Numbers", icon: "numbers", section: "numbers", navId: "open-numbers-browse" },
+    { id: "community", label: "Community", icon: "community", section: "community", navId: "open-community" },
+    { id: "quiz", label: "Quiz", icon: "quiz", section: "quiz", navId: "open-quiz" },
+    { id: "games", label: "Games", icon: "games", section: "games", navId: "open-games" },
+    { id: "profile", label: "You", icon: "you", section: "profile", navId: "open-profile" }
   ];
+
+  // Maps a section (and its sub-sections) onto the rail item that owns it.
+  const SECTION_RAIL = {
+    home: "home",
+    tarot: "tarot",
+    "tarot-frame": "tarot",
+    "tarot-house": "tarot",
+    planner: "calendar",
+    kabbalah: "kabbalah",
+    "kabbalah-worlds": "kabbalah",
+    "kabbalah-paths": "kabbalah",
+    "kabbalah-cross": "kabbalah",
+    "kabbalah-tree": "kabbalah",
+    cube: "kabbalah",
+    "kabbalah-tandem": "kabbalah",
+    iching: "iching",
+    "iching-trigram": "iching",
+    "iching-bigram": "iching",
+    "iching-phase": "iching",
+    planets: "planets",
+    zodiac: "planets",
+    natal: "planets",
+    astronomy: "planets",
+    sky: "planets",
+    cycles: "planets",
+    elements: "planets",
+    tattvas: "planets",
+    modalities: "planets",
+    alphabet: "alphabet",
+    "alphabet-letters": "alphabet",
+    "alphabet-text": "alphabet",
+    "alphabet-reference": "alphabet",
+    scriber: "alphabet",
+    numbers: "numbers",
+    "num-pad": "numbers",
+    community: "community",
+    games: "games",
+    quiz: "quiz",
+    profile: "profile"
+  };
 
   const HIDE_IN_MORE = new Set([
     "open-home",
@@ -23,7 +71,6 @@
     "open-calendar-months"
   ]);
 
-  // Menu ids whose section name differs from the id suffix.
   const ID_SECTION_ALIASES = {
     "open-kabbalah-sephirot": "kabbalah",
     "open-alphabet-word": "alphabet",
@@ -32,52 +79,55 @@
     "open-iching-hexagrams": "iching"
   };
 
-  function sectionTabId(section) {
-    const current = String(section || "");
-    if (current === "profile" || current === "settings") return "you";
-    if (current === "tarot-frame" || current === "tarot-house") return "tarot";
-    const tab = TAB_DEFS.find((item) => item.section === current);
-    return tab ? tab.id : "";
+  function railIdForSection(section) {
+    return SECTION_RAIL[String(section || "")] || "";
   }
 
   function isActiveId(id, section) {
     const current = String(section || "");
-    const tab = TAB_DEFS.find((item) => item.navIds.includes(id));
-    if (tab) {
-      return Boolean(tab.section) && tab.section === current;
+    const item = RAIL_ITEMS.find((entry) => entry.navId === id);
+    if (item) {
+      return item.id === railIdForSection(current);
     }
     const target = ID_SECTION_ALIASES[id] || String(id || "").replace(/^open-/, "");
     return target === current;
   }
 
   function iconSvg(name) {
-    if (name === "home") {
-      return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.2 12 4l8 7.2V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>';
-    }
-    if (name === "tarot") {
-      return '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M12 8.5 13.2 11l2.6.2-2 1.8.6 2.6L12 14.3 9.6 15.6l.6-2.6-2-1.8 2.6-.2z"/></svg>';
-    }
-    if (name === "calendar") {
-      return '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>';
-    }
-    if (name === "you") {
-      return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 19.5c.8-3.4 3.4-5.2 6.5-5.2s5.7 1.8 6.5 5.2"/></svg>';
-    }
-    return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg>';
+    const paths = {
+      home: '<path d="M4 11.2 12 4l8 7.2V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/>',
+      tarot: '<rect x="7" y="3" width="10" height="18" rx="2.4"/><path d="M12 8.6 13.2 11l2.6.2-2 1.8.6 2.6L12 14.4l-2.4 1.2.6-2.6-2-1.8 2.6-.2z"/>',
+      calendar: '<rect x="4" y="5" width="16" height="15" rx="2.6"/><path d="M8 3v4M16 3v4M4 10h16"/>',
+      kabbalah: '<circle cx="12" cy="4.8" r="2"/><circle cx="5.6" cy="17" r="2"/><circle cx="18.4" cy="17" r="2"/><path d="M12 6.8 6.6 15.4M12 6.8l5.4 8.6M7.6 17h8.8"/>',
+      iching: '<path d="M5 7h14M5 12h14M5 17h8"/>',
+      planet: '<circle cx="12" cy="12" r="5.2"/><path d="M4.4 15.2c4 1.6 11.2 1.6 15.2 0"/>',
+      alphabet: '<path d="M6 19 12 5l6 14M8.6 13.6h6.8"/>',
+      numbers: '<path d="M9 4 7 20M17 4l-2 16M5 9h14M4 15h14"/>',
+      community: '<circle cx="9" cy="9" r="2.8"/><path d="M4 19c.7-3.1 2.8-4.8 5-4.8s4.3 1.7 5 4.8"/><path d="M15.6 7.2a2.6 2.6 0 1 1 0 5.2M16 19c-.2-1.7-.6-3-1.3-4"/>',
+      quiz: '<circle cx="12" cy="12" r="8.4"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.6 2.2c-.8.5-1.2 1-1.2 1.9"/><circle cx="12" cy="17" r=".9" fill="currentColor" stroke="none"/>',
+      games: '<rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="9" cy="9" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="15" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/>',
+      you: '<circle cx="12" cy="8" r="3.2"/><path d="M5.5 19.5c.8-3.4 3.4-5.2 6.5-5.2s5.7 1.8 6.5 5.2"/>',
+      more: '<circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/>',
+      settings: '<circle cx="12" cy="12" r="3"/><path d="M12 3.5v2.2M12 18.3v2.2M4.9 7.8l1.9 1.1M17.2 15.1l1.9 1.1M4.9 16.2l1.9-1.1M17.2 8.9l1.9-1.1"/>',
+      chevron: '<path d="M14.5 6 8.5 12l6 6"/>'
+    };
+    return `<svg viewBox="0 0 24 24" aria-hidden="true">${paths[name] || paths.more}</svg>`;
   }
 
-  function youSection() {
-    const profile = document.getElementById("open-profile");
-    if (profile instanceof HTMLElement && !profile.hidden) {
-      return "profile";
-    }
-    return "settings";
+  function visibleRailItems() {
+    return RAIL_ITEMS.filter((item) => {
+      if (item.id === "home") {
+        return true;
+      }
+      const button = document.getElementById(item.navId);
+      return button instanceof HTMLElement && !button.hidden;
+    });
   }
 
   host.register({
     id: "layout-phone",
     name: "Phone Layout",
-    version: "1.0.3",
+    version: "1.1.0",
     role: "skin",
     bundled: document.documentElement.getAttribute("data-kabbak-native") === "1",
     mount(shellEl, helpers) {
@@ -91,18 +141,21 @@
       shellEl.innerHTML = `
         <div class="layout-phone">
           <header class="layout-phone-top">
-            <button class="layout-phone-back" type="button" aria-label="Go back">Back</button>
+            <button class="layout-phone-back" type="button" aria-label="Back" hidden>${iconSvg("chevron")}</button>
             <div class="layout-phone-title"></div>
             <div class="layout-phone-top-actions">
               <div class="layout-phone-widgets"></div>
-              <button class="layout-phone-settings" type="button">Settings</button>
+              <button class="layout-phone-settings" type="button" aria-label="Settings">${iconSvg("settings")}</button>
             </div>
           </header>
           <div class="layout-phone-pages"></div>
-          <nav class="layout-phone-tabs" aria-label="Primary"></nav>
+          <nav class="layout-phone-rail-wrap" aria-label="Primary">
+            <div class="layout-phone-rail"></div>
+            <button class="layout-phone-rail-more" type="button">${iconSvg("more")}<span>More</span></button>
+          </nav>
           <div class="layout-phone-sheet" hidden>
             <button class="layout-phone-sheet-backdrop" type="button" aria-label="Close menu"></button>
-            <div class="layout-phone-sheet-panel" role="dialog" aria-label="More">
+            <div class="layout-phone-sheet-panel" role="dialog" aria-label="Menu">
               <div class="layout-phone-sheet-handle"></div>
               <div class="layout-phone-sheet-search"></div>
               <div class="layout-phone-sheet-menu"></div>
@@ -118,7 +171,8 @@
       const settingsEl = shellEl.querySelector(".layout-phone-settings");
       const pagesEl = shellEl.querySelector(".layout-phone-pages");
       const widgetsEl = shellEl.querySelector(".layout-phone-widgets");
-      const tabsEl = shellEl.querySelector(".layout-phone-tabs");
+      const railEl = shellEl.querySelector(".layout-phone-rail");
+      const railMoreEl = shellEl.querySelector(".layout-phone-rail-more");
       const sheetEl = shellEl.querySelector(".layout-phone-sheet");
       const sheetMenuEl = shellEl.querySelector(".layout-phone-sheet-menu");
       const sheetSearchEl = shellEl.querySelector(".layout-phone-sheet-search");
@@ -126,12 +180,16 @@
       const sheetOptionsEl = shellEl.querySelector(".layout-phone-sheet-options");
 
       const OPTIONS_STORAGE_KEY = "kabbak-phone-options";
-      const DEFAULT_OPTIONS = { browse: "drill", density: "comfortable", tabLabels: true };
+      const DEFAULT_OPTIONS = { browse: "drill", density: "comfortable", barLabels: true };
 
       function readOptions() {
         try {
           const parsed = JSON.parse(window.localStorage.getItem(OPTIONS_STORAGE_KEY) || "{}");
-          return { ...DEFAULT_OPTIONS, ...(parsed && typeof parsed === "object" ? parsed : {}) };
+          const merged = { ...DEFAULT_OPTIONS, ...(parsed && typeof parsed === "object" ? parsed : {}) };
+          if (typeof merged.tabLabels === "boolean" && typeof merged.barLabels !== "boolean") {
+            merged.barLabels = merged.tabLabels;
+          }
+          return merged;
         } catch (_error) {
           return { ...DEFAULT_OPTIONS };
         }
@@ -149,7 +207,7 @@
         const root = document.documentElement;
         root.classList.toggle("kabbak-phone-split", options.browse === "split");
         root.classList.toggle("kabbak-phone-compact", options.density === "compact");
-        root.classList.toggle("kabbak-phone-no-tablabels", options.tabLabels === false);
+        root.classList.toggle("kabbak-phone-no-barlabels", options.barLabels === false);
       }
 
       function renderOptions() {
@@ -160,7 +218,7 @@
         const rows = [
           { label: "Layout", key: "browse", choices: [["drill", "Full screen"], ["split", "Split"]] },
           { label: "Rows", key: "density", choices: [["comfortable", "Comfortable"], ["compact", "Compact"]] },
-          { label: "Tab labels", key: "tabLabels", choices: [[true, "Show"], [false, "Hide"]] }
+          { label: "Bar labels", key: "barLabels", choices: [[true, "Show"], [false, "Hide"]] }
         ];
         rows.forEach((row) => {
           const rowEl = document.createElement("div");
@@ -299,28 +357,24 @@
         renderOptions();
       }
 
-      function renderTabs() {
+      function renderRail() {
         const section = ui.getActiveSection();
-        const currentTab = sheetOpen ? "more" : sectionTabId(section);
-        tabsEl.innerHTML = "";
-        TAB_DEFS.forEach((tab) => {
+        const activeId = railIdForSection(section);
+        railEl.innerHTML = "";
+        visibleRailItems().forEach((item) => {
           const button = document.createElement("button");
           button.type = "button";
-          button.className = "layout-phone-tab";
-          button.dataset.tab = tab.id;
-          button.classList.toggle("is-active", tab.id === currentTab);
-          button.innerHTML = `${iconSvg(tab.icon)}<span>${tab.label}</span>`;
-          button.addEventListener("click", () => {
-            if (tab.id === "more") {
-              setSheet(!sheetOpen);
-              renderTabs();
-              return;
-            }
-            setSheet(false);
-            openSection(tab.id === "you" ? youSection() : tab.section);
-          });
-          tabsEl.appendChild(button);
+          button.className = "layout-phone-rail-item";
+          button.dataset.id = item.id;
+          button.classList.toggle("is-active", item.id === activeId);
+          button.innerHTML = `${iconSvg(item.icon)}<span>${item.label}</span>`;
+          button.addEventListener("click", () => openSection(item.section));
+          railEl.appendChild(button);
         });
+        const activeButton = railEl.querySelector(".layout-phone-rail-item.is-active");
+        if (activeButton) {
+          railEl.scrollLeft = activeButton.offsetLeft - (railEl.clientWidth - activeButton.offsetWidth) / 2;
+        }
       }
 
       function renderChrome() {
@@ -329,15 +383,16 @@
         const canReturnToList = Boolean(layout && layout.classList.contains("layout-sidebar-collapsed"));
         titleEl.textContent = ui.sectionLabel(section) || section;
         backEl.hidden = section === "home" && !sheetOpen && !canReturnToList;
-        backEl.textContent = canReturnToList ? "List" : "Back";
-        renderTabs();
+        backEl.setAttribute("aria-label", canReturnToList ? "Back to list" : "Back");
+        backEl.classList.toggle("is-list-back", canReturnToList);
+        renderRail();
         if (sheetOpen) renderSheet();
       }
 
       backEl.addEventListener("click", () => {
         if (sheetOpen) {
           setSheet(false);
-          renderTabs();
+          renderChrome();
           return;
         }
         const layout = activeLayout();
@@ -351,9 +406,13 @@
         setSheet(false);
         openSection("settings");
       });
+      railMoreEl.addEventListener("click", () => {
+        setSheet(!sheetOpen);
+        renderChrome();
+      });
       sheetBackdropEl.addEventListener("click", () => {
         setSheet(false);
-        renderTabs();
+        renderChrome();
       });
 
       renderChrome();
@@ -379,7 +438,7 @@
         document.documentElement.classList.remove(
           "kabbak-phone-split",
           "kabbak-phone-compact",
-          "kabbak-phone-no-tablabels",
+          "kabbak-phone-no-barlabels",
           "kabbak-phone-sheet-open"
         );
         document.removeEventListener("taro-plugins-ready", renderChrome);

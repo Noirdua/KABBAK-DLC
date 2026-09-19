@@ -2,7 +2,7 @@
   "id": "layout-phone",
   "name": "Phone Layout",
   "kind": "gui",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Phone chrome: compact header, bottom tabs, and a More sheet. App pages stay the same; only navigation is replaced.",
   "entry": "layout-phone.js",
   "css": "layout-phone.css",

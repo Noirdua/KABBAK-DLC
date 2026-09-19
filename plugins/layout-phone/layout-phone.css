@@ -1,3 +1,12 @@
+/* layout-phone — native-first mobile chrome.
+   Restyles the shell and common content surfaces for touch; the app's pages are
+   unchanged and keep following the active theme tokens (--tt-*). */
+
+:root {
+  --phone-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --phone-hairline: var(--tt-border);
+}
+
 html[data-kabbak-native] {
   height: 100%;
   -webkit-text-size-adjust: 100%;
@@ -10,18 +19,31 @@ html[data-kabbak-native] body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* --- Connection gate ------------------------------------------------------ */
+
 html[data-kabbak-native] .connection-gate {
   padding: calc(24px + env(safe-area-inset-top, 0px)) 18px calc(24px + env(safe-area-inset-bottom, 0px));
 }
 
 html[data-kabbak-native] .connection-gate-card {
   width: min(460px, 100%);
-  border-radius: 22px;
+  border: 0;
+  border-radius: 24px;
+  background: var(--tt-bg);
 }
 
 html[data-kabbak-native] .connection-gate-title {
-  font-size: 26px;
+  font-size: 24px;
 }
+
+html[data-kabbak-native] .connection-gate-actions button,
+html[data-kabbak-native] .connection-gate-demo-btn {
+  border: 0;
+  border-radius: 14px;
+  min-height: 48px;
+}
+
+/* --- Shell ---------------------------------------------------------------- */
 
 html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
   height: 100dvh;
@@ -39,54 +61,77 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
   max-height: 100dvh;
   background: var(--tt-page-bg);
   color: var(--tt-text);
+  font-family: var(--phone-font);
 }
+
+/* --- App bar -------------------------------------------------------------- */
 
 .layout-phone-top {
   position: relative;
   z-index: 3;
   display: flex;
   align-items: center;
-  gap: 8px;
-  min-height: 52px;
-  padding: calc(8px + env(safe-area-inset-top, 0px)) calc(10px + env(safe-area-inset-right, 0px)) 8px calc(10px + env(safe-area-inset-left, 0px));
+  gap: 4px;
+  min-height: 56px;
+  padding: calc(6px + env(safe-area-inset-top, 0px)) calc(6px + env(safe-area-inset-right, 0px)) 6px calc(6px + env(safe-area-inset-left, 0px));
   border-bottom: 1px solid var(--tt-border);
   background: var(--tt-bg);
+  background: color-mix(in srgb, var(--tt-bg) 92%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
 }
 
 .layout-phone-back,
-.layout-phone-settings,
-.layout-phone-tab,
-.layout-phone-sheet-item,
-.layout-phone-sheet-group-toggle,
-.layout-phone-sheet-backdrop {
-  font: inherit;
-  color: inherit;
+.layout-phone-settings {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--tt-text-soft);
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.layout-phone-back:active,
+.layout-phone-settings:active {
+  transform: scale(0.94);
+  background: var(--tt-surface);
 }
 
 .layout-phone-back[hidden] {
   display: none;
 }
 
-.layout-phone-back,
-.layout-phone-settings {
-  flex: 0 0 auto;
-  min-height: 42px;
-  padding: 8px 12px;
-  border: 0;
-  border-radius: 12px;
-  background: var(--tt-surface);
-  font-weight: 600;
+.layout-phone-back svg,
+.layout-phone-settings svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.layout-phone-back.is-list-back {
+  color: var(--tt-brand);
+  background: color-mix(in srgb, var(--tt-brand) 14%, transparent);
 }
 
 .layout-phone-title {
   flex: 1 1 auto;
   min-width: 0;
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: -0.01em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -95,7 +140,7 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
 .layout-phone-top-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
   min-width: 0;
 }
 
@@ -112,6 +157,8 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
   flex-wrap: nowrap;
 }
 
+/* --- Page area ------------------------------------------------------------ */
+
 /* Positioned so the full-bleed #home-welcome (position:absolute; inset:0) fills
    only the page area instead of the whole shell and its chrome. */
 .layout-phone-pages {
@@ -123,60 +170,102 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
   overflow-x: hidden;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
+  background: var(--tt-page-bg);
 }
 
 .layout-phone-pages::-webkit-scrollbar,
+.layout-phone-rail::-webkit-scrollbar,
 .layout-phone-sheet-menu::-webkit-scrollbar {
   width: 0;
   height: 0;
+  display: none;
 }
 
-.layout-phone-tabs {
+/* --- Bottom rail (horizontal scroller + pinned More) ---------------------- */
+
+.layout-phone-rail-wrap {
   position: relative;
   z-index: 3;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0;
-  padding: 4px calc(6px + env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) calc(6px + env(safe-area-inset-left, 0px));
+  display: flex;
+  align-items: stretch;
   border-top: 1px solid var(--tt-border);
   background: var(--tt-bg-deep);
+  background: color-mix(in srgb, var(--tt-bg-deep) 94%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-.layout-phone-tab {
+.layout-phone-rail {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 6px calc(8px + env(safe-area-inset-left, 0px)) 6px calc(8px + env(safe-area-inset-right, 0px));
+}
+
+.layout-phone-rail-item,
+.layout-phone-rail-more {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  min-height: 50px;
+  gap: 3px;
+  min-width: 66px;
+  min-height: 54px;
+  padding: 6px 12px;
   border: 0;
-  border-radius: 12px;
   background: transparent;
   color: var(--tt-text-muted);
-  transition: color 0.15s ease, background 0.15s ease;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border-radius: 16px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
 }
 
-.layout-phone-tab svg {
-  width: 22px;
-  height: 22px;
+.layout-phone-rail-item:active,
+.layout-phone-rail-more:active {
+  transform: scale(0.95);
+}
+
+.layout-phone-rail-item svg,
+.layout-phone-rail-more svg {
+  width: 23px;
+  height: 23px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linejoin: round;
+  stroke-width: 1.8;
   stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.layout-phone-tab span {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.layout-phone-tab.is-active {
+.layout-phone-rail-item.is-active {
   color: var(--tt-brand);
-  background: color-mix(in srgb, var(--tt-brand) 12%, transparent);
+  background: color-mix(in srgb, var(--tt-brand) 16%, transparent);
 }
+
+.layout-phone-rail-more {
+  min-width: 70px;
+  border-radius: 0;
+  border-left: 1px solid var(--tt-border);
+  color: var(--tt-text-soft);
+  padding-right: calc(12px + env(safe-area-inset-right, 0px));
+}
+
+/* --- Sheet ---------------------------------------------------------------- */
 
 .layout-phone-sheet {
   position: fixed;
@@ -193,7 +282,7 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
   position: absolute;
   inset: 0;
   border: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.55);
 }
 
 .layout-phone-sheet-panel {
@@ -201,14 +290,14 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
   left: 0;
   right: 0;
   bottom: 0;
-  max-height: min(86dvh, 720px);
+  max-height: min(88dvh, 760px);
   display: flex;
   flex-direction: column;
   padding: 8px calc(12px + env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) calc(12px + env(safe-area-inset-left, 0px));
-  border-radius: 22px 22px 0 0;
+  border-radius: 26px 26px 0 0;
   background: var(--tt-bg);
-  box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.35);
-  animation: layout-phone-slide 0.22s ease;
+  box-shadow: 0 -20px 48px rgba(0, 0, 0, 0.45);
+  animation: layout-phone-slide 0.24s cubic-bezier(0.22, 0.8, 0.3, 1);
 }
 
 @keyframes layout-phone-fade {
@@ -217,7 +306,7 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
 }
 
 @keyframes layout-phone-slide {
-  from { transform: translateY(14%); }
+  from { transform: translateY(16%); }
   to { transform: translateY(0); }
 }
 
@@ -229,11 +318,11 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
 }
 
 .layout-phone-sheet-handle {
-  width: 42px;
+  width: 40px;
   height: 4px;
-  margin: 4px auto 10px;
+  margin: 6px auto 12px;
   border-radius: 99px;
-  background: var(--tt-border);
+  background: var(--tt-border-soft);
 }
 
 .layout-phone-sheet-search {
@@ -243,10 +332,10 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
 .layout-phone-sheet-search input {
   width: 100%;
   box-sizing: border-box;
-  min-height: 46px;
-  padding: 10px 12px;
+  min-height: 48px;
+  padding: 10px 14px;
   border: 1px solid var(--tt-border);
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--tt-bg-deep);
   color: var(--tt-text);
   font: inherit;
@@ -263,9 +352,9 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
 }
 
 .layout-phone-sheet-heading {
-  padding: 14px 10px 4px;
+  padding: 16px 12px 6px;
   color: var(--tt-text-muted);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -276,16 +365,28 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
   display: block;
   width: 100%;
   text-align: left;
-  min-height: 46px;
-  padding: 11px 12px;
+  min-height: 50px;
+  padding: 13px 14px;
   border: 0;
-  border-radius: 10px;
+  border-radius: 14px;
   background: transparent;
+  color: var(--tt-text);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s ease;
+}
+
+.layout-phone-sheet-item:active,
+.layout-phone-sheet-group-toggle:active {
+  background: var(--tt-surface);
 }
 
 .layout-phone-sheet-item.is-active,
 .layout-phone-sheet-group-toggle.is-active {
-  background: var(--tt-surface);
+  background: color-mix(in srgb, var(--tt-brand) 14%, transparent);
   color: var(--tt-text-bright);
 }
 
@@ -293,26 +394,22 @@ html[data-plugin-skin="layout-phone"] .plugin-ui-shell {
   display: none;
   flex-direction: column;
   gap: 1px;
-  padding: 0 0 6px 8px;
+  padding: 0 0 6px 10px;
 }
 
 .layout-phone-sheet-group.is-open > .layout-phone-sheet-children {
   display: flex;
 }
 
-/* Lock the page behind the sheet. */
-html.kabbak-phone-sheet-open,
-html.kabbak-phone-sheet-open body {
-  overflow: hidden;
-}
+/* --- Display options ------------------------------------------------------ */
 
 .layout-phone-sheet-options {
   margin-top: 8px;
-  padding-top: 10px;
+  padding-top: 12px;
   border-top: 1px solid var(--tt-border);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .layout-phone-option-row {
@@ -323,15 +420,15 @@ html.kabbak-phone-sheet-open body {
 }
 
 .layout-phone-option-label {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--tt-text-soft);
 }
 
 .layout-phone-segmented {
   display: inline-flex;
-  padding: 2px;
+  padding: 3px;
   border: 1px solid var(--tt-border);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--tt-bg-deep);
 }
 
@@ -341,35 +438,190 @@ html.kabbak-phone-sheet-open body {
   color: var(--tt-text-muted);
   font: inherit;
   font-size: 12px;
+  font-weight: 600;
   min-height: 34px;
-  padding: 7px 10px;
-  border-radius: 8px;
+  padding: 7px 12px;
+  border-radius: 9px;
+  cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
 .layout-phone-segmented button.is-active {
-  background: var(--tt-surface);
-  color: var(--tt-text-bright);
+  background: var(--tt-brand);
+  color: #111114;
 }
 
-/* Mobile content tuning: easier tap targets and no iOS focus zoom. */
+/* Lock the page behind the sheet. */
+html.kabbak-phone-sheet-open,
+html.kabbak-phone-sheet-open body {
+  overflow: hidden;
+}
+
+/* --- Content native layer ------------------------------------------------- */
+
+html[data-plugin-skin="layout-phone"] .list-panel,
+html[data-plugin-skin="layout-phone"] .kab-tree-panel,
+html[data-plugin-skin="layout-phone"] .detail-panel {
+  background: var(--tt-page-bg);
+  border-color: var(--tt-border);
+}
+
+html[data-plugin-skin="layout-phone"] .card-list {
+  padding: 0;
+  gap: 0;
+}
+
+html[data-plugin-skin="layout-phone"] .list-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--tt-border);
+}
+
+html[data-plugin-skin="layout-phone"] .list-item {
+  position: relative;
+  min-height: 56px;
+  padding: 12px 44px 12px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--phone-hairline);
+  border-radius: 0;
+  background: transparent;
+  color: var(--tt-text);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html[data-plugin-skin="layout-phone"] .list-item::after {
+  content: "";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--tt-text-dim);
+  border-bottom: 2px solid var(--tt-text-dim);
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+html[data-plugin-skin="layout-phone"] .list-item.is-selected {
+  background: color-mix(in srgb, var(--tt-brand) 12%, transparent);
+  border-color: var(--phone-hairline);
+}
+
+html[data-plugin-skin="layout-phone"] .list-item.is-selected::after {
+  border-color: var(--tt-brand);
+}
+
+html[data-plugin-skin="layout-phone"] .list-name {
+  font-size: 15px;
+  font-weight: 600;
+  padding-right: 0;
+}
+
+html[data-plugin-skin="layout-phone"] .list-meta {
+  font-size: 12.5px;
+}
+
+html[data-plugin-skin="layout-phone"] .detail-panel {
+  padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+  gap: 16px;
+}
+
+html[data-plugin-skin="layout-phone"] .detail-heading h2 {
+  font-size: 22px;
+}
+
+html[data-plugin-skin="layout-phone"] .meta-grid {
+  gap: 10px;
+}
+
+html[data-plugin-skin="layout-phone"] .meta-card {
+  border: 0;
+  border-radius: 16px;
+  padding: 12px 14px;
+  background: var(--tt-surface);
+}
+
+/* Buttons and overlays: rounded, borderless, 44px minimum. */
+html[data-plugin-skin="layout-phone"] .planner-btn,
+html[data-plugin-skin="layout-phone"] .taro-overlay-btn,
+html[data-plugin-skin="layout-phone"] .settings-trigger {
+  min-height: 44px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--tt-surface);
+  color: var(--tt-text);
+}
+
+html[data-plugin-skin="layout-phone"] .taro-overlay-btn.is-primary {
+  background: var(--tt-brand);
+  color: #111114;
+}
+
+html[data-plugin-skin="layout-phone"] .taro-overlay-panel {
+  width: min(560px, calc(100vw - 20px));
+  border: 0;
+  border-radius: 22px;
+  background: var(--tt-bg);
+}
+
+html[data-plugin-skin="layout-phone"] .taro-overlay-body {
+  padding: 16px;
+}
+
+html[data-plugin-skin="layout-phone"] .cache-loader-card {
+  border: 0;
+  border-radius: 20px;
+  background: var(--tt-bg);
+}
+
+/* Inputs. */
 html[data-plugin-skin="layout-phone"] input,
 html[data-plugin-skin="layout-phone"] select,
 html[data-plugin-skin="layout-phone"] textarea {
   font-size: 16px;
 }
 
-/* One column on phones. The GUI's own collapsed rules already let the visible
-   pane fill the page, so do NOT cap the panel here or a drilled-down list is
-   left at a fixed height with blank space underneath. */
+html[data-plugin-skin="layout-phone"] input[type="text"],
+html[data-plugin-skin="layout-phone"] input[type="search"],
+html[data-plugin-skin="layout-phone"] input[type="url"],
+html[data-plugin-skin="layout-phone"] input[type="email"],
+html[data-plugin-skin="layout-phone"] input[type="password"],
+html[data-plugin-skin="layout-phone"] input[type="number"],
+html[data-plugin-skin="layout-phone"] select,
+html[data-plugin-skin="layout-phone"] textarea {
+  border-radius: 14px;
+  border: 1px solid var(--tt-border);
+  background: var(--tt-bg-deep);
+  min-height: 46px;
+  padding: 10px 13px;
+  color: var(--tt-text);
+}
+
+html[data-plugin-skin="layout-phone"] input:focus,
+html[data-plugin-skin="layout-phone"] select:focus,
+html[data-plugin-skin="layout-phone"] textarea:focus {
+  outline: none;
+  border-color: var(--tt-brand);
+}
+
+/* The core inline pane toggles belong to the desktop chrome; the header back
+   button and drill-down replace them on phones. */
+html[data-plugin-skin="layout-phone"] .sidebar-toggle-inline,
+html[data-plugin-skin="layout-phone"] .detail-toggle-inline,
+html[data-plugin-skin="layout-phone"] .detail-popout-open,
+html[data-plugin-skin="layout-phone"] .sidebar-popout-open,
+html[data-plugin-skin="layout-phone"] #topbar-panel-toggle {
+  display: none !important;
+}
+
+/* --- Browse layouts ------------------------------------------------------- */
+
+/* One column on phones. The GUI's collapsed rules already let the visible pane
+   fill the page, so do NOT cap the panel here or a drilled-down list is left at
+   a fixed height with blank space underneath. */
 html[data-plugin-skin="layout-phone"] .browse-layout,
 html[data-plugin-skin="layout-phone"] .kab-layout {
   grid-template-columns: minmax(0, 1fr);
-}
-
-html[data-plugin-skin="layout-phone"] .list-item {
-  min-height: 48px;
 }
 
 html[data-plugin-skin="layout-phone"] button.settings-trigger,
@@ -396,7 +648,7 @@ html[data-plugin-skin="layout-phone"].kabbak-phone-split .kab-layout > .kab-tree
   pointer-events: auto !important;
   overflow: hidden !important;
   border-right: none !important;
-  border-bottom: 1px solid var(--tt-surface) !important;
+  border-bottom: 1px solid var(--tt-border) !important;
 }
 
 html[data-plugin-skin="layout-phone"].kabbak-phone-split .browse-layout > .detail-panel,
@@ -418,20 +670,27 @@ html[data-plugin-skin="layout-phone"].kabbak-phone-split .kab-layout > .detail-p
 
 /* Option: compact rows. */
 html[data-plugin-skin="layout-phone"].kabbak-phone-compact .list-item {
-  min-height: 40px;
-  padding: 6px 10px;
+  min-height: 44px;
+  padding: 8px 40px 8px 14px;
 }
 
 html[data-plugin-skin="layout-phone"].kabbak-phone-compact .list-name {
-  font-size: 13px;
+  font-size: 13.5px;
 }
 
-/* Option: hide bottom tab labels. */
-html[data-plugin-skin="layout-phone"].kabbak-phone-no-tablabels .layout-phone-tab span {
+/* Option: hide rail labels. */
+html[data-plugin-skin="layout-phone"].kabbak-phone-no-barlabels .layout-phone-rail-item span,
+html[data-plugin-skin="layout-phone"].kabbak-phone-no-barlabels .layout-phone-rail-more span {
   display: none;
 }
 
-html[data-plugin-skin="layout-phone"].kabbak-phone-no-tablabels .layout-phone-tab svg {
-  width: 24px;
-  height: 24px;
+html[data-plugin-skin="layout-phone"].kabbak-phone-no-barlabels .layout-phone-rail-item,
+html[data-plugin-skin="layout-phone"].kabbak-phone-no-barlabels .layout-phone-rail-more {
+  min-width: 56px;
+}
+
+html[data-plugin-skin="layout-phone"].kabbak-phone-no-barlabels .layout-phone-rail-item svg,
+html[data-plugin-skin="layout-phone"].kabbak-phone-no-barlabels .layout-phone-rail-more svg {
+  width: 25px;
+  height: 25px;
 }

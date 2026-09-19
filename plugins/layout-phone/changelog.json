@@ -28,6 +28,15 @@
         "Fixed list/detail panes being capped at part height, leaving blank space. Drill-down now fills the page, and Back returns from a detail to the list.",
         "Display options in the More sheet: Full screen vs Split browse layout, comfortable vs compact rows, and tab labels on/off."
       ]
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-09-19",
+      "notes": [
+        "Native-first overhaul: app bar with icon back/settings, horizontally scrollable bottom rail with a pinned More button, and a system font.",
+        "Native content surfaces: borderless tappable rows with chevrons, card panels, rounded borderless buttons, filled inputs, and native sheet/overlay styling.",
+        "Desktop pane toggles are hidden on phones; the header back button handles drill-down."
+      ]
     }
   ]
 }
