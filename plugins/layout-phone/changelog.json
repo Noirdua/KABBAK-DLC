@@ -6,6 +6,20 @@
       "notes": [
         "Phone skin: header with back, bottom tabs (Home, Tarot, Calendar, More, You), and a full-screen More sheet for the rest of the menu."
       ]
+    },
+    {
+      "version": "1.0.1",
+      "date": "2026-09-19",
+      "notes": [
+        "Fix: the full-bleed home view covered the header and tabs and swallowed every tap. The page area is now a positioning context."
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "date": "2026-09-19",
+      "notes": [
+        "Tabs navigate by section id so they work even when the top bar is hidden; larger tap targets, safe-area insets, hidden scrollbars, a slide-up sheet, and background scroll lock."
+      ]
     }
   ]
 }

@@ -8,11 +8,11 @@
   }
 
   const TAB_DEFS = [
-    { id: "home", label: "Home", icon: "home", navIds: ["open-home", "open-home-menu"] },
-    { id: "tarot", label: "Tarot", icon: "tarot", navIds: ["open-tarot-cards", "open-tarot"] },
-    { id: "calendar", label: "Calendar", icon: "calendar", navIds: ["open-calendar", "open-calendar-months"] },
-    { id: "more", label: "More", icon: "more", navIds: [] },
-    { id: "you", label: "You", icon: "you", navIds: ["open-profile", "open-settings"] }
+    { id: "home", label: "Home", icon: "home", section: "home", navIds: ["open-home", "open-home-menu"] },
+    { id: "tarot", label: "Tarot", icon: "tarot", section: "tarot", navIds: ["open-tarot"] },
+    { id: "calendar", label: "Calendar", icon: "calendar", section: "planner", navIds: ["open-calendar"] },
+    { id: "more", label: "More", icon: "more", section: "", navIds: [] },
+    { id: "you", label: "You", icon: "you", section: "", navIds: ["open-profile", "open-settings"] }
   ];
 
   const HIDE_IN_MORE = new Set([
@@ -23,15 +23,31 @@
     "open-calendar-months"
   ]);
 
-  function idsForSection(section) {
-    const id = String(section || "");
-    const tab = TAB_DEFS.find((item) => item.navIds.includes(`open-${id}`) || item.id === id);
-    if (tab) return tab.navIds;
-    return [`open-${id}`];
+  // Menu ids whose section name differs from the id suffix.
+  const ID_SECTION_ALIASES = {
+    "open-kabbalah-sephirot": "kabbalah",
+    "open-alphabet-word": "alphabet",
+    "open-numbers-browse": "numbers",
+    "open-numbers-theory": "numbers",
+    "open-iching-hexagrams": "iching"
+  };
+
+  function sectionTabId(section) {
+    const current = String(section || "");
+    if (current === "profile" || current === "settings") return "you";
+    if (current === "tarot-frame" || current === "tarot-house") return "tarot";
+    const tab = TAB_DEFS.find((item) => item.section === current);
+    return tab ? tab.id : "";
   }
 
   function isActiveId(id, section) {
-    return idsForSection(section).includes(id) || id === `open-${section}`;
+    const current = String(section || "");
+    const tab = TAB_DEFS.find((item) => item.navIds.includes(id));
+    if (tab) {
+      return Boolean(tab.section) && tab.section === current;
+    }
+    const target = ID_SECTION_ALIASES[id] || String(id || "").replace(/^open-/, "");
+    return target === current;
   }
 
   function iconSvg(name) {
@@ -50,18 +66,18 @@
     return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg>';
   }
 
-  function youNavId() {
+  function youSection() {
     const profile = document.getElementById("open-profile");
     if (profile instanceof HTMLElement && !profile.hidden) {
-      return "open-profile";
+      return "profile";
     }
-    return "open-settings";
+    return "settings";
   }
 
   host.register({
     id: "layout-phone",
     name: "Phone Layout",
-    version: "1.0.0",
+    version: "1.0.2",
     role: "skin",
     bundled: document.documentElement.getAttribute("data-kabbak-native") === "1",
     mount(shellEl, helpers) {
@@ -112,10 +128,21 @@
 
       let sheetOpen = false;
 
+      function openSection(section) {
+        const target = String(section || "");
+        if (!target) return;
+        if (typeof ui.openSection === "function") {
+          ui.openSection(target);
+          return;
+        }
+        ui.openNav(target === "planner" ? "open-calendar" : `open-${target}`);
+      }
+
       function setSheet(open) {
         sheetOpen = Boolean(open);
         sheetEl.hidden = !sheetOpen;
         rootEl.classList.toggle("is-sheet-open", sheetOpen);
+        document.documentElement.classList.toggle("kabbak-phone-sheet-open", sheetOpen);
         if (sheetOpen) {
           renderSheet();
         }
@@ -193,18 +220,9 @@
         });
       }
 
-      function activeTabId(section) {
-        const home = section === "home";
-        if (home) return "home";
-        if (section === "tarot" || section === "tarot-frame" || section === "tarot-house") return "tarot";
-        if (section === "planner") return "calendar";
-        if (section === "profile" || section === "settings") return "you";
-        return "more";
-      }
-
       function renderTabs() {
         const section = ui.getActiveSection();
-        const currentTab = sheetOpen ? "more" : activeTabId(section);
+        const currentTab = sheetOpen ? "more" : sectionTabId(section);
         tabsEl.innerHTML = "";
         TAB_DEFS.forEach((tab) => {
           const button = document.createElement("button");
@@ -220,11 +238,7 @@
               return;
             }
             setSheet(false);
-            if (tab.id === "you") {
-              ui.openNav(youNavId());
-              return;
-            }
-            ui.openNav(tab.navIds[0]);
+            openSection(tab.id === "you" ? youSection() : tab.section);
           });
           tabsEl.appendChild(button);
         });
@@ -233,6 +247,7 @@
       function renderChrome() {
         const section = ui.getActiveSection();
         titleEl.textContent = ui.sectionLabel(section) || section;
+        backEl.hidden = section === "home" && !sheetOpen;
         renderTabs();
         if (sheetOpen) renderSheet();
       }
@@ -247,7 +262,7 @@
       });
       settingsEl.addEventListener("click", () => {
         setSheet(false);
-        ui.openNav("open-settings");
+        openSection("settings");
       });
       sheetBackdropEl.addEventListener("click", () => {
         setSheet(false);
