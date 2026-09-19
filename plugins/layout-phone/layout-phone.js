@@ -77,7 +77,7 @@
   host.register({
     id: "layout-phone",
     name: "Phone Layout",
-    version: "1.0.2",
+    version: "1.0.3",
     role: "skin",
     bundled: document.documentElement.getAttribute("data-kabbak-native") === "1",
     mount(shellEl, helpers) {
@@ -106,6 +106,7 @@
               <div class="layout-phone-sheet-handle"></div>
               <div class="layout-phone-sheet-search"></div>
               <div class="layout-phone-sheet-menu"></div>
+              <div class="layout-phone-sheet-options"></div>
             </div>
           </div>
         </div>
@@ -122,11 +123,88 @@
       const sheetMenuEl = shellEl.querySelector(".layout-phone-sheet-menu");
       const sheetSearchEl = shellEl.querySelector(".layout-phone-sheet-search");
       const sheetBackdropEl = shellEl.querySelector(".layout-phone-sheet-backdrop");
+      const sheetOptionsEl = shellEl.querySelector(".layout-phone-sheet-options");
+
+      const OPTIONS_STORAGE_KEY = "kabbak-phone-options";
+      const DEFAULT_OPTIONS = { browse: "drill", density: "comfortable", tabLabels: true };
+
+      function readOptions() {
+        try {
+          const parsed = JSON.parse(window.localStorage.getItem(OPTIONS_STORAGE_KEY) || "{}");
+          return { ...DEFAULT_OPTIONS, ...(parsed && typeof parsed === "object" ? parsed : {}) };
+        } catch (_error) {
+          return { ...DEFAULT_OPTIONS };
+        }
+      }
+
+      let options = readOptions();
+
+      function persistOptions() {
+        try {
+          window.localStorage.setItem(OPTIONS_STORAGE_KEY, JSON.stringify(options));
+        } catch (_error) {}
+      }
+
+      function applyOptions() {
+        const root = document.documentElement;
+        root.classList.toggle("kabbak-phone-split", options.browse === "split");
+        root.classList.toggle("kabbak-phone-compact", options.density === "compact");
+        root.classList.toggle("kabbak-phone-no-tablabels", options.tabLabels === false);
+      }
+
+      function renderOptions() {
+        if (!sheetOptionsEl) {
+          return;
+        }
+        sheetOptionsEl.innerHTML = "";
+        const rows = [
+          { label: "Layout", key: "browse", choices: [["drill", "Full screen"], ["split", "Split"]] },
+          { label: "Rows", key: "density", choices: [["comfortable", "Comfortable"], ["compact", "Compact"]] },
+          { label: "Tab labels", key: "tabLabels", choices: [[true, "Show"], [false, "Hide"]] }
+        ];
+        rows.forEach((row) => {
+          const rowEl = document.createElement("div");
+          rowEl.className = "layout-phone-option-row";
+          const labelEl = document.createElement("span");
+          labelEl.className = "layout-phone-option-label";
+          labelEl.textContent = row.label;
+          const segEl = document.createElement("div");
+          segEl.className = "layout-phone-segmented";
+          row.choices.forEach(([value, text]) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.textContent = text;
+            button.classList.toggle("is-active", options[row.key] === value);
+            button.addEventListener("click", () => {
+              options = { ...options, [row.key]: value };
+              persistOptions();
+              applyOptions();
+              renderOptions();
+            });
+            segEl.appendChild(button);
+          });
+          rowEl.appendChild(labelEl);
+          rowEl.appendChild(segEl);
+          sheetOptionsEl.appendChild(rowEl);
+        });
+      }
 
       ui.attachPages(pagesEl);
       ui.attachWidgets(widgetsEl);
+      applyOptions();
 
       let sheetOpen = false;
+
+      function activeLayout() {
+        const layouts = pagesEl.querySelectorAll(".browse-layout, .kab-layout");
+        for (const layout of layouts) {
+          if (layout.closest("[hidden]")) continue;
+          const section = layout.closest("section");
+          if (section instanceof HTMLElement && section.hidden) continue;
+          return layout;
+        }
+        return null;
+      }
 
       function openSection(section) {
         const target = String(section || "");
@@ -218,6 +296,7 @@
           group.appendChild(childWrap);
           sheetMenuEl.appendChild(group);
         });
+        renderOptions();
       }
 
       function renderTabs() {
@@ -246,8 +325,11 @@
 
       function renderChrome() {
         const section = ui.getActiveSection();
+        const layout = activeLayout();
+        const canReturnToList = Boolean(layout && layout.classList.contains("layout-sidebar-collapsed"));
         titleEl.textContent = ui.sectionLabel(section) || section;
-        backEl.hidden = section === "home" && !sheetOpen;
+        backEl.hidden = section === "home" && !sheetOpen && !canReturnToList;
+        backEl.textContent = canReturnToList ? "List" : "Back";
         renderTabs();
         if (sheetOpen) renderSheet();
       }
@@ -256,6 +338,11 @@
         if (sheetOpen) {
           setSheet(false);
           renderTabs();
+          return;
+        }
+        const layout = activeLayout();
+        if (layout && layout.classList.contains("layout-sidebar-collapsed")) {
+          window.TarotChromeUi?.showSidebarOnly?.(layout);
           return;
         }
         ui.goBack();
@@ -270,10 +357,31 @@
       });
 
       renderChrome();
+      // List/detail panes collapse via classes from the core chrome; watch them
+      // so the header back/label tracks drill-down without a section change.
+      // Coalesce bursts (selection toggles etc.) into one frame.
+      let chromeFrame = 0;
+      const scheduleChrome = () => {
+        if (chromeFrame) return;
+        chromeFrame = window.requestAnimationFrame(() => {
+          chromeFrame = 0;
+          renderChrome();
+        });
+      };
+      const layoutObserver = new MutationObserver(scheduleChrome);
+      layoutObserver.observe(pagesEl, { subtree: true, attributes: true, attributeFilter: ["class"] });
       const stop = ui.onSectionChange(renderChrome);
       document.addEventListener("taro-plugins-ready", renderChrome);
       document.addEventListener("taro-menu-updated", renderChrome);
       return () => {
+        layoutObserver.disconnect();
+        if (chromeFrame) window.cancelAnimationFrame(chromeFrame);
+        document.documentElement.classList.remove(
+          "kabbak-phone-split",
+          "kabbak-phone-compact",
+          "kabbak-phone-no-tablabels",
+          "kabbak-phone-sheet-open"
+        );
         document.removeEventListener("taro-plugins-ready", renderChrome);
         document.removeEventListener("taro-menu-updated", renderChrome);
         if (typeof stop === "function") stop();

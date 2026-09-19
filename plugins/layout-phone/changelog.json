@@ -20,6 +20,14 @@
       "notes": [
         "Tabs navigate by section id so they work even when the top bar is hidden; larger tap targets, safe-area insets, hidden scrollbars, a slide-up sheet, and background scroll lock."
       ]
+    },
+    {
+      "version": "1.0.3",
+      "date": "2026-09-19",
+      "notes": [
+        "Fixed list/detail panes being capped at part height, leaving blank space. Drill-down now fills the page, and Back returns from a detail to the list.",
+        "Display options in the More sheet: Full screen vs Split browse layout, comfortable vs compact rows, and tab labels on/off."
+      ]
     }
   ]
 }
