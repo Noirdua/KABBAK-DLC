@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "version": "1.3.5",
+      "date": "2026-09-20",
+      "notes": [
+        "The bottom rail is removed (not just hidden) while the calendar options sheet is open, so its translucent background and blur can no longer sit over the sheet."
+      ]
+    },
+    {
+      "version": "1.3.4",
+      "date": "2026-09-20",
+      "notes": [
+        "Calendar options sheet now sizes to the visible viewport (100dvh) so its actions are not hidden under mobile browser chrome.",
+        "While the sheet is open the bottom rail and app bar are hidden and the page layer is raised, so the sheet is never overlapped or tap-blocked."
+      ]
+    },
+    {
       "version": "1.3.3",
       "date": "2026-09-20",
       "notes": [
