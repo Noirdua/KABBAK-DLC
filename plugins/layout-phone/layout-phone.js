@@ -7,7 +7,7 @@
     return;
   }
 
-  const PHONE_VERSION = "1.2.0";
+  const PHONE_VERSION = "1.3.0";
 
   // Bottom rail is a horizontal scroller; "More" stays pinned on the right.
   const RAIL_ITEMS = [
@@ -365,6 +365,24 @@
 
       let railSignature = "";
       let lastRailId = "";
+      const railPlugins = new Map();
+
+      function railPluginList() {
+        return [...railPlugins.values()];
+      }
+
+      function syncRailActive() {
+        const activeId = railIdForSection(ui.getActiveSection());
+        railEl.querySelectorAll(".layout-phone-rail-item").forEach((button) => {
+          if (button.dataset.railPlugin) {
+            const entry = railPlugins.get(button.dataset.railPlugin);
+            button.classList.toggle("is-active", Boolean(entry?.active));
+            return;
+          }
+          button.classList.toggle("is-active", button.dataset.id === activeId);
+        });
+        return activeId;
+      }
 
       function centerRailItem(button) {
         if (!button) return;
@@ -378,7 +396,8 @@
 
       function renderRail() {
         const items = visibleRailItems();
-        const signature = items.map((item) => item.id).join(",");
+        const plugins = railPluginList();
+        const signature = `${items.map((item) => item.id).join(",")}|${plugins.map((entry) => entry.id).join(",")}`;
         // Build the buttons once. Rebuilding on every chrome render would cancel
         // an in-progress touch drag and reset the scroll position.
         if (signature !== railSignature) {
@@ -393,16 +412,64 @@
             button.addEventListener("click", () => openSection(item.section));
             railEl.appendChild(button);
           });
+          plugins.forEach((entry) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "layout-phone-rail-item";
+            button.dataset.railPlugin = entry.id;
+            button.innerHTML = `${entry.icon}<span>${entry.label}</span>`;
+            button.addEventListener("click", () => entry.onClick());
+            railEl.appendChild(button);
+          });
         }
-        const activeId = railIdForSection(ui.getActiveSection());
-        railEl.querySelectorAll(".layout-phone-rail-item").forEach((button) => {
-          button.classList.toggle("is-active", button.dataset.id === activeId);
-        });
+        const activeId = syncRailActive();
         if (activeId && activeId !== lastRailId) {
           lastRailId = activeId;
-          centerRailItem(railEl.querySelector(".layout-phone-rail-item.is-active"));
+          centerRailItem(railEl.querySelector(".layout-phone-rail-item.is-active:not([data-rail-plugin])"));
         }
       }
+
+      // Plugins (e.g. the music player) can contribute a rail item instead of
+      // taking space in the app bar. Mobile-only entry point.
+      const railApi = {
+        add(item) {
+          const id = String(item?.id || "").trim();
+          if (!id) {
+            return () => {};
+          }
+          railPlugins.set(id, {
+            id,
+            label: String(item.label || "Item"),
+            icon: String(item.icon || ""),
+            onClick: typeof item.onClick === "function" ? item.onClick : () => {},
+            active: Boolean(item.active)
+          });
+          renderRail();
+          return () => {
+            if (railPlugins.delete(id)) {
+              renderRail();
+            }
+          };
+        },
+        remove(id) {
+          if (railPlugins.delete(String(id || ""))) {
+            renderRail();
+          }
+        },
+        setActive(id, active) {
+          const entry = railPlugins.get(String(id || ""));
+          if (!entry) {
+            return;
+          }
+          entry.active = Boolean(active);
+          railEl.querySelectorAll(".layout-phone-rail-item[data-rail-plugin]").forEach((button) => {
+            if (button.dataset.railPlugin === entry.id) {
+              button.classList.toggle("is-active", entry.active);
+            }
+          });
+        }
+      };
+      window.KabbakPhoneRail = railApi;
 
       function renderChrome() {
         const section = ui.getActiveSection();
@@ -588,6 +655,9 @@
         layoutObserver.disconnect();
         if (chromeFrame) window.cancelAnimationFrame(chromeFrame);
         stopRailMomentum();
+        if (window.KabbakPhoneRail === railApi) {
+          delete window.KabbakPhoneRail;
+        }
         document.documentElement.classList.remove(
           "kabbak-phone-split",
           "kabbak-phone-compact",

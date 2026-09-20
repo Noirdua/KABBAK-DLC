@@ -1,6 +1,13 @@
 {
   "entries": [
     {
+      "version": "2.7.0",
+      "date": "2026-09-19",
+      "notes": [
+        "Phone layout: the player is now a horizontal item in the bottom menu rail (via window.KabbakPhoneRail) rather than a button in the app bar. The slide-up sheet is unchanged; the app-bar mini button remains as a fallback when no phone rail is present."
+      ]
+    },
+    {
       "version": "2.6.0",
       "date": "2026-09-19",
       "notes": [

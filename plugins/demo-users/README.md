@@ -11,7 +11,9 @@ folder). Do not nest a second `demo-users/` directory here.
 - **Demo accounts** (`cli_demo_*`) — shared logins for the connection gate. The
   gate button appears when the API is loopback/private (or `KABBAK_DEMO_ACCESS=1`
   / `allowRemote`), fills in a demo key, and connects. The gate only ever uses
-  demo accounts, never trials.
+  demo accounts, never trials. Shared demos are **browse-only**: journal, friends,
+  inbox, posts, games sessions, and other personal profile data are disabled so
+  visitors are nudged to create a trial account.
 - **Trial accounts** (`cli_trial_*`) — individually issued, time-limited
   accounts to hand out (for example two-week trials). Each has its own name,
   access level, roles, scopes, and expiry; reveal the key and send it to that

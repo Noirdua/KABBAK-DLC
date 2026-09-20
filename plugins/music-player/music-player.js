@@ -21,6 +21,8 @@
     playlists: []
   };
 
+  const MUSIC_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6.4l9.5-1.9V16"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16" cy="16" r="2.5"/></svg>';
+
   const AUDIO_EXTENSIONS = new Set([
     ".mp3", ".ogg", ".oga", ".wav", ".webm", ".weba", ".m4a", ".m4b", ".mp4",
     ".flac", ".aac", ".opus", ".aiff", ".aif", ".wma", ".alac", ".amr", ".wv"
@@ -110,6 +112,7 @@
     let sheetEl = null;
     let miniEl = null;
     let miniLabelEl = null;
+    let removeRailItem = null;
 
     // Horizontal placement of the whole widget inside the top bar.
     function applyAlignment(align) {
@@ -582,6 +585,7 @@
         sheetEl.hidden = !open;
         root.classList.toggle("is-sheet-open", open);
         document.documentElement.classList.toggle("kabbak-mp-sheet-open", open);
+        window.KabbakPhoneRail?.setActive?.("music-player", open);
         if (open) {
           miniEl.setAttribute("aria-expanded", "true");
         } else {
@@ -593,7 +597,20 @@
       backdrop.addEventListener("click", () => setOpen(false));
       sheetEl._mpClose = () => setOpen(false);
 
-      root.appendChild(miniEl);
+      // Preferred: a horizontal item in the bottom rail. Falls back to a mini
+      // button in the app bar if the phone rail is not available.
+      const railApi = window.KabbakPhoneRail;
+      if (railApi && typeof railApi.add === "function") {
+        removeRailItem = railApi.add({
+          id: "music-player",
+          label: "Music",
+          icon: MUSIC_ICON,
+          onClick: () => setOpen(sheetEl.hidden)
+        });
+      } else {
+        root.appendChild(miniEl);
+      }
+
       // The app bar clips and creates a containing block for fixed children, so
       // the sheet lives on <body> instead of inside the widget.
       document.body.appendChild(sheetEl);
@@ -628,6 +645,10 @@
         document.removeEventListener("click", onDocumentClick);
         window.clearInterval(timeInterval);
         document.documentElement.classList.remove("kabbak-mp-sheet-open");
+        if (removeRailItem) {
+          removeRailItem();
+          removeRailItem = null;
+        }
         if (sheetEl) {
           sheetEl.remove();
           sheetEl = null;
@@ -646,7 +667,7 @@
   host.register({
     id: "music-player",
     name: "Music Player",
-    version: "2.6.0",
+    version: "2.7.0",
     mount(containerEl, helpers) {
       const isPhone = isPhoneHost();
       let ui = null;

@@ -53,6 +53,13 @@
       ]
     },
     {
+      "version": "1.3.0",
+      "date": "2026-09-19",
+      "notes": [
+        "Plugins can contribute a horizontal rail item via window.KabbakPhoneRail (add/remove/setActive), so widgets like the music player live in the bottom menu instead of the app bar."
+      ]
+    },
+    {
       "version": "1.2.0",
       "date": "2026-09-19",
       "notes": [

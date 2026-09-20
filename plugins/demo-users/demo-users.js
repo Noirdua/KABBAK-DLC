@@ -1,8 +1,9 @@
 /* demo-users.js — DLC plugin (GUI side).
  * Gate demo login + a Demo & Trial Accounts manager in Admin. Demo accounts are
- * shared connection-gate logins; trial accounts are individually issued with an
- * expiry. Both support access level, roles/scopes, reset key/profile, delete,
- * and reveal key. All server work is in this plugin's server.js.
+ * shared connection-gate logins (browse-only); trial accounts are individually
+ * issued with an expiry. Both support access level, roles/scopes, reset
+ * key/profile, delete, and reveal key. All server work is in this plugin's
+ * server.js.
  */
 (function () {
   "use strict";
@@ -131,10 +132,11 @@
     useBtn.type = "button";
     useBtn.addEventListener("click", useDemoAccess);
     row.appendChild(useBtn);
+    const hint = el("span", "settings-field-hint", "Browse-only — create a trial to keep a journal, friends, and a profile.");
     const details = el("div", "connection-gate-demo-details");
     details.id = "demo-users-gate-details";
     details.setAttribute("aria-live", "polite");
-    gateBoxEl.append(row, details);
+    gateBoxEl.append(row, hint, details);
 
     fields.insertAdjacentElement("afterend", gateBoxEl);
     return gateBoxEl;
@@ -463,7 +465,7 @@
       id: "demo-users",
       name: "Demo Users",
       kind: "gui",
-      version: "1.2.0",
+      version: "1.3.0",
       mount() {
         boot();
       }
