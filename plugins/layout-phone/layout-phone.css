@@ -927,6 +927,12 @@ html[data-plugin-skin="layout-phone"] .planner-settings-card {
   border-radius: 24px 24px 0 0;
 }
 
+/* The page layer (z-index 1) paints below the rail (z-index 3), which would
+   cover the options sheet; lift it while the sheet is open. */
+html[data-plugin-skin="layout-phone"].kabbak-planner-sheet-open .layout-phone-pages {
+  z-index: 5;
+}
+
 html[data-plugin-skin="layout-phone"] .planner-settings-filters .planner-layer,
 html[data-plugin-skin="layout-phone"] .planner-settings-views .planner-view-btn {
   min-height: 40px;

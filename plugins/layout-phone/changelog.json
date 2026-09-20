@@ -1,6 +1,14 @@
 {
   "entries": [
     {
+      "version": "1.3.3",
+      "date": "2026-09-20",
+      "notes": [
+        "Calendar options sheet is promoted above the bottom rail so Subscribe, New event, and the astrology/moon popovers are fully visible and tappable.",
+        "The card no longer clips the per-calendar popovers, and the sheet scrolls instead of the card."
+      ]
+    },
+    {
       "version": "1.3.2",
       "date": "2026-09-20",
       "notes": [
