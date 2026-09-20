@@ -1,6 +1,13 @@
 {
   "entries": [
     {
+      "version": "1.3.2",
+      "date": "2026-09-20",
+      "notes": [
+        "Calendar folds its view switcher, filters, Subscribe, and New event into one options sheet, so the month grid is no longer squished by a wrapping toolbar."
+      ]
+    },
+    {
       "version": "1.0.0",
       "date": "2026-09-19",
       "notes": [
