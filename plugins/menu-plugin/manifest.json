@@ -2,8 +2,8 @@
   "id": "menu-plugin",
   "name": "Menu Order",
   "kind": "gui",
-  "version": "1.8.0",
-  "description": "Customize top bar navigation: reorder items, group into submenus, assign search keywords, add a menu search bar, and apply visual themes (LED, wood, paper, stone, velvet).",
+  "version": "1.9.0",
+  "description": "Customize top bar navigation: reorder items, group into submenus (Social contains Inbox, Board, Quiz, Games, and Profile), assign search keywords, add a menu search bar, and apply visual themes (LED, wood, paper, stone, velvet).",
   "entry": "menu-plugin.js",
   "css": "menu-plugin.css"
 }

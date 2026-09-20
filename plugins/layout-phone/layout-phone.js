@@ -7,7 +7,7 @@
     return;
   }
 
-  const PHONE_VERSION = "1.3.0";
+  const PHONE_VERSION = "1.3.1";
 
   // Bottom rail is a horizontal scroller; "More" stays pinned on the right.
   const RAIL_ITEMS = [
@@ -32,6 +32,7 @@
     "tarot-frame": "tarot",
     "tarot-house": "tarot",
     planner: "calendar",
+    "playing-cards": "tarot",
     kabbalah: "kabbalah",
     "kabbalah-worlds": "kabbalah",
     "kabbalah-paths": "kabbalah",
@@ -70,7 +71,16 @@
     "open-home-menu",
     "open-tarot-cards",
     "open-calendar",
-    "open-calendar-months"
+    "open-calendar-months",
+    "open-kabbalah-sephirot",
+    "open-iching-hexagrams",
+    "open-planets",
+    "open-alphabet-word",
+    "open-numbers-browse",
+    "open-community",
+    "open-quiz",
+    "open-games",
+    "open-profile"
   ]);
 
   const ID_SECTION_ALIASES = {

@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "version": "1.9.0",
+      "date": "2026-09-20",
+      "notes": [
+        "Shipped menu defaults are grouped: Tarot, Kabbalah, I Ching, Astrology, Alphabet, Numbers, Lore, Audio, and Social.",
+        "Inbox and Profile live under Social by default. Required items nested in a group stay there instead of being promoted to the top level.",
+        "New Lore and Social group ids are recognized, and Playing Cards counts as a Tarot child.",
+        "Adds a Default (grouped) menu preset."
+      ]
+    },
+    {
       "version": "1.8.0",
       "date": "2026-09-01",
       "notes": [

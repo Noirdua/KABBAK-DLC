@@ -91,7 +91,7 @@
 
   // Top-level entries that are only menu groups (they have no section of their
   // own; their content lives in subpages).
-  const MENU_GROUP_IDS = new Set(["alphabet", "astronomy", "audio", "calendar", "iching", "kabbalah", "numbers", "tarot"]);
+  const MENU_GROUP_IDS = new Set(["alphabet", "astronomy", "audio", "iching", "kabbalah", "numbers", "tarot", "lore", "community-menu"]);
 
   function isMenuGroupId(value) {
     return MENU_GROUP_IDS.has(normalizeSectionId(value));
@@ -485,6 +485,9 @@
 
     const items = Array.isArray(config.items) ? config.items : [];
     const handledTopLevelIds = new Set();
+    // Ids placed as dropdown children. A required menu id (Profile, Settings)
+    // that the operator nested inside a group must not be promoted back out.
+    const placedChildIds = new Set();
     const placed = [];
 
     function place(element) {
@@ -544,11 +547,16 @@
           reveal(dropdown.wrapper);
         }
 
+        const groupDisabled = item?.enabled === false;
         const configuredChildIds = new Set();
         children.forEach((child) => {
           const childId = String(child?.id || "").trim();
           const resolvedChild = childId ? resolveUnitById({ byId }, childId) : null;
-          configuredChildIds.add(resolvedChild?.id || childId);
+          const canonicalChildId = resolvedChild?.id || childId;
+          configuredChildIds.add(canonicalChildId);
+          // A disabled group must not swallow required items: leave them out of
+          // placedChildIds so the rescue loop promotes them back to the top level.
+          if (canonicalChildId && !groupDisabled) placedChildIds.add(canonicalChildId);
         });
         dropdown.menu.querySelectorAll("button").forEach((btn) => {
           if (!configuredChildIds.has(btn.id)) {
@@ -565,7 +573,9 @@
             button = createSectionButton(child);
           }
           if (!button) return;
-          if (child?.label) {
+          // Never clobber buttons that own child elements (e.g. the inbox item's
+          // unread badge span); the config label only seeds plain buttons.
+          if (child?.label && button.childElementCount === 0) {
             button.textContent = String(child.label).trim();
           }
           if (child?.enabled === false && !isRequiredMenuId(resolvedChild?.id || childId)) {
@@ -637,7 +647,7 @@
     });
 
     REQUIRED_MENU_ORDER.forEach((requiredId) => {
-      if (handledTopLevelIds.has(requiredId)) return;
+      if (handledTopLevelIds.has(requiredId) || placedChildIds.has(requiredId)) return;
       const requiredUnit = byId.get(requiredId);
       if (!requiredUnit) return;
       handledTopLevelIds.add(requiredId);
@@ -646,7 +656,7 @@
     });
 
     const tarotUnit = byId.get("open-tarot");
-    const tarotChildIds = ["open-tarot-cards", "open-tarot-spread", "open-tarot-frame", "open-tarot-house"];
+    const tarotChildIds = ["open-tarot-cards", "open-tarot-spread", "open-tarot-frame", "open-tarot-house", "open-playing-cards"];
     const tarotAvailable = window.TarotAppConfig?.hasTarotAccess?.() === true
       || window.TarotAppConfig?.hasAdminApiManagementAccess?.() === true;
     if (tarotUnit && tarotAvailable && !handledTopLevelIds.has("open-tarot")
@@ -1005,7 +1015,7 @@
   host.register({
     id: "menu-plugin",
     name: "Menu Order",
-    version: "1.8.0",
+    version: "1.9.0",
     mount(containerEl, helpers) {
       lastHelpers = helpers;
       containerEl.style.display = "none"; // no visible widget; it manages the nav itself
@@ -1069,6 +1079,9 @@
       const nav = navItemFromConfig(item, units);
       if (!nav) return;
       if (nav.id) seen.add(nav.id);
+      (Array.isArray(nav.children) ? nav.children : []).forEach((child) => {
+        if (child?.id) seen.add(child.id);
+      });
       items.push(nav);
     });
     REQUIRED_MENU_ORDER.forEach((id) => {

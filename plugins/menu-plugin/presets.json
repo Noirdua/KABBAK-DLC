@@ -1,0 +1,670 @@
+{
+  "presets": {
+    "dfdf": {
+      "showUnlisted": true,
+      "items": [
+        {
+          "id": "open-alphabet",
+          "label": "Alphabet ▾",
+          "enabled": true,
+          "children": [
+            {
+              "id": "open-quiz",
+              "label": "",
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "id": "open-home-menu",
+          "label": "Home",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-numbers-browse",
+          "label": "Browse",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-astronomy",
+          "label": "Astronomy ▾",
+          "enabled": true,
+          "children": []
+        }
+      ]
+    },
+    "mine": {
+      "showUnlisted": false,
+      "items": [
+        {
+          "id": "open-alphabet",
+          "label": "Alphabet ▾",
+          "enabled": true,
+          "children": []
+        }
+      ]
+    },
+    "all": {
+      "showUnlisted": false,
+      "systemHeader": "SYSTEM",
+      "items": [
+        {
+          "id": "open-alphabet",
+          "label": "Alphabet ▾",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-home-menu",
+          "label": "Home",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-astronomy",
+          "label": "Astronomy ▾",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "type": "header",
+          "label": "my stuff"
+        },
+        {
+          "id": "open-audio",
+          "label": "Audio ▾",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-alphabet-word",
+          "label": "Word",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-cycles",
+          "label": "Cycles",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-audio-circle",
+          "label": "Circle",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-calendar",
+          "label": "Calendar ▾",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-elements",
+          "label": "Elements",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-enochian",
+          "label": "Enochian",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-gods",
+          "label": "Gods",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-iching",
+          "label": "I Ching ▾",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-kabbalah",
+          "label": "Kabbalah ▾",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-numbers",
+          "label": "Numbers ▾",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-quiz",
+          "label": "Quiz",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-tarot",
+          "label": "Tarot ▾",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-alphabet-letters",
+          "label": "Letter",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-alphabet-text",
+          "label": "Text",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-alphabet-reference",
+          "label": "Reference",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-modalities",
+          "label": "Modalities",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-natal",
+          "label": "Natal Chart",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-planets",
+          "label": "Planet",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-zodiac",
+          "label": "Zodiac",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-sky",
+          "label": "Sky",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-audio-notes",
+          "label": "Notes",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-holidays",
+          "label": "Holidays",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-calendar-months",
+          "label": "Months",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-calendar-timeline",
+          "label": "Timeline",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-iching-hexagrams",
+          "label": "Hexagrams",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-iching-trigrams",
+          "label": "Trigrams",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-iching-bigrams",
+          "label": "Bigrams",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-iching-phases",
+          "label": "Phases",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-kabbalah-sephirot",
+          "label": "Sefirot",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-kabbalah-worlds",
+          "label": "Qabalistic Worlds",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-kabbalah-paths",
+          "label": "Paths",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-kabbalah-cross",
+          "label": "Rosicrucian Cross",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-kabbalah-tree",
+          "label": "Tree",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-kabbalah-cube",
+          "label": "Cube",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-numbers-browse",
+          "label": "Browse",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-numbers-theory",
+          "label": "Theory",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-tarot-cards",
+          "label": "Cards",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-tarot-spread",
+          "label": "Draw Spread",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-tarot-frame",
+          "label": "Frame",
+          "enabled": true,
+          "children": []
+        }
+      ]
+    },
+    "Default (grouped)": {
+      "showUnlisted": false,
+      "items": [
+        {
+          "type": "search",
+          "id": "mp-menu-search",
+          "label": "Search menu…"
+        },
+        {
+          "id": "open-home-menu",
+          "label": "Home",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-tarot",
+          "label": "Tarot",
+          "enabled": true,
+          "keywords": "cards, arcana, divination",
+          "children": [
+            {
+              "id": "open-tarot-cards",
+              "label": "Cards",
+              "enabled": true
+            },
+            {
+              "id": "open-tarot-spread",
+              "label": "Draw Spread",
+              "enabled": true
+            },
+            {
+              "id": "open-tarot-frame",
+              "label": "Frame",
+              "enabled": true
+            },
+            {
+              "id": "open-tarot-house",
+              "label": "House",
+              "enabled": true
+            },
+            {
+              "id": "open-playing-cards",
+              "label": "Playing Cards",
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "id": "open-kabbalah",
+          "label": "Kabbalah",
+          "enabled": true,
+          "children": [
+            {
+              "id": "open-kabbalah-sephirot",
+              "label": "Sefirot",
+              "enabled": true
+            },
+            {
+              "id": "open-kabbalah-worlds",
+              "label": "Qabalistic Worlds",
+              "enabled": true
+            },
+            {
+              "id": "open-kabbalah-paths",
+              "label": "Paths",
+              "enabled": true
+            },
+            {
+              "id": "open-kabbalah-cross",
+              "label": "Rosicrucian Cross",
+              "enabled": true
+            },
+            {
+              "id": "open-kabbalah-tree",
+              "label": "Tree",
+              "enabled": true
+            },
+            {
+              "id": "open-kabbalah-cube",
+              "label": "Cube",
+              "enabled": true
+            },
+            {
+              "id": "open-kabbalah-tandem",
+              "label": "Tree + Cube",
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "id": "open-iching",
+          "label": "I Ching",
+          "enabled": true,
+          "children": [
+            {
+              "id": "open-iching-hexagrams",
+              "label": "Hexagrams",
+              "enabled": true
+            },
+            {
+              "id": "open-iching-trigrams",
+              "label": "Trigrams",
+              "enabled": true
+            },
+            {
+              "id": "open-iching-bigrams",
+              "label": "Bigrams",
+              "enabled": true
+            },
+            {
+              "id": "open-iching-phases",
+              "label": "Phases",
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "id": "open-astronomy",
+          "label": "Astrology",
+          "enabled": true,
+          "children": [
+            {
+              "id": "open-calendar",
+              "label": "Calendar",
+              "enabled": true
+            },
+            {
+              "id": "open-cycles",
+              "label": "Cycles",
+              "enabled": true
+            },
+            {
+              "id": "open-modalities",
+              "label": "Modalities",
+              "enabled": true
+            },
+            {
+              "id": "open-natal",
+              "label": "Natal Chart",
+              "enabled": true
+            },
+            {
+              "id": "open-planets",
+              "label": "Planets",
+              "enabled": true
+            },
+            {
+              "id": "open-sky",
+              "label": "Sky",
+              "enabled": true
+            },
+            {
+              "id": "open-zodiac",
+              "label": "Zodiac",
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "id": "open-alphabet",
+          "label": "Alphabet",
+          "enabled": true,
+          "children": [
+            {
+              "id": "open-alphabet-word",
+              "label": "Word",
+              "enabled": true
+            },
+            {
+              "id": "open-alphabet-letters",
+              "label": "Letter",
+              "enabled": true
+            },
+            {
+              "id": "open-alphabet-text",
+              "label": "Text",
+              "enabled": true
+            },
+            {
+              "id": "open-alphabet-reference",
+              "label": "Reference",
+              "enabled": true
+            },
+            {
+              "id": "open-scriber",
+              "label": "Scriber",
+              "enabled": true,
+              "keywords": "writing, poetry, story, editor, notebook"
+            }
+          ]
+        },
+        {
+          "id": "open-numbers",
+          "label": "Numbers",
+          "enabled": true,
+          "children": [
+            {
+              "id": "open-numbers-browse",
+              "label": "Browse",
+              "enabled": true
+            },
+            {
+              "id": "open-numbers-theory",
+              "label": "Theory",
+              "enabled": true
+            },
+            {
+              "id": "open-numbers-num-pad",
+              "label": "Num Pad",
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "id": "open-lore",
+          "label": "Lore",
+          "enabled": true,
+          "children": [
+            {
+              "id": "open-elements",
+              "label": "Elements",
+              "enabled": true
+            },
+            {
+              "id": "open-tattvas",
+              "label": "Tattvas",
+              "enabled": true
+            },
+            {
+              "id": "open-enochian",
+              "label": "Enochian",
+              "enabled": true
+            },
+            {
+              "id": "open-gods",
+              "label": "Gods",
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "id": "open-audio",
+          "label": "Audio",
+          "enabled": true,
+          "children": [
+            {
+              "id": "open-audio-circle",
+              "label": "Circle",
+              "enabled": true
+            },
+            {
+              "id": "open-audio-notes",
+              "label": "Notes",
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "id": "open-community-menu",
+          "label": "Social",
+          "enabled": true,
+          "children": [
+            {
+              "id": "open-inbox",
+              "enabled": true
+            },
+            {
+              "id": "open-community",
+              "label": "Board",
+              "enabled": true
+            },
+            {
+              "id": "open-quiz",
+              "label": "Quiz",
+              "enabled": true,
+              "keywords": "questions, study, test"
+            },
+            {
+              "id": "open-games",
+              "label": "Games",
+              "enabled": true
+            },
+            {
+              "id": "open-profile",
+              "label": "Profile",
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "id": "open-links",
+          "label": "Links",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-urantia",
+          "label": "Urantia",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-hydrus-network",
+          "label": "Hydrus Network",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-hieroglyphs",
+          "label": "Hieroglyphs",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-journal",
+          "label": "Journal",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "holidays",
+          "label": "Holidays",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "calendar-months",
+          "label": "Months",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "calendar-timeline",
+          "label": "Timeline",
+          "enabled": true,
+          "children": []
+        },
+        {
+          "id": "open-admin",
+          "label": "Admin",
+          "enabled": true,
+          "keywords": "manage, settings, control panel",
+          "children": []
+        },
+        {
+          "id": "open-settings",
+          "label": "Settings",
+          "enabled": true,
+          "children": []
+        }
+      ]
+    }
+  }
+}
