@@ -33,7 +33,7 @@
   host.register({
     id: "layout-dock",
     name: "Dock Layout",
-    version: "1.0.0",
+      version: "1.0.2",
     role: "skin",
     mount(shellEl, helpers) {
       const ui = helpers.ui;

@@ -7,7 +7,7 @@
     return;
   }
 
-  const PHONE_VERSION = "1.3.1";
+  const PHONE_VERSION = "1.4.1";
 
   // Bottom rail is a horizontal scroller; "More" stays pinned on the right.
   const RAIL_ITEMS = [

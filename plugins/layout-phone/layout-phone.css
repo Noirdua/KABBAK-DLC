@@ -806,8 +806,16 @@ html[data-plugin-skin="layout-phone"] .alpha-tool-mode-option:has(input:checked)
   color: #111114;
 }
 
-html[data-plugin-skin="layout-phone"] .alpha-gematria-options-btn {
+html[data-plugin-skin="layout-phone"] .alpha-gematria-toolbar .page-settings-btn {
   width: 100%;
+  justify-content: center;
+}
+
+html[data-plugin-skin="layout-phone"] .page-settings-btn {
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  font-size: 14px;
 }
 
 html[data-plugin-skin="layout-phone"] .alpha-gematria-controls {
@@ -966,9 +974,6 @@ html[data-plugin-skin="layout-phone"].kabbak-phone-split .kab-layout > .detail-p
 
 html[data-plugin-skin="layout-phone"] .planner-settings-btn {
   display: inline-flex;
-  width: 44px;
-  height: 44px;
-  font-size: 18px;
 }
 
 html[data-plugin-skin="layout-phone"] .planner-toolbar .planner-views,
@@ -991,35 +996,6 @@ html[data-plugin-skin="layout-phone"] .planner-range {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-html[data-plugin-skin="layout-phone"] .planner-settings-card {
-  width: 100%;
-  max-width: 100%;
-  border-radius: 24px 24px 0 0;
-}
-
-/* The page layer (z-index 1) paints below the rail (z-index 3), which would
-   cover the options sheet; lift it while the sheet is open. */
-html[data-plugin-skin="layout-phone"].kabbak-planner-sheet-open .layout-phone-pages {
-  z-index: 5 !important;
-}
-
-/* Remove the rail entirely rather than hiding it: its translucent background
-   and backdrop-filter still painted a bar over the sheet. The grid has fixed
-   rows, so dropping the item leaves the pages track untouched. */
-html[data-plugin-skin="layout-phone"].kabbak-planner-sheet-open .layout-phone-rail-wrap {
-  display: none !important;
-  background: transparent;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  border-top: 0;
-}
-
-/* The app bar keeps its row (visibility, not display) so pages cannot shift
-   up into the auto row. */
-html[data-plugin-skin="layout-phone"].kabbak-planner-sheet-open .layout-phone-top {
-  visibility: hidden;
 }
 
 html[data-plugin-skin="layout-phone"] .planner-settings-filters .planner-layer,

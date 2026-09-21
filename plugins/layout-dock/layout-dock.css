@@ -110,9 +110,19 @@
 .layout-dock-pages {
   grid-area: pages;
   position: relative;
+  /* Contain fixed page overlays (e.g. the immersive tarot-frame grid) so they
+     cannot paint over the dock. */
+  z-index: 1;
   min-width: 0;
   min-height: 0;
   overflow: auto;
+}
+
+/* The nav and HUD own the chrome and must stay above the page layer. */
+.layout-dock-nav,
+.layout-dock-hud {
+  position: relative;
+  z-index: 2;
 }
 
 .layout-dock-hud {

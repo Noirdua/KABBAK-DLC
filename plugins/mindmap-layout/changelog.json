@@ -1,6 +1,13 @@
 {
   "entries": [
     {
+      "version": "1.0.4",
+      "date": "2026-09-21",
+      "notes": [
+        "Page layer forms its own stacking context so full-screen page overlays (the tarot Frame grid) no longer cover the HUD."
+      ]
+    },
+    {
       "version": "1.0.0",
       "date": "2026-09-07",
       "notes": [

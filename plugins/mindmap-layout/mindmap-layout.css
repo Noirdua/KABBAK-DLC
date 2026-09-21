@@ -21,6 +21,9 @@
 
 .mindmap-hud {
   grid-column: 1 / -1;
+  position: relative;
+  /* Keep the chrome above the page layer. */
+  z-index: 2;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -207,6 +210,9 @@
 .mindmap-pages {
   display: none;
   position: relative;
+  /* Contain fixed page overlays (e.g. the immersive tarot-frame grid) so the
+     HUD keeps painting above them. */
+  z-index: 1;
   min-width: 0;
   min-height: 0;
   overflow: auto;

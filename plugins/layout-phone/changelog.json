@@ -1,6 +1,21 @@
 {
   "entries": [
     {
+      "version": "1.4.1",
+      "date": "2026-09-21",
+      "notes": [
+        "Calendar settings moved to the shared page-settings overlay, which removes the page-layer promotion hack and works on every skin.",
+        "House of Cards settings use the shared overlay too."
+      ]
+    },
+    {
+      "version": "1.4.0",
+      "date": "2026-09-21",
+      "notes": [
+        "Unified page-settings buttons: Word Lookup, Alphabet Text, and Alphabet Reference now use the shared page-settings overlay and the standard page-settings button style."
+      ]
+    },
+    {
       "version": "1.3.9",
       "date": "2026-09-21",
       "notes": [

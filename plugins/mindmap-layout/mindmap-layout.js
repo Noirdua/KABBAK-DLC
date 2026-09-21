@@ -165,7 +165,7 @@
   host.register({
     id: "mindmap-layout",
     name: "Mindmap Layout",
-    version: "1.0.0",
+      version: "1.0.4",
     role: "skin",
     mount(shellEl, helpers) {
       const ui = helpers.ui;
