@@ -699,13 +699,85 @@ html[data-plugin-skin="layout-phone"] .alpha-gematria-toolbar {
   gap: 10px;
 }
 
-html[data-plugin-skin="layout-phone"] .alpha-script-field {
-  justify-content: space-between;
+/* Hebrew script and the on-screen keyboard now live in Lookup settings; the
+   toolbar keeps only the tool mode and the settings button. */
+html[data-plugin-skin="layout-phone"] .alpha-gematria-options-panel .alpha-gematria-toggle {
+  min-height: 44px;
 }
 
-html[data-plugin-skin="layout-phone"] .alpha-script-field select {
-  flex: 1 1 auto;
-  margin-left: 10px;
+/* Chip and tab strips scroll on one row on phones instead of wrapping onto
+   two or three, which keeps the content below them on screen. */
+html[data-plugin-skin="layout-phone"] .profile-tabs,
+html[data-plugin-skin="layout-phone"] .profile-note-filters,
+html[data-plugin-skin="layout-phone"] .inbox-filters,
+html[data-plugin-skin="layout-phone"] .gods-tabs {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+html[data-plugin-skin="layout-phone"] .profile-tabs::-webkit-scrollbar,
+html[data-plugin-skin="layout-phone"] .profile-note-filters::-webkit-scrollbar,
+html[data-plugin-skin="layout-phone"] .inbox-filters::-webkit-scrollbar,
+html[data-plugin-skin="layout-phone"] .gods-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+html[data-plugin-skin="layout-phone"] .profile-tab,
+html[data-plugin-skin="layout-phone"] .profile-filter-btn,
+html[data-plugin-skin="layout-phone"] .profile-kind-btn,
+html[data-plugin-skin="layout-phone"] .inbox-filter,
+html[data-plugin-skin="layout-phone"] .gods-tab-btn {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 8px 14px;
+  white-space: nowrap;
+}
+
+/* Draw Spread: one scrollable row of controls instead of wrapping to three. */
+html[data-plugin-skin="layout-phone"] .tarot-spread-toolbar {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  gap: 8px;
+  padding-bottom: 10px;
+}
+
+html[data-plugin-skin="layout-phone"] .tarot-spread-toolbar::-webkit-scrollbar {
+  display: none;
+}
+
+html[data-plugin-skin="layout-phone"] .tarot-spread-type-controls {
+  flex: 0 0 auto;
+}
+
+html[data-plugin-skin="layout-phone"] .tarot-spread-type-btn,
+html[data-plugin-skin="layout-phone"] .tarot-spread-redraw-btn {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 8px 14px;
+  font-size: 13px;
+}
+
+/* Letter Database: seven language tabs scroll on one row instead of wrapping
+   into three, which keeps the list and detail panes on screen. */
+html[data-plugin-skin="layout-phone"] .alpha-tabs {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+html[data-plugin-skin="layout-phone"] .alpha-tab-btn {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 8px 14px;
 }
 
 html[data-plugin-skin="layout-phone"] .alpha-tool-mode-group {

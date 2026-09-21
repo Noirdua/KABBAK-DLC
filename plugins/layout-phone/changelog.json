@@ -1,6 +1,35 @@
 {
   "entries": [
     {
+      "version": "1.3.9",
+      "date": "2026-09-21",
+      "notes": [
+        "Profile tabs, journal filters, Inbox filters, and Gods tabs scroll on one row on phones instead of wrapping."
+      ]
+    },
+    {
+      "version": "1.3.8",
+      "date": "2026-09-21",
+      "notes": [
+        "Draw Spread controls scroll on one row on phones.",
+        "Num Pad docks its toolbars into the filter sheet at phone-class widths (up to 900px)."
+      ]
+    },
+    {
+      "version": "1.3.7",
+      "date": "2026-09-21",
+      "notes": [
+        "Letter Database language tabs scroll on a single row on phones instead of wrapping."
+      ]
+    },
+    {
+      "version": "1.3.6",
+      "date": "2026-09-21",
+      "notes": [
+        "Word Lookup: Hebrew script and the on-screen keyboard moved into Lookup settings; phones start with the keyboard hidden to give results more room."
+      ]
+    },
+    {
       "version": "1.3.5",
       "date": "2026-09-20",
       "notes": [
