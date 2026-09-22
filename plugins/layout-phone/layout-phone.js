@@ -507,7 +507,11 @@
         ui.goBack();
       });
       settingsEl.addEventListener("click", () => {
-        setSheet(false);
+        // Prefer the current page's own settings overlay; fall back to the
+        // account/settings page when the page has no options.
+        if (window.TaroPageSettings?.openCurrent?.()) {
+          return;
+        }
         openSection("settings");
       });
       railMoreEl.addEventListener("click", () => {

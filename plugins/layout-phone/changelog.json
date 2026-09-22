@@ -1,6 +1,14 @@
 {
   "entries": [
     {
+      "version": "1.4.2",
+      "date": "2026-09-22",
+      "notes": [
+        "The app-bar gear now opens the current page settings overlay, falling back to account settings when the page has none.",
+        "Page-level settings buttons are hidden on phones so panels get the full width."
+      ]
+    },
+    {
       "version": "1.4.1",
       "date": "2026-09-21",
       "notes": [

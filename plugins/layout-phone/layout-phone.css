@@ -1029,3 +1029,15 @@ html[data-plugin-skin="layout-phone"].kabbak-phone-no-barlabels .layout-phone-ra
   width: 25px;
   height: 25px;
 }
+
+/* The app-bar gear is the single settings entry point on phones, so page-level
+   settings buttons are hidden and the panels get the full width. */
+html[data-plugin-skin="layout-phone"] .page-settings-btn,
+html[data-plugin-skin="layout-phone"] [data-page-settings-trigger] {
+  display: none !important;
+}
+
+/* Word Lookup's toolbar only holds that button now. */
+html[data-plugin-skin="layout-phone"] .alpha-gematria-toolbar {
+  display: none;
+}
