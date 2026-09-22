@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "version": "1.0.0",
+      "date": "2026-09-22",
+      "notes": [
+        "New plugin: Stripe subscription webhooks grant and revoke a client's tier roles and access level.",
+        "Signature verification uses the official stripe npm package over the raw request body.",
+        "Write-only signing secret plus an event log in the plugin settings.",
+        "Moved out of the API core (the old /api/v1/webhooks/stripe route and core Stripe service are gone)."
+      ]
+    }
+  ]
+}

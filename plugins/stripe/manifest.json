@@ -1,0 +1,11 @@
+{
+  "id": "stripe",
+  "name": "Stripe Subscriptions",
+  "kind": "gui",
+  "version": "1.0.0",
+  "description": "Stripe subscription webhooks that grant or revoke a client's tier roles (permissions) and access level from its Stripe subscription, with an event log.",
+  "public": false,
+  "server": {
+    "entry": "server.js"
+  }
+}
