@@ -7,7 +7,7 @@
     return;
   }
 
-  const PHONE_VERSION = "1.4.1";
+  const PHONE_VERSION = "1.5.0";
 
   // Bottom rail is a horizontal scroller; "More" stays pinned on the right.
   const RAIL_ITEMS = [
@@ -66,22 +66,32 @@
     profile: "profile"
   };
 
-  const HIDE_IN_MORE = new Set([
-    "open-home",
-    "open-home-menu",
-    "open-tarot-cards",
-    "open-calendar",
-    "open-calendar-months",
-    "open-kabbalah-sephirot",
-    "open-iching-hexagrams",
-    "open-planets",
-    "open-alphabet-word",
-    "open-numbers-browse",
-    "open-community",
-    "open-quiz",
-    "open-games",
-    "open-profile"
-  ]);
+  let railOverride = null;
+
+  function normalizeRailItem(item) {
+    const id = String(item?.id || "").trim();
+    const navId = String(item?.navId || "").trim();
+    if (!id || !navId) return null;
+    const known = RAIL_ITEMS.find((entry) => entry.id === id) || null;
+    return {
+      id,
+      label: String(item?.label || known?.label || id).trim() || id,
+      icon: String(item?.icon || known?.icon || "more").trim() || "more",
+      section: String(item?.section || known?.section || id).trim() || id,
+      navId,
+      enabled: item?.enabled !== false
+    };
+  }
+
+  function activeRailCatalog() {
+    const source = Array.isArray(railOverride) && railOverride.length ? railOverride : RAIL_ITEMS;
+    return source.map(normalizeRailItem).filter((item) => item && item.enabled !== false);
+  }
+
+  function hiddenInMore(id) {
+    const value = String(id || "");
+    return activeRailCatalog().some((item) => item.navId === value || item.id === value);
+  }
 
   const ID_SECTION_ALIASES = {
     "open-kabbalah-sephirot": "kabbalah",
@@ -92,12 +102,15 @@
   };
 
   function railIdForSection(section) {
-    return SECTION_RAIL[String(section || "")] || "";
+    const key = String(section || "");
+    if (SECTION_RAIL[key]) return SECTION_RAIL[key];
+    const custom = activeRailCatalog().find((item) => item.section === key || item.id === key);
+    return custom ? custom.id : "";
   }
 
   function isActiveId(id, section) {
     const current = String(section || "");
-    const item = RAIL_ITEMS.find((entry) => entry.navId === id);
+    const item = activeRailCatalog().find((entry) => entry.navId === id);
     if (item) {
       return item.id === railIdForSection(current);
     }
@@ -127,7 +140,7 @@
   }
 
   function visibleRailItems() {
-    return RAIL_ITEMS.filter((item) => {
+    return activeRailCatalog().filter((item) => {
       if (item.id === "home") {
         return true;
       }
@@ -338,7 +351,7 @@
         sheetMenuEl.innerHTML = "";
         items.forEach((item) => {
           if (item.type === "search") return;
-          if (HIDE_IN_MORE.has(item.id)) return;
+          if (hiddenInMore(item.id)) return;
           if (item.type === "header") {
             const heading = document.createElement("div");
             heading.className = "layout-phone-sheet-heading";
@@ -347,7 +360,7 @@
             return;
           }
           const children = (item.children || []).filter((child) => {
-            return !child.hidden && child.type !== "search" && !HIDE_IN_MORE.has(child.id);
+            return !child.hidden && child.type !== "search" && !hiddenInMore(child.id);
           });
           if (!children.length) {
             appendNavButton(sheetMenuEl, item, active);
@@ -648,6 +661,26 @@
         }
       }, true);
 
+      function applyRailConfig(config) {
+        const rail = Array.isArray(config?.rail) ? config.rail.map(normalizeRailItem).filter(Boolean) : [];
+        railOverride = rail.length ? rail : null;
+        railSignature = "";
+        renderRail();
+        if (sheetOpen) renderSheet();
+      }
+
+      function onPhoneConfig(event) {
+        if (String(event?.detail?.pluginName || "") !== "layout-phone") return;
+        applyRailConfig(event?.detail?.config);
+      }
+
+      document.addEventListener("taro-plugin-config-updated", onPhoneConfig);
+      if (helpers && typeof helpers.requestJson === "function") {
+        helpers.requestJson("GET", "/api/v1/plugins/layout-phone/config")
+          .then((payload) => applyRailConfig(payload?.config))
+          .catch(() => {});
+      }
+
       renderChrome();
       // List/detail panes collapse via classes from the core chrome; watch them
       // so the header back/label tracks drill-down without a section change.
@@ -680,6 +713,7 @@
         );
         document.removeEventListener("taro-plugins-ready", renderChrome);
         document.removeEventListener("taro-menu-updated", renderChrome);
+        document.removeEventListener("taro-plugin-config-updated", onPhoneConfig);
         if (typeof stop === "function") stop();
       };
     }
