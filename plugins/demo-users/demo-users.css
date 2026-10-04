@@ -57,9 +57,30 @@
   background: color-mix(in srgb, var(--tt-accent) 20%, transparent);
 }
 
-.demo-users-kind-trial {
+.demo-users-kind-trial,
+.demo-users-kind-signup {
   color: #fcd34d;
   background: rgba(252, 211, 77, 0.16);
+}
+
+.demo-users-kind-unverified {
+  color: #fca5a5;
+  background: rgba(252, 165, 165, 0.16);
+}
+
+.demo-users-extend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.demo-users-extend-date {
+  background: var(--tt-bg);
+  color: var(--tt-text);
+  border: 1px solid var(--tt-border);
+  border-radius: 8px;
+  padding: 4px 8px;
 }
 
 .demo-users-row-actions {

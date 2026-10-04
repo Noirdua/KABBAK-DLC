@@ -63,10 +63,13 @@
   }
 
   function formatExpiry(account) {
-    if (!account.expiresAt) return "No expiry";
+    if (!account.expiresAt) {
+      return account.source === "account" && !account.keyPresent ? "No trial key yet" : "No expiry";
+    }
     const when = new Date(account.expiresAt);
     if (Number.isNaN(when.getTime())) return "No expiry";
-    return account.expired ? `Expired ${when.toLocaleString()}` : `Expires ${when.toLocaleString()}`;
+    const day = when.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+    return account.expired ? `Expired ${day}` : `Expires ${day}`;
   }
 
   // --- Key reveal -----------------------------------------------------------
@@ -379,6 +382,141 @@
       }
     }, { danger: true });
 
+    if (kind === "trial") {
+      actions.appendChild(buildExtendBar(account, onChanged, "issued"));
+    }
+    row.appendChild(actions);
+    return row;
+  }
+
+  function buildExtendBar(account, onChanged, mode) {
+    const bar = el("div", "demo-users-extend");
+    const applyDays = async (days, btn) => {
+      if (btn) btn.disabled = true;
+      try {
+        if (mode === "account") {
+          await requestJson("POST", `/admin/signup-accounts/${encodeURIComponent(account.id)}/extend`, { days });
+        } else {
+          await requestJson("PATCH", `/admin/demo-accounts/${encodeURIComponent(account.id)}`, { extendDays: days });
+        }
+        onChanged?.();
+      } catch (error) {
+        window.alert(`Could not extend the trial. ${error?.message || ""}`);
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    };
+    [7, 14, 30].forEach((days) => {
+      const btn = el("button", "dlc-shop-btn", `+${days}d`);
+      btn.type = "button";
+      btn.title = `Add ${days} days from the current expiry, or from today if it has already ended`;
+      btn.addEventListener("click", () => void applyDays(days, btn));
+      bar.appendChild(btn);
+    });
+    const date = el("input", "demo-users-extend-date");
+    date.type = "date";
+    if (account.expiresAt) {
+      const when = new Date(account.expiresAt);
+      if (!Number.isNaN(when.getTime())) date.value = when.toISOString().slice(0, 10);
+    }
+    const setBtn = el("button", "dlc-shop-btn", "Set date");
+    setBtn.type = "button";
+    setBtn.addEventListener("click", async () => {
+      if (!date.value) return;
+      setBtn.disabled = true;
+      try {
+        const expiresAt = new Date(`${date.value}T23:59:59`).toISOString();
+        if (mode === "account") {
+          await requestJson("POST", `/admin/signup-accounts/${encodeURIComponent(account.id)}/extend`, { expiresAt });
+        } else {
+          await requestJson("PATCH", `/admin/demo-accounts/${encodeURIComponent(account.id)}`, { expiresAt });
+        }
+        onChanged?.();
+      } catch (error) {
+        window.alert(`Could not set the expiry. ${error?.message || ""}`);
+      } finally {
+        setBtn.disabled = false;
+      }
+    });
+    bar.append(date, setBtn);
+    return bar;
+  }
+
+  function buildSignupRow(account, onChanged) {
+    const row = el("div", "demo-users-row");
+    const info = el("div", "demo-users-row-main");
+    const titleRow = el("div", "demo-users-row-title");
+    titleRow.appendChild(el("strong", "", account.username ? `@${account.username}` : (account.name || account.id)));
+    titleRow.appendChild(el("span", "demo-users-kind demo-users-kind-signup", "Trial"));
+    if (!account.emailVerified) {
+      titleRow.appendChild(el("span", "demo-users-kind demo-users-kind-unverified", "Unverified"));
+    }
+    if (account.expired) {
+      titleRow.appendChild(el("span", "demo-users-status-expired", "Expired"));
+    }
+    info.appendChild(titleRow);
+    info.appendChild(el("span", "settings-field-hint", [
+      account.email || "no email",
+      formatExpiry(account),
+      account.accessLevel || "no key",
+      account.createdAt ? `joined ${new Date(account.createdAt).toLocaleDateString()}` : ""
+    ].filter(Boolean).join(" · ")));
+    row.appendChild(info);
+
+    const actions = el("div", "demo-users-row-actions");
+    const addAction = (label, handler, opts = {}) => {
+      const btn = el("button", `dlc-shop-btn${opts.danger ? " is-danger" : ""}`, label);
+      btn.type = "button";
+      btn.addEventListener("click", () => void handler(btn));
+      actions.appendChild(btn);
+    };
+    if (!account.emailVerified) {
+      addAction("Verify", async (btn) => {
+        btn.disabled = true;
+        try {
+          const result = await requestJson("POST", `/admin/signup-accounts/${encodeURIComponent(account.id)}/verify`);
+          showKeyOnce(result?.apiKey, account.username || account.id);
+          onChanged?.();
+        } catch (error) {
+          window.alert(`Could not verify. ${error?.message || ""}`);
+        } finally {
+          btn.disabled = false;
+        }
+      });
+    }
+    if (account.keyPresent) {
+      actions.appendChild(buildExtendBar(account, onChanged, "account"));
+      addAction("Reset key", async (btn) => {
+        if (!account.clientId) return;
+        if (!window.confirm(`Reset the key for @${account.username || account.id}?`)) return;
+        btn.disabled = true;
+        try {
+          const svc = service();
+          const result = await svc.requestJson(
+            "POST",
+            svc.buildApiUrl(`/api/v1/admin/api-clients/${encodeURIComponent(account.clientId)}/rotate-key`)
+          );
+          showKeyOnce(result?.apiKey, account.username || account.id);
+          onChanged?.();
+        } catch (error) {
+          window.alert(`Could not reset the key. ${error?.message || ""}`);
+        } finally {
+          btn.disabled = false;
+        }
+      });
+    }
+    addAction("Delete", async (btn) => {
+      if (!window.confirm(`Delete @${account.username || account.id}? Their key and account are removed.`)) return;
+      btn.disabled = true;
+      try {
+        await requestJson("DELETE", `/admin/signup-accounts/${encodeURIComponent(account.id)}`);
+        onChanged?.();
+      } catch (error) {
+        window.alert(`Could not delete. ${error?.message || ""}`);
+      } finally {
+        btn.disabled = false;
+      }
+    }, { danger: true });
     row.appendChild(actions);
     return row;
   }
@@ -404,11 +542,21 @@
       accounts
         .slice()
         .sort((a, b) => {
-          const rank = (entry) => (entry.kind === "trial" ? 0 : 1);
+          const rank = (entry) => {
+            if (entry.source === "account" && entry.emailVerified === false) return 0;
+            if (entry.source === "account") return 1;
+            if (entry.kind === "trial") return 2;
+            return 3;
+          };
           if (rank(a) !== rank(b)) return rank(a) - rank(b);
-          return String(a.name || "").localeCompare(String(b.name || ""));
+          return String(a.username || a.name || "").localeCompare(String(b.username || b.name || ""));
         })
-        .forEach((account) => listEl.appendChild(buildAccountRow(account, reload)));
+        .forEach((account) => {
+          const row = account.source === "account"
+            ? buildSignupRow(account, reload)
+            : buildAccountRow(account, reload);
+          listEl.appendChild(row);
+        });
     }
     bodyEl.appendChild(listEl);
   }
@@ -427,7 +575,7 @@
     panel.id = "demo-users-admin-panel";
     const head = el("div", "settings-panel-head");
     head.appendChild(el("strong", "", "Demo & Trial Accounts"));
-    head.appendChild(el("span", "", "Shared demo accounts for the connection gate, plus individually issued trial accounts you can hand out (for example two-week trials). Both are hidden from the normal Users list and can carry their own access level, roles, scopes, and expiry."));
+    head.appendChild(el("span", "", "Shared demo logins, handed-out trials, and self-serve signup accounts — including unverified ones. Signup trials show their expiry date and can be extended here."));
     const body = el("div", "demo-users-panel-body");
     panel.append(head, body);
     usersPanel.insertAdjacentElement("afterend", panel);

@@ -163,6 +163,15 @@ module.exports = function register(router, ctx) {
       }
       return new Date(parsed).toISOString();
     }
+    if (body && Object.prototype.hasOwnProperty.call(body, "extendDays")) {
+      const days = Number(body.extendDays);
+      if (!Number.isFinite(days) || days <= 0) {
+        throw createHttpError(400, "invalid_expiry", "extendDays must be a positive number.");
+      }
+      const current = Date.parse(existing?.expiresAt || "");
+      const base = Number.isFinite(current) && current > nowMs() ? current : nowMs();
+      return new Date(base + days * 24 * 60 * 60 * 1000).toISOString();
+    }
     if (body && Object.prototype.hasOwnProperty.call(body, "ttlDays")) {
       const days = Number(body.ttlDays);
       if (!Number.isFinite(days) || days <= 0) {
@@ -268,11 +277,76 @@ module.exports = function register(router, ctx) {
     response.apiSuccess({ settings: normalizeSettings(saved) });
   });
 
+  function accountsApi() {
+    return ctx.requireApi("src/services/account-service");
+  }
+
+  function summarizeSignup(account) {
+    const trial = account?.trial && typeof account.trial === "object" ? account.trial : {};
+    const expiresAt = String(trial.expiresAt || "");
+    const expiresMs = Date.parse(expiresAt);
+    const keyPresent = account?.keyPresent === true;
+    return {
+      id: String(account.id || ""),
+      source: "account",
+      kind: "signup",
+      name: String(account.username || account.id || ""),
+      username: String(account.username || ""),
+      email: String(account.email || ""),
+      emailVerified: account.emailVerified === true,
+      status: String(account.status || ""),
+      clientId: String(trial.clientId || ""),
+      accessLevel: String(trial.accessLevel || ""),
+      roles: [],
+      scopes: [],
+      expiresAt,
+      expired: keyPresent && Number.isFinite(expiresMs) && expiresMs <= nowMs(),
+      keyPresent,
+      trialActive: account.trialActive === true,
+      createdAt: String(account.createdAt || ""),
+      keyPreview: ""
+    };
+  }
+
+  function listSignupAccounts() {
+    return accountsApi().listAccounts().map(summarizeSignup);
+  }
+
   router.get("/admin/demo-accounts", requireApiKey, adminOnly, (request, response) => {
     const wanted = String(request.query?.kind || "").trim();
-    const kind = wanted ? normalizeKind(wanted, "") : "";
-    const accounts = listDemoClients(kind || undefined).map(summarize);
+    const kind = wanted && wanted !== "signup" ? normalizeKind(wanted, "") : "";
+    const issued = wanted === "signup" ? [] : listDemoClients(kind || undefined).map(summarize);
+    const signups = !wanted || wanted === "signup" ? listSignupAccounts() : [];
+    const accounts = [...signups, ...issued];
     response.apiSuccess({ count: accounts.length, accounts });
+  });
+
+  router.post("/admin/signup-accounts/:accountId/extend", requireApiKey, adminOnly, (request, response) => {
+    const body = request.body && typeof request.body === "object" ? request.body : {};
+    const result = accountsApi().extendAccountTrial(request.params.accountId, {
+      days: body.days ?? body.extendDays,
+      expiresAt: body.expiresAt
+    });
+    response.apiSuccess(result);
+  });
+
+  router.post("/admin/signup-accounts/:accountId/verify", requireApiKey, adminOnly, (request, response) => {
+    const result = accountsApi().verifyAccountManually(request.params.accountId);
+    response.apiSuccess({
+      accountId: result.account?.id || request.params.accountId,
+      username: result.account?.username || "",
+      apiKey: result.trial?.apiKey || "",
+      clientId: result.trial?.clientId || "",
+      expiresAt: result.trial?.expiresAt || ""
+    });
+  });
+
+  router.delete("/admin/signup-accounts/:accountId", requireApiKey, adminOnly, (request, response) => {
+    const result = accountsApi().removeAccount(request.params.accountId);
+    if (!result.removed) {
+      throw createNotFoundError("account_not_found", "No account with that id.");
+    }
+    response.apiSuccess({ removed: true, id: request.params.accountId });
   });
 
   router.get("/admin/demo-accounts/:id/key", requireApiKey, adminOnly, (request, response) => {
