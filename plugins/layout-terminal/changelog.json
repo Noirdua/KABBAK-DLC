@@ -1,0 +1,21 @@
+{
+  "entries": [
+    {
+      "version": "1.0.1",
+      "date": "2026-10-24",
+      "notes": [
+        "Top-bar widgets such as the music player stay in the top bar instead of being pushed into the sidebar menu.",
+        "Widgets wrap onto their own row on very narrow screens so they cannot break the breadcrumb bar."
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-10-24",
+      "notes": [
+        "New terminal layout: fixed left index with grouped, searchable navigation and counts, thin breadcrumb bar, and an off-canvas drawer on narrow screens.",
+        "Terminal palette by default, with followTheme and per-color config overrides.",
+        "Reads the live menu, so Menu Order reordering, grouping, and hidden entries are honored."
+      ]
+    }
+  ]
+}
