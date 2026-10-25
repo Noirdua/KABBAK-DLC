@@ -613,7 +613,7 @@
       id: "demo-users",
       name: "Demo Users",
       kind: "gui",
-      version: "1.3.0",
+      version: "1.3.1",
       mount() {
         boot();
       }

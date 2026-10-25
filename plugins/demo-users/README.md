@@ -18,9 +18,21 @@ folder). Do not nest a second `demo-users/` directory here.
   accounts to hand out (for example two-week trials). Each has its own name,
   access level, roles, scopes, and expiry; reveal the key and send it to that
   person.
-- **Admin → Demo & Trial Accounts:** one manager for both kinds — create, edit
-  access/roles/scopes/expiry, reveal key ("reset password" = rotate key), reset
-  profile, and delete.
+- **Admin → Users → Demo & Trial Accounts** (below the users table): one
+  manager for both kinds — create, edit access/roles/scopes/expiry, extend or
+  reactivate an expired trial, reveal key ("reset password" = rotate key),
+  reset profile, and delete.
+
+From a shell, the same account operations are available in the core CLI:
+
+```bash
+npm run accounts -- extend @username --days 14
+npm run accounts -- extend @username --until 2027-01-31
+npm run accounts -- remove @username
+```
+
+`extend` moves the expiry from now (or the current end, if still active) and
+reactivates an expired trial key. `remove` deletes the account and its key.
 
 Both kinds are stored as **hidden managed API clients** (`hidden: true`) so they
 never appear in Admin → Users. Expiry is enforced by the API key middleware
@@ -59,6 +71,12 @@ admin-only). Keys:
 | `maxDemoAccounts` | `0` | Cap on demo accounts; `0` = unlimited |
 | `maxTrialAccounts` | `0` | Cap on trial accounts; `0` = unlimited |
 | `gateAccountId` | `""` | Default demo account the gate logs into; blank = first active |
+| `supportEmail` | `""` | Support email shown in the expired-trial message |
+| `supportPhone` | `""` | Optional support phone shown in the expired-trial message |
+
+The support email/phone are read by the core trial-expired login error. Leave
+either blank to omit it; with both blank the message stays the generic
+“Contact the operator” text.
 
 Legacy keys `defaultAccessLevel`, `defaultTtlDays`, and `maxAccounts` are still
 read as fallbacks.

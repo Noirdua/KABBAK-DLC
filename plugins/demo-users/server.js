@@ -28,7 +28,9 @@ const DEFAULT_SETTINGS = Object.freeze({
   defaultTrialDays: DEFAULT_TRIAL_DAYS,
   maxDemoAccounts: 0,
   maxTrialAccounts: 0,
-  gateAccountId: ""
+  gateAccountId: "",
+  supportEmail: "",
+  supportPhone: ""
 });
 
 function clampInt(value, min, max, fallback) {
@@ -62,7 +64,15 @@ module.exports = function register(router, ctx) {
     return Date.now();
   }
 
-  function normalizeSettings(raw) {
+  function normalizeSupportEmail(value) {
+  return String(value || "").trim().slice(0, 160);
+}
+
+function normalizeSupportPhone(value) {
+  return String(value || "").trim().replace(/\s+/g, " ").slice(0, 40);
+}
+
+function normalizeSettings(raw) {
     const source = raw && typeof raw === "object" && !Array.isArray(raw) ? raw : {};
     const legacyLevel = String(source.defaultAccessLevel || "").trim();
     const demoAccessLevel = String(source.demoAccessLevel || "").trim() || legacyLevel || DEFAULT_SETTINGS.demoAccessLevel;
@@ -85,7 +95,9 @@ module.exports = function register(router, ctx) {
         DEFAULT_SETTINGS.maxDemoAccounts
       ),
       maxTrialAccounts: clampInt(source.maxTrialAccounts, 0, 1000, DEFAULT_SETTINGS.maxTrialAccounts),
-      gateAccountId: String(source.gateAccountId || "").trim()
+      gateAccountId: String(source.gateAccountId || "").trim(),
+      supportEmail: normalizeSupportEmail(source.supportEmail),
+      supportPhone: normalizeSupportPhone(source.supportPhone)
     };
   }
 
@@ -272,6 +284,12 @@ module.exports = function register(router, ctx) {
     // Validate the access levels against the live registry before persisting.
     normalizeAccessLevel(next.demoAccessLevel, DEFAULT_SETTINGS.demoAccessLevel);
     normalizeAccessLevel(next.trialAccessLevel, DEFAULT_SETTINGS.demoAccessLevel);
+    if (next.supportEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(next.supportEmail)) {
+      throw createHttpError(400, "invalid_support_email", "Enter a valid support email address.");
+    }
+    if (next.supportPhone && !/^[+()0-9.\s-]+$/.test(next.supportPhone)) {
+      throw createHttpError(400, "invalid_support_phone", "The support phone may use digits, spaces, +, -, ., and parentheses.");
+    }
     const merged = { ...(ctx.readConfig() || {}), ...next };
     const saved = ctx.writeConfig(merged);
     response.apiSuccess({ settings: normalizeSettings(saved) });
