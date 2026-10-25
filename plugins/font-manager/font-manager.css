@@ -1,0 +1,265 @@
+.font-manager {
+  color: var(--tt-text);
+}
+
+.font-manager .settings-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.font-manager .font-manager-status {
+  min-height: 18px;
+  color: var(--tt-text-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.font-manager .font-manager-status[data-tone="ok"] {
+  color: #86efac;
+}
+
+.font-manager .font-manager-status[data-tone="error"] {
+  color: #fca5a5;
+}
+
+.font-manager .font-manager-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--tt-border) 85%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--tt-surface) 35%, transparent);
+}
+
+.font-manager .font-manager-panel-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.font-manager .font-manager-panel-head strong {
+  color: var(--tt-text-bright);
+  font-size: 14px;
+}
+
+.font-manager .font-manager-panel-head span {
+  color: var(--tt-text-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.font-manager .font-manager-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px 12px;
+}
+
+.font-manager .font-manager-form .settings-field-full {
+  grid-column: 1 / -1;
+}
+
+.font-manager .font-manager-form input[type="file"] {
+  padding: 6px 0;
+  color: var(--tt-text-soft);
+}
+
+.font-manager .font-manager-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.font-manager .font-manager-button {
+  min-height: 32px;
+  padding: 6px 11px;
+  border: 1px solid var(--tt-border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--tt-surface) 70%, transparent);
+  color: var(--tt-text);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.font-manager .font-manager-button:hover:not(:disabled) {
+  border-color: var(--tt-accent);
+  color: var(--tt-text-bright);
+}
+
+.font-manager .font-manager-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.font-manager .font-manager-button-primary {
+  border-color: color-mix(in srgb, var(--tt-accent) 70%, var(--tt-border));
+  background: color-mix(in srgb, var(--tt-accent) 25%, var(--tt-surface));
+  color: var(--tt-text-bright);
+}
+
+.font-manager .font-manager-button-danger {
+  border-color: color-mix(in srgb, #ef4444 55%, var(--tt-border));
+  color: #fecaca;
+}
+
+.font-manager .font-manager-font-list {
+  display: grid;
+  gap: 8px;
+}
+
+.font-manager .font-manager-font {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(220px, 1fr) auto;
+  gap: 10px 14px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--tt-border);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--tt-bg-deepest) 55%, transparent);
+}
+
+.font-manager .font-manager-font-main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.font-manager .font-manager-font-main strong {
+  color: var(--tt-text-bright);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.font-manager .font-manager-font-main span {
+  color: var(--tt-text-muted);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.font-manager .font-manager-range {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 10px;
+  color: var(--tt-text-dim);
+}
+
+.font-manager .font-manager-font-preview {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--tt-surface) 40%, transparent);
+  color: var(--tt-text-soft);
+  font-size: 18px;
+  line-height: 1.3;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.font-manager .font-manager-font-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.font-manager .font-manager-stack-list {
+  display: grid;
+  gap: 10px;
+}
+
+.font-manager .font-manager-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--tt-border);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--tt-bg-deepest) 45%, transparent);
+}
+
+.font-manager .font-manager-stack-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.font-manager .font-manager-stack-head strong {
+  color: var(--tt-text-bright);
+  font-size: 13px;
+}
+
+.font-manager .font-manager-stack-head span {
+  color: var(--tt-text-muted);
+  font-size: 11px;
+}
+
+.font-manager .font-manager-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.font-manager .font-manager-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px 4px 9px;
+  border: 1px solid color-mix(in srgb, var(--tt-accent) 45%, var(--tt-border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--tt-accent) 16%, var(--tt-surface));
+  color: var(--tt-text-soft);
+  font-size: 11px;
+}
+
+.font-manager .font-manager-chip button {
+  min-width: 20px;
+  min-height: 20px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--tt-text-muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.font-manager .font-manager-chip button:hover {
+  background: color-mix(in srgb, var(--tt-accent) 30%, transparent);
+  color: var(--tt-text-bright);
+}
+
+.font-manager .font-manager-stack-add {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.font-manager .font-manager-stack-add select {
+  flex: 1 1 200px;
+  min-height: 32px;
+  padding: 6px 8px;
+  border: 1px solid var(--tt-border);
+  border-radius: 8px;
+  background: var(--tt-bg-deepest);
+  color: var(--tt-text);
+  font: inherit;
+  font-size: 12px;
+}
+
+@media (max-width: 760px) {
+  .font-manager .font-manager-font {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .font-manager .font-manager-font-actions {
+    justify-content: flex-start;
+  }
+}

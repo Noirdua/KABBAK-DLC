@@ -1,0 +1,16 @@
+{
+  "id": "font-manager",
+  "name": "Font Manager",
+  "kind": "gui",
+  "version": "1.0.0",
+  "description": "Upload font files and choose which families the main text, headings, Arabic, Enochian, and CJK areas use. Built-in fonts remain as fallbacks.",
+  "entry": "font-manager.js",
+  "css": "font-manager.css",
+  "section": {
+    "id": "font-manager",
+    "label": "Fonts"
+  },
+  "server": {
+    "entry": "server.js"
+  }
+}

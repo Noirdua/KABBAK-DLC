@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "version": "1.0.0",
+      "date": "2026-10-25",
+      "notes": [
+        "New Fonts section for admins: upload .woff2/.woff/.ttf/.otf files, preview them, and delete them.",
+        "Assign uploaded families to main text, display/headings, Arabic, Enochian, and CJK, in priority order.",
+        "Assignments apply to the whole site for every user; built-in fonts and the I Ching/Enochian symbol catalog remain as fallbacks.",
+        "Font files and metadata are stored under storage/plugin-data/font-manager and survive plugin updates."
+      ]
+    }
+  ]
+}
