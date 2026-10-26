@@ -523,17 +523,27 @@
 
   async function renderPanel(bodyEl) {
     bodyEl.replaceChildren();
+    bodyEl.appendChild(el("span", "settings-field-hint", "Loading demo and trial accounts…"));
     let accounts = [];
     try {
       const payload = await requestJson("GET", "/admin/demo-accounts");
       accounts = Array.isArray(payload?.accounts) ? payload.accounts : [];
     } catch (error) {
+      bodyEl.replaceChildren();
       bodyEl.appendChild(el("span", "settings-field-hint", `Could not load demo accounts. ${error?.message || ""}`));
       return;
     }
+    bodyEl.replaceChildren();
 
     const reload = () => void renderPanel(bodyEl);
-    bodyEl.appendChild(buildCreateForm(reload));
+    let createForm;
+    try {
+      createForm = buildCreateForm(reload);
+    } catch (error) {
+      bodyEl.replaceChildren();
+      bodyEl.appendChild(el("span", "settings-field-hint", `Could not render the account form. ${error?.message || ""}`));
+      return;
+    }
 
     const listEl = el("div", "demo-users-list");
     if (!accounts.length) {
@@ -558,46 +568,60 @@
           listEl.appendChild(row);
         });
     }
-    bodyEl.appendChild(listEl);
+    bodyEl.replaceChildren(createForm, listEl);
   }
 
-  function ensureAdminPanel() {
-    const table = document.getElementById("admin-clients-table");
-    if (!table || document.getElementById("demo-users-admin-panel")) {
-      return;
-    }
-    const usersPanel = table.closest(".settings-panel");
-    if (!usersPanel || !usersPanel.parentElement) {
-      return;
-    }
+  function mountAdminPage(root) {
+    root.replaceChildren();
+    const settingsPanel = el("div", "settings-panel settings-panel-wide");
+    const settingsHead = el("div", "settings-panel-head");
+    settingsHead.append(
+      el("strong", "", "Access & trial policy"),
+      el("span", "", "Gate demo access, access levels, trial length, limits, and support contacts. Self-serve signup policy stays under System → Signup.")
+    );
+    const settingsBody = el("div", "demo-users-admin-settings");
+    settingsPanel.append(settingsHead, settingsBody);
 
-    const panel = el("div", "settings-panel settings-panel-wide");
-    panel.id = "demo-users-admin-panel";
-    const head = el("div", "settings-panel-head");
-    head.appendChild(el("strong", "", "Demo & Trial Accounts"));
-    head.appendChild(el("span", "", "Shared demo logins, handed-out trials, and self-serve signup accounts — including unverified ones. Signup trials show their expiry date and can be extended here."));
-    const body = el("div", "demo-users-panel-body");
-    panel.append(head, body);
-    usersPanel.insertAdjacentElement("afterend", panel);
+    const accountsPanel = el("div", "settings-panel settings-panel-wide");
+    accountsPanel.dataset.demoUsersAccounts = "1";
+    const accountsHead = el("div", "settings-panel-head");
+    accountsHead.append(
+      el("strong", "", "Demo & trial accounts"),
+      el("span", "", "Shared demo logins, handed-out trials, and self-serve signup accounts — including unverified ones. Extend, verify, reset, or delete them here.")
+    );
+    const accountsBody = el("div", "demo-users-panel-body");
+    accountsPanel.append(accountsHead, accountsBody);
 
-    void loadAccessLevels().then(() => renderPanel(body));
-  }
+    root.append(settingsPanel, accountsPanel);
 
-  function observeAdmin() {
-    const target = document.getElementById("admin-section") || document.body;
-    if (!target || target._demoUsersObserver) {
-      ensureAdminPanel();
-      return;
+    const renderSettings = window.TaroTimeDlcShop?.renderPluginSettingsInto;
+    if (typeof renderSettings === "function") {
+      void renderSettings(settingsBody, { name: "demo-users", title: "Demo Users" });
+    } else {
+      settingsBody.appendChild(el("span", "settings-field-hint", "Plugin settings are unavailable. Reload the page."));
     }
-    const observer = new MutationObserver(() => ensureAdminPanel());
-    observer.observe(target, { childList: true, subtree: true });
-    target._demoUsersObserver = observer;
-    ensureAdminPanel();
+    accountsBody.appendChild(el("span", "settings-field-hint", "Loading accounts…"));
+    void loadAccessLevels()
+      .catch(() => {})
+      .then(() => renderPanel(accountsBody))
+      .catch((error) => {
+        accountsBody.replaceChildren();
+        accountsBody.appendChild(el("span", "settings-field-hint", `Could not load the accounts panel. ${error?.message || ""}`));
+      });
+
+    let firstShow = true;
+    document.addEventListener("admin:plugin-page-shown", (event) => {
+      if (event.detail?.id !== "demo-users") return;
+      if (firstShow) {
+        firstShow = false;
+        return;
+      }
+      void renderPanel(accountsBody);
+    });
   }
 
   function boot() {
     bindGate();
-    observeAdmin();
   }
 
   if (document.readyState === "loading") {
@@ -617,6 +641,17 @@
       mount() {
         boot();
       }
+    });
+  }
+  if (host && typeof host.registerAdminPage === "function") {
+    host.registerAdminPage({
+      id: "demo-users",
+      label: "Demo Users",
+      group: "Plugins",
+      title: "Demo Users",
+      description: "Demo logins, handed-out trials, signup accounts, and the plugin's trial policy.",
+      order: 10,
+      mount: mountAdminPage
     });
   }
 })();

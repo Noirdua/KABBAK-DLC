@@ -18,10 +18,11 @@ folder). Do not nest a second `demo-users/` directory here.
   accounts to hand out (for example two-week trials). Each has its own name,
   access level, roles, scopes, and expiry; reveal the key and send it to that
   person.
-- **Admin → Users → Demo & Trial Accounts** (below the users table): one
+- **Admin → Plugins → Demo Users**: one page for the plugin's settings and a
   manager for both kinds — create, edit access/roles/scopes/expiry, extend or
   reactivate an expired trial, reveal key ("reset password" = rotate key),
-  reset profile, and delete.
+  reset profile, and delete. The page is registered with
+  `TaroTimePluginHost.registerAdminPage`, so the plugin owns its menu entry.
 
 From a shell, the same account operations are available in the core CLI:
 
@@ -57,9 +58,10 @@ Contributed via the manifest `server` entry, mounted at
 
 ## Config
 
-Admin → DLC → Demo Users → **Settings** edits `config.json` through
-`GET|POST /admin/settings` (GET is readable by any authenticated key; POST is
-admin-only). Keys:
+Admin → Plugins → Demo Users → **Access & trial policy** edits `config.json`
+through `GET|POST /admin/settings` (GET is readable by any authenticated key;
+POST is admin-only). The same values remain editable from
+Admin → Plugins & DLC → Demo Users → Settings. Keys:
 
 | Key | Default | Effect |
 | --- | --- | --- |
