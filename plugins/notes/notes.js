@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  const PROFILE_SCRIPT = "app/ui-profile.js?v=20261027-shared-editor";
+  const PROFILE_SCRIPT = "app/ui-profile.js?v=20261027-enochian-persist";
 
   function showMessage(root, message) {
     root.replaceChildren();
@@ -104,7 +104,7 @@
     id: "notes",
     name: "Notes",
     kind: "gui",
-    version: "1.0.1",
+    version: "1.0.2",
     section: { id: "notes", label: "Notes" },
     mount
   });

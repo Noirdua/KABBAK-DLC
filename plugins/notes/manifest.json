@@ -2,7 +2,7 @@
   "id": "notes",
   "name": "Notes",
   "kind": "gui",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Quick notes with time and sky snapshots, split out of the Journal.",
   "entry": "notes.js",
   "css": "notes.css",

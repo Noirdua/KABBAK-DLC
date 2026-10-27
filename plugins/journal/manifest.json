@@ -2,7 +2,7 @@
   "id": "journal",
   "name": "Journal",
   "kind": "gui",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Personal journal (diary): waking and dream entries, scenes, and PDF export.",
   "entry": "journal.js",
   "css": "journal.css",
