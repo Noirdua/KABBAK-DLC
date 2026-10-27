@@ -1,11 +1,26 @@
 {
   "entries": [
     {
+      "version": "1.4.1",
+      "date": "2026-10-27",
+      "notes": [
+        "Uses the shared editor toolbar and language keyboard (Hebrew, Greek, Arabic)."
+      ]
+    },
+    {
       "version": "1.0.0",
       "date": "2026-09-11",
       "notes": [
         "New Journal page: the notebook (dream/waking entries, scenes, quick notes, PDF export) as its own section.",
         "Moved out of the Profile into a standalone page; open it from the Journal card or the top menu."
+      ]
+    },
+    {
+      "version": "1.4.0",
+      "date": "2026-10-26",
+      "notes": [
+        "Journal now opens the diary directly instead of showing a Diary/Note picker.",
+        "Quick Notes moved to the separate Notes page."
       ]
     }
   ]

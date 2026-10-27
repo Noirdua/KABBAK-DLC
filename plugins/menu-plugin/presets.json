@@ -634,6 +634,12 @@
           "children": []
         },
         {
+          "id": "open-notes",
+          "label": "Notes",
+          "enabled": true,
+          "children": []
+        },
+        {
           "id": "holidays",
           "label": "Holidays",
           "enabled": true,

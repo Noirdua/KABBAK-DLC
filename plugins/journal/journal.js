@@ -1,8 +1,8 @@
-/* journal.js — DLC plugin: personal journal page. */
+/* journal.js — DLC plugin: personal journal (diary) page. */
 (function () {
   "use strict";
 
-  const PROFILE_SCRIPT = "app/ui-profile.js?v=20260913-decan-detail";
+  const PROFILE_SCRIPT = "app/ui-profile.js?v=20261027-shared-editor";
 
   function showMessage(root, message) {
     root.replaceChildren();
@@ -13,7 +13,7 @@
   }
 
   async function ensureProfileUi() {
-    if (window.ProfileUi && typeof window.ProfileUi.mountJournal === "function") {
+    if (window.ProfileUi && typeof window.ProfileUi.showJournalPage === "function") {
       return window.ProfileUi;
     }
     try {
@@ -22,61 +22,75 @@
     return window.ProfileUi || null;
   }
 
-  function renderLanding(root, onPick) {
-    root.replaceChildren();
-    const wrap = document.createElement("div");
-    wrap.className = "journal-landing";
-    [
-      { id: "diary", label: "Diary" },
-      { id: "note", label: "Note" }
-    ].forEach((choice) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "journal-landing-btn";
-      button.textContent = choice.label;
-      button.addEventListener("click", () => onPick(choice.id));
-      wrap.appendChild(button);
-    });
-    root.appendChild(wrap);
+  function activeSection(helpers) {
+    return String(
+      helpers?.ui?.getActiveSection?.()
+      || window.TarotSectionStateUi?.getActiveSection?.()
+      || ""
+    );
+  }
+
+  function goBack(helpers) {
+    if (typeof helpers?.ui?.goBack === "function") {
+      helpers.ui.goBack();
+      return;
+    }
+    if (typeof window.TarotSectionStateUi?.goBack === "function") {
+      window.TarotSectionStateUi.goBack();
+      return;
+    }
+    window.TarotSectionStateUi?.setActiveSection?.("home");
   }
 
   function mount(root, helpers) {
-    let unmountJournal = null;
+    let starting = false;
+    let mounted = false;
 
-    function showLanding() {
-      if (typeof unmountJournal === "function") {
-        unmountJournal();
+    async function start() {
+      if (starting || mounted) {
+        return;
       }
-      unmountJournal = null;
-      renderLanding(root, showMode);
-    }
-
-    async function showMode(mode) {
+      starting = true;
       root.replaceChildren();
       const ui = await ensureProfileUi();
-      if (!ui || typeof ui.mountJournal !== "function") {
+      starting = false;
+      if (activeSection(helpers) !== "journal") {
+        return;
+      }
+      if (!ui || typeof ui.showJournalPage !== "function") {
         showMessage(root, "Journal could not start — the profile module did not load.");
         return;
       }
-      unmountJournal = ui.mountJournal(root, helpers, { mode, onBack: showLanding }) || null;
+      ui.showJournalPage(root, helpers, {
+        mode: "diary",
+        onBack: () => goBack(helpers)
+      });
+      mounted = true;
+    }
+
+    function stop() {
+      if (typeof window.ProfileUi?.releaseJournalPage === "function") {
+        window.ProfileUi.releaseJournalPage(root);
+      }
+      mounted = false;
+      root.replaceChildren();
     }
 
     const onSection = (event) => {
-      if (String(event?.detail?.activeSection || "") === "journal" && !unmountJournal && !root.querySelector(".journal-landing")) {
-        showLanding();
+      if (String(event?.detail?.activeSection || "") === "journal") {
+        void start();
+      } else {
+        stop();
       }
     };
     document.addEventListener("section:changed", onSection);
-    if (String(helpers?.ui?.getActiveSection?.() || "") === "journal") {
-      showLanding();
+    if (activeSection(helpers) === "journal") {
+      void start();
     }
 
     return () => {
       document.removeEventListener("section:changed", onSection);
-      if (typeof unmountJournal === "function") {
-        unmountJournal();
-      }
-      unmountJournal = null;
+      stop();
     };
   }
 
@@ -90,7 +104,7 @@
     id: "journal",
     name: "Journal",
     kind: "gui",
-    version: "1.1.0",
+    version: "1.4.1",
     section: { id: "journal", label: "Journal" },
     mount
   });

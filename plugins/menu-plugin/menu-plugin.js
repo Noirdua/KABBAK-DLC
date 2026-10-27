@@ -108,6 +108,16 @@
     return String(text || "").replace(/[\s▾▼↓]+$/g, "").trim();
   }
 
+  function elementLabel(element) {
+    if (!(element instanceof HTMLElement)) return "";
+    return String(
+      element.dataset?.menuLabel
+      || element.getAttribute?.("aria-label")
+      || element.textContent
+      || ""
+    ).trim();
+  }
+
   function datasetForId(buttonOrSectionId) {
     const normalized = normalizeSectionId(buttonOrSectionId);
     return SECTION_DATASETS[normalized] || "";
@@ -174,14 +184,14 @@
       const isDropdown = child.classList?.contains("topbar-dropdown");
       if (isDropdown) {
         const trigger = child.querySelector("button.settings-trigger");
-        const unit = addUnit(child, trigger?.id || "", (trigger?.textContent || "").trim(), false, child);
+        const unit = addUnit(child, trigger?.id || "", elementLabel(trigger), false, child);
         child.querySelectorAll(".topbar-dropdown-menu button").forEach((btn) => {
-          addUnit(btn, btn.id || "", (btn.textContent || "").trim(), true, unit ? child : null);
+          addUnit(btn, btn.id || "", elementLabel(btn), true, unit ? child : null);
         });
         return;
       }
       if (child.tagName === "BUTTON") {
-        addUnit(child, child.id || "", (child.textContent || "").trim(), false, null);
+        addUnit(child, child.id || "", elementLabel(child), false, null);
       }
     });
 
@@ -469,7 +479,7 @@
       const unit = {
         element,
         id: requiredId,
-        label: stripDropdownSuffix(element.textContent || ""),
+        label: stripDropdownSuffix(elementLabel(element)),
         isSubpage: Boolean(element.closest(".topbar-dropdown-menu")),
         parentDropdownEl: element.closest(".topbar-dropdown")
       };
@@ -536,7 +546,7 @@
         handledTopLevelIds.add(resolvedUnit?.id || id);
 
         const baseLabel = String(
-          item?.label || stripDropdownSuffix(dropdown.trigger?.textContent || "") || ""
+          item?.label || stripDropdownSuffix(elementLabel(dropdown.trigger)) || ""
         ).trim();
         if (dropdown.trigger) {
           dropdown.trigger.textContent = baseLabel ? `${baseLabel} ▾` : "▾";
@@ -821,7 +831,7 @@
         const childUnit = btn.id ? byId.get(btn.id) : null;
         const text = childUnit
           ? unitSearchText(childUnit, keywordIndex)
-          : `${btn.textContent || ""} ${btn.id || ""}`.toLowerCase();
+          : `${elementLabel(btn)} ${btn.id || ""}`.toLowerCase();
         if (text.includes(normalized)) {
           showUnit(btn);
           anyMatch = true;
@@ -1056,7 +1066,7 @@
         || [];
       children = [...buttons].map((button) => ({
         id: String(button.id || "").trim(),
-        label: stripDropdownSuffix(button.textContent || button.id),
+        label: stripDropdownSuffix(elementLabel(button) || button.id),
         hidden: Boolean(button.hidden) || button.classList.contains("mp-hidden"),
         children: []
       })).filter((child) => child.id);

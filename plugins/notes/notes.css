@@ -1,0 +1,47 @@
+#notes-section {
+  height: calc(100vh - 61px);
+  height: calc(100dvh - 61px);
+  overflow: auto;
+  box-sizing: border-box;
+  background: var(--tt-page-bg);
+}
+
+.profile-notes-panel--page {
+  display: block;
+  max-width: 720px;
+  margin: 12px auto 32px;
+  padding: 14px 16px 24px;
+  border-radius: 14px;
+  box-sizing: border-box;
+}
+
+.journal-view-note .profile-note-filters,
+.journal-view-note #profile-note-list,
+.journal-view-note #profile-note-editor,
+.journal-view-note #profile-note-new,
+.journal-view-note .profile-quicknote-hint {
+  display: none !important;
+}
+
+.journal-view-note .profile-quicknote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.journal-view-note .profile-quicknote-head h3 {
+  display: none;
+}
+
+.journal-message {
+  padding: 24px;
+  color: var(--tt-text-muted);
+}
+
+@media (max-width: 640px) {
+  .profile-notes-panel--page {
+    margin: 8px;
+    padding: 12px;
+  }
+}

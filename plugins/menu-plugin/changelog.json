@@ -1,6 +1,13 @@
 {
   "entries": [
     {
+      "version": "1.9.1",
+      "date": "2026-10-26",
+      "notes": [
+        "Menu labels prefer aria-label/data-menu-label, so badge text such as the Inbox unread count no longer changes the menu label."
+      ]
+    },
+    {
       "version": "1.9.0",
       "date": "2026-09-20",
       "notes": [
