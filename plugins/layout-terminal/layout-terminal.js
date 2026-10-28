@@ -11,15 +11,44 @@
     return;
   }
 
-  const VERSION = "1.0.1";
+  const VERSION = "1.0.3";
 
   const DEFAULT_CONFIG = {
+    theme: "terminal",
     followTheme: false,
     colors: {},
     brand: "kabbak",
     byline: "correspondence archive",
     showSearch: true,
     sidebarWidth: 264
+  };
+
+  const THEME_PRESETS = {
+    terminal: {},
+    green: {
+      bg: "#020805",
+      panel: "#04100a",
+      raised: "#0a1d13",
+      line: "#173a27",
+      text: "#b8f6d0",
+      bright: "#ecfff4",
+      muted: "#74c793",
+      dim: "#3f7b5b",
+      accent: "#4ade80",
+      green: "#4ade80"
+    },
+    amber: {
+      bg: "#0a0702",
+      panel: "#120d04",
+      raised: "#1f1708",
+      line: "#3b2c11",
+      text: "#f5e6c4",
+      bright: "#fff8e7",
+      muted: "#c7a86a",
+      dim: "#7d683f",
+      accent: "#f59e0b",
+      green: "#fbbf24"
+    }
   };
 
   const COLOR_PROPERTIES = {
@@ -397,6 +426,14 @@
         Object.values(COLOR_PROPERTIES).forEach((property) => {
           rootEl.style.removeProperty(property);
         });
+        if (config.followTheme !== true) {
+          const preset = THEME_PRESETS[String(config.theme || "terminal")] || THEME_PRESETS.terminal;
+          Object.entries(preset).forEach(([key, value]) => {
+            const property = COLOR_PROPERTIES[key];
+            const color = safeColor(value);
+            if (property && color) rootEl.style.setProperty(property, color);
+          });
+        }
         Object.entries(config.colors || {}).forEach(([key, value]) => {
           const property = COLOR_PROPERTIES[key];
           const color = safeColor(value);
@@ -505,7 +542,10 @@
         closeDrawer();
         scheduleNav();
       });
-      listen(document, "taro-plugins-ready", scheduleNav);
+      listen(document, "taro-plugins-ready", () => {
+        ui.attachPages(pagesEl);
+        scheduleNav();
+      });
       listen(document, "taro-menu-updated", scheduleNav);
       listen(document, "connection:access-updated", scheduleNav);
       listen(document, "taro-plugin-config-updated", (event) => {

@@ -12,10 +12,11 @@ The skin reads the live menu through `TaroTimePluginHost.listNav()`, so the **Me
 
 ## Config
 
-Edit `config.json` in Settings → DLC Shop & Plugins → Terminal Layout.
+Edit the skin in **Settings → DLC Shop & Plugins → Terminal Layout** (or Admin → Plugins → Terminal Layout). The designed form covers theme, branding, search, and sidebar width; the config file remains available for advanced color overrides.
 
 ```json
 {
+  "theme": "terminal",
   "followTheme": false,
   "colors": {},
   "brand": "kabbak",
@@ -25,7 +26,8 @@ Edit `config.json` in Settings → DLC Shop & Plugins → Terminal Layout.
 }
 ```
 
-- `followTheme: true` remaps the terminal variables to the app's `--tt-*` theme tokens. Individual values in `colors` still win.
+- `theme` is `terminal` (default), `green`, or `amber`. The green and amber themes replace the old separate terminal variants; uninstall any duplicate terminal skin.
+- `followTheme: true` remaps the terminal variables to the app's `--tt-*` theme tokens and wins over `theme`. Individual values in `colors` still win.
 - `colors` accepts `bg`, `panel`, `raised`, `line`, `text`, `bright`, `muted`, `dim`, `accent`, and `green` with hex, rgb/hsl, or `var(--token)` values.
 - `sidebarWidth` is clamped to 220–340px.
 - `showSearch: false` hides the menu search box.

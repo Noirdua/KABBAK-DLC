@@ -635,3 +635,33 @@ html.kabbak-terminal-drawer-open body {
     transition: none;
   }
 }
+
+/* Every attached page fills the terminal page area, not the older top-bar
+   viewport. Sections that have their own inner scroll still scroll there; the
+   outer fallback keeps long pages usable when a plugin does not. */
+html[data-plugin-skin="layout-terminal"] .terminal-pages > section {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  overflow-y: auto !important;
+  box-sizing: border-box;
+}
+
+html[data-plugin-skin="layout-terminal"] #sky-section {
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+}
+
+html[data-plugin-skin="layout-terminal"] #now-panel {
+  height: 100%;
+  min-height: 100%;
+  padding: 10px 16px;
+  --now-square-size: min(calc(100vw - var(--terminal-sidebar-w) - 64px), calc(100svh - 96px));
+}
+
+@media (max-width: 900px) {
+  html[data-plugin-skin="layout-terminal"] #now-panel {
+    --now-square-size: min(calc(100vw - 32px), calc(100svh - 120px));
+  }
+}

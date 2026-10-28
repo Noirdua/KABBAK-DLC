@@ -1,6 +1,24 @@
 {
   "entries": [
     {
+      "version": "1.0.3",
+      "date": "2026-10-28",
+      "notes": [
+        "Combined the normal and green terminal variants into one skin with a Theme setting (Terminal, Terminal green, Amber).",
+        "Follow app theme still overrides the selected terminal palette.",
+        "Designed settings form for theme, branding, search, sidebar width, and color overrides."
+      ]
+    },
+    {
+      "version": "1.0.2",
+      "date": "2026-10-28",
+      "notes": [
+        "Pages that load after the skin now attach to the terminal page area (fixes hieroglyphs and later plugin sections).",
+        "Page sections fill the terminal page area instead of assuming the old top-bar height, with an outer scroll fallback.",
+        "Sky fills the terminal page area and sizes its sky square for the sidebar-adjusted width."
+      ]
+    },
+    {
       "version": "1.0.1",
       "date": "2026-10-24",
       "notes": [

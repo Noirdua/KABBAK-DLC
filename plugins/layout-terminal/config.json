@@ -1,8 +1,11 @@
 {
-  "followTheme": false,
-  "colors": {},
-  "brand": "kabbak",
-  "byline": "correspondence archive",
-  "showSearch": true,
-  "sidebarWidth": 264
+    "followTheme":  false,
+    "colors":  {
+
+               },
+    "brand":  "kabbak",
+    "byline":  "correspondence archive",
+    "showSearch":  true,
+    "sidebarWidth":  264,
+    "theme":  "terminal"
 }
