@@ -11,7 +11,8 @@
     return;
   }
 
-  const VERSION = "1.0.3";
+  const VERSION = "1.0.4";
+  const VARIANT_STORAGE_KEY = "kabbak-skin-variant-layout-terminal";
 
   const DEFAULT_CONFIG = {
     theme: "terminal",
@@ -416,7 +417,16 @@
         if (drawerOpen) setDrawer(false);
       }
 
-      function applyConfig() {
+      function getSkinVariant() {
+    try {
+      const value = String(window.localStorage.getItem(VARIANT_STORAGE_KEY) || "").trim();
+      return ["terminal", "green", "amber"].includes(value) ? value : "";
+    } catch (_error) {
+      return "";
+    }
+  }
+
+      function applyConfig(variantOverride = "") {
         brandNameEl.textContent = String(config.brand || DEFAULT_CONFIG.brand);
         bylineEl.textContent = String(config.byline || "");
         searchWrapEl.hidden = config.showSearch === false;
@@ -427,7 +437,8 @@
           rootEl.style.removeProperty(property);
         });
         if (config.followTheme !== true) {
-          const preset = THEME_PRESETS[String(config.theme || "terminal")] || THEME_PRESETS.terminal;
+          const themeId = String(variantOverride || getSkinVariant() || config.theme || "terminal");
+          const preset = THEME_PRESETS[themeId] || THEME_PRESETS.terminal;
           Object.entries(preset).forEach(([key, value]) => {
             const property = COLOR_PROPERTIES[key];
             const color = safeColor(value);
@@ -558,6 +569,16 @@
       listen(document, "taro-plugin-content-updated", (event) => {
         if (String(event?.detail?.pluginName || "") !== "layout-terminal") return;
         void loadConfig();
+      });
+      listen(document, "kabbak:skin-variant", (event) => {
+        if (String(event?.detail?.skin || "") !== "layout-terminal") return;
+        applyConfig(String(event?.detail?.variant || ""));
+        renderChrome();
+      });
+      listen(window, "storage", (event) => {
+        if (event.key !== VARIANT_STORAGE_KEY) return;
+        applyConfig();
+        renderChrome();
       });
 
       const topbarActions = document.getElementById("topbar-actions");

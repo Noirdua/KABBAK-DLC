@@ -1,6 +1,15 @@
 {
   "entries": [
     {
+      "version": "1.0.4",
+      "date": "2026-10-28",
+      "notes": [
+        "Added a per-user Terminal variant setting under Settings → UI Overhaul: Server default, Terminal (default), Terminal green, or Amber.",
+        "Legacy Terminal Green skin selections migrate to the main Terminal Layout with the green variant.",
+        "The variant applies live and is stored in this browser only."
+      ]
+    },
+    {
       "version": "1.0.3",
       "date": "2026-10-28",
       "notes": [

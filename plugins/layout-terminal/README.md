@@ -28,6 +28,10 @@ Edit the skin in **Settings → DLC Shop & Plugins → Terminal Layout** (or Adm
 
 - `theme` is `terminal` (default), `green`, or `amber`. The green and amber themes replace the old separate terminal variants; uninstall any duplicate terminal skin.
 - `followTheme: true` remaps the terminal variables to the app's `--tt-*` theme tokens and wins over `theme`. Individual values in `colors` still win.
+
+## Per-user variants
+
+Users choose **Settings → UI Overhaul → Terminal variant** (Server default, Terminal default, Terminal green, or Amber). The choice is stored in that browser and overrides the plugin's server default `theme`; the admin form sets the default. A legacy Terminal Green skin selection migrates to Terminal Layout + green, and the old skin should be uninstalled.
 - `colors` accepts `bg`, `panel`, `raised`, `line`, `text`, `bright`, `muted`, `dim`, `accent`, and `green` with hex, rgb/hsl, or `var(--token)` values.
 - `sidebarWidth` is clamped to 220–340px.
 - `showSearch: false` hides the menu search box.
