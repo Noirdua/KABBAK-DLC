@@ -11,7 +11,7 @@
     return;
   }
 
-  const VERSION = "1.0.4";
+  const VERSION = "1.0.5";
   const VARIANT_STORAGE_KEY = "kabbak-skin-variant-layout-terminal";
 
   const DEFAULT_CONFIG = {
@@ -431,19 +431,24 @@
         bylineEl.textContent = String(config.byline || "");
         searchWrapEl.hidden = config.showSearch === false;
         footNoteEl.textContent = `layout-terminal ${VERSION}`;
-        rootEl.classList.toggle("is-theme", config.followTheme === true);
+        const chosenVariant = String(variantOverride || getSkinVariant() || "").trim();
+        const followTheme = config.followTheme === true && !chosenVariant;
+        rootEl.classList.toggle("is-theme", followTheme);
 
         Object.values(COLOR_PROPERTIES).forEach((property) => {
           rootEl.style.removeProperty(property);
         });
-        if (config.followTheme !== true) {
-          const themeId = String(variantOverride || getSkinVariant() || config.theme || "terminal");
+        if (!followTheme) {
+          const themeId = chosenVariant || String(config.theme || "terminal");
           const preset = THEME_PRESETS[themeId] || THEME_PRESETS.terminal;
+          rootEl.dataset.variant = THEME_PRESETS[themeId] ? themeId : "terminal";
           Object.entries(preset).forEach(([key, value]) => {
             const property = COLOR_PROPERTIES[key];
             const color = safeColor(value);
             if (property && color) rootEl.style.setProperty(property, color);
           });
+        } else {
+          rootEl.dataset.variant = "theme";
         }
         Object.entries(config.colors || {}).forEach(([key, value]) => {
           const property = COLOR_PROPERTIES[key];

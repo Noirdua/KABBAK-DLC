@@ -1,6 +1,14 @@
 {
   "entries": [
     {
+      "version": "1.0.5",
+      "date": "2026-10-28",
+      "notes": [
+        "The per-user Terminal variant now overrides follow-theme so choosing Terminal green actually applies.",
+        "The UI Overhaul variant picker no longer has a Server default option; it reflects the effective server theme until the user picks one."
+      ]
+    },
+    {
       "version": "1.0.4",
       "date": "2026-10-28",
       "notes": [

@@ -31,7 +31,7 @@ Edit the skin in **Settings → DLC Shop & Plugins → Terminal Layout** (or Adm
 
 ## Per-user variants
 
-Users choose **Settings → UI Overhaul → Terminal variant** (Server default, Terminal default, Terminal green, or Amber). The choice is stored in that browser and overrides the plugin's server default `theme`; the admin form sets the default. A legacy Terminal Green skin selection migrates to Terminal Layout + green, and the old skin should be uninstalled.
+Users choose **Settings → UI Overhaul → Terminal variant** (Terminal default, Terminal green, or Amber). The choice is stored in that browser and overrides the plugin's server default `theme`, including `followTheme`; the admin form sets the default. A legacy Terminal Green skin selection migrates to Terminal Layout + green, and the old skin should be uninstalled.
 - `colors` accepts `bg`, `panel`, `raised`, `line`, `text`, `bright`, `muted`, `dim`, `accent`, and `green` with hex, rgb/hsl, or `var(--token)` values.
 - `sidebarWidth` is clamped to 220–340px.
 - `showSearch: false` hides the menu search box.
