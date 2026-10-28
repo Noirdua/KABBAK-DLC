@@ -2,7 +2,7 @@
   "id": "layout-terminal",
   "name": "Terminal Layout",
   "kind": "gui",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Terminal-style UI overhaul: a fixed left index with grouped navigation, a thin breadcrumb bar, and pwn.watch-inspired monospace chrome. App pages are unchanged.",
   "entry": "layout-terminal.js",
   "css": "layout-terminal.css",

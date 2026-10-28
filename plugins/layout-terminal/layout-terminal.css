@@ -647,6 +647,13 @@ html[data-plugin-skin="layout-terminal"] .terminal-pages > section {
   box-sizing: border-box;
 }
 
+html[data-plugin-skin="layout-terminal"] .terminal-pages > section,
+html[data-plugin-skin="layout-terminal"] .terminal-pages > section *,
+html[data-plugin-skin="layout-terminal"] .terminal-pages > section *::before,
+html[data-plugin-skin="layout-terminal"] .terminal-pages > section *::after {
+  box-sizing: border-box;
+}
+
 html[data-plugin-skin="layout-terminal"] .terminal-pages > #tarot-frame-section.is-grid-focus {
   position: absolute;
   inset: 0;
@@ -664,6 +671,15 @@ html[data-plugin-skin="layout-terminal"] #now-panel {
   min-height: 100%;
   padding: 10px 16px;
   --now-square-size: min(calc(100vw - var(--terminal-sidebar-w) - 64px), calc(100svh - 96px));
+}
+
+@media (min-width: 901px) {
+  html[data-plugin-skin="layout-terminal"] #now-panel .now-panel-square {
+    width: min(100%, 1180px);
+    height: min(84svh, 820px);
+    max-height: 100%;
+    aspect-ratio: auto;
+  }
 }
 
 @media (max-width: 900px) {

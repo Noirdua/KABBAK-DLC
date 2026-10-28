@@ -1,6 +1,14 @@
 {
   "entries": [
     {
+      "version": "1.0.7",
+      "date": "2026-10-28",
+      "notes": [
+        "Page layouts now use border-box sizing inside the terminal page area, so padded panels (Sky, Frame, Alphabet, and others) fit the workspace instead of overflowing and being cropped.",
+        "The Sky board scales to the page width instead of the full viewport, so it no longer runs under the sidebar on smaller desktop windows."
+      ]
+    },
+    {
       "version": "1.0.6",
       "date": "2026-10-28",
       "notes": [
