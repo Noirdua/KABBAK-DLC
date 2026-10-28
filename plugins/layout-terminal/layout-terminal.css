@@ -647,6 +647,12 @@ html[data-plugin-skin="layout-terminal"] .terminal-pages > section {
   box-sizing: border-box;
 }
 
+html[data-plugin-skin="layout-terminal"] .terminal-pages > #tarot-frame-section.is-grid-focus {
+  position: absolute;
+  inset: 0;
+  overflow: hidden !important;
+}
+
 html[data-plugin-skin="layout-terminal"] #sky-section {
   height: 100%;
   min-height: 0;

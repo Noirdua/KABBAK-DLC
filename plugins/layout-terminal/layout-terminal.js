@@ -11,7 +11,7 @@
     return;
   }
 
-  const VERSION = "1.0.5";
+  const VERSION = "1.0.6";
   const VARIANT_STORAGE_KEY = "kabbak-skin-variant-layout-terminal";
 
   const DEFAULT_CONFIG = {

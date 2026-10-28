@@ -1,6 +1,13 @@
 {
   "entries": [
     {
+      "version": "1.0.6",
+      "date": "2026-10-28",
+      "notes": [
+        "The Tarot Frame page now fills the terminal page area instead of the whole viewport, so its grid no longer runs under the top bar and sidebar."
+      ]
+    },
+    {
       "version": "1.0.5",
       "date": "2026-10-28",
       "notes": [
