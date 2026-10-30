@@ -1,0 +1,21 @@
+{
+  "entries": [
+    {
+      "version": "1.1.0",
+      "date": "2026-10-30",
+      "notes": [
+        "Table data now loads from a script file (data/liber-777.js) instead of a JSON fetch, so the page works without the plugin-asset route.",
+        "JSON stays in the folder for tooling and inspection."
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-10-30",
+      "notes": [
+        "New 777 page: clickable Tree of Life on the left, complete Liber 777 correspondence tables on the right.",
+        "Table data from the open_777 data set (MIT), transcribed from Liber 777 (1909, public domain).",
+        "Search box filters the current key and lists every key that contains the term; full table toggle shows all 35 columns."
+      ]
+    }
+  ]
+}
