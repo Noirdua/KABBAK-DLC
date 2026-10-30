@@ -1,0 +1,553 @@
+/* liber-777.css — Liber 777 correspondence tables.
+ * Styles follow the app's theme tokens (--tt-*) so every look/palette works.
+ */
+
+.plugin-api-section[data-plugin-section="liber-777"],
+#liber-777-section {
+  padding: 0;
+}
+
+.l777-shell {
+  display: grid;
+  grid-template-columns: minmax(210px, 270px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  padding: 18px clamp(12px, 3vw, 32px) 48px;
+  color: var(--tt-text);
+}
+
+/* ── left column: tree + key list ─────────────────────────────────────────── */
+
+.l777-side {
+  position: sticky;
+  top: 12px;
+  max-height: calc(100vh - 24px);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 12px;
+  border: 1px solid var(--tt-border);
+  border-radius: 16px;
+  background: var(--tt-bg-deep);
+  scrollbar-width: thin;
+  scrollbar-color: var(--tt-scroll-thumb) var(--tt-scroll-track);
+}
+
+.l777-brand {
+  margin: 0;
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--tt-accent);
+  font-variant-numeric: lining-nums;
+}
+
+.l777-brand-sub {
+  margin: 0 0 4px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--tt-text-muted);
+}
+
+.l777-tree {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+  touch-action: manipulation;
+}
+
+.l777-path {
+  stroke: var(--tt-border);
+  stroke-width: 1.6;
+  transition: stroke 120ms ease, stroke-width 120ms ease;
+}
+
+.l777-path.is-active {
+  stroke: var(--tt-accent);
+  stroke-width: 2.6;
+}
+
+.l777-path-hit {
+  stroke: transparent;
+  stroke-width: 14;
+  cursor: pointer;
+  outline: none;
+}
+
+.l777-path-badge {
+  cursor: pointer;
+}
+
+.l777-badge-box {
+  fill: var(--tt-bg-deepest);
+  stroke: var(--tt-border);
+  stroke-width: 1;
+}
+
+.l777-path-badge.is-active .l777-badge-box,
+.l777-path-badge:hover .l777-badge-box {
+  fill: var(--tt-accent);
+  stroke: var(--tt-accent);
+}
+
+.l777-badge-text {
+  fill: var(--tt-text-cool-bright);
+  font-size: 10px;
+  font-family: "Noto Rashi Hebrew", "Noto Sans Hebrew", serif;
+  pointer-events: none;
+}
+
+.l777-path-badge.is-active .l777-badge-text,
+.l777-path-badge:hover .l777-badge-text {
+  fill: var(--tt-bg-deepest);
+}
+
+.l777-node {
+  fill: var(--tt-surface);
+  stroke: var(--tt-border);
+  stroke-width: 1.4;
+  cursor: pointer;
+  outline: none;
+  transition: fill 120ms ease, stroke 120ms ease;
+}
+
+.l777-node:hover,
+.l777-node:focus-visible {
+  stroke: var(--tt-accent);
+}
+
+.l777-node.is-active {
+  fill: var(--tt-accent);
+  stroke: var(--tt-accent-strong);
+}
+
+.l777-node-daath {
+  fill: transparent;
+  stroke-dasharray: 3 3;
+}
+
+.l777-node-text {
+  fill: var(--tt-text-bright);
+  font-size: 10px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.l777-node.is-active + .l777-node-text,
+.l777-node.is-active ~ .l777-node-name {
+  fill: var(--tt-text-bright);
+}
+
+.l777-node-name {
+  fill: var(--tt-text-muted);
+  font-size: 7.5px;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+/* key list */
+
+.l777-keylist {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-top: 1px solid var(--tt-border-soft);
+  padding-top: 8px;
+}
+
+.l777-keylist-heading {
+  margin: 8px 0 2px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tt-text-dim);
+}
+
+.l777-keylist-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 5px 8px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.l777-keylist-item:hover {
+  background: var(--tt-surface);
+}
+
+.l777-keylist-item.is-active {
+  border-color: var(--tt-accent);
+  background: var(--tt-accent-soft);
+}
+
+.l777-keylist-sub {
+  color: var(--tt-text-muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* ── right column ─────────────────────────────────────────────────────────── */
+
+.l777-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.l777-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--tt-border);
+}
+
+.l777-kicker {
+  margin: 0 0 2px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tt-accent);
+}
+
+.l777-title {
+  margin: 0;
+  font-size: clamp(22px, 3vw, 32px);
+  line-height: 1.1;
+  color: var(--tt-text-bright);
+}
+
+.l777-sub {
+  margin: 4px 0 0;
+  color: var(--tt-text-muted);
+  font-size: 13px;
+}
+
+.l777-nav {
+  display: flex;
+  gap: 6px;
+}
+
+.l777-nav-btn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--tt-border);
+  border-radius: 10px;
+  background: var(--tt-surface);
+  color: var(--tt-text);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.l777-nav-btn:hover {
+  border-color: var(--tt-accent);
+}
+
+.l777-tools {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.l777-search {
+  flex: 1 1 220px;
+  min-width: 0;
+  padding: 9px 12px;
+  border: 1px solid var(--tt-border);
+  border-radius: 10px;
+  background: var(--tt-bg-deepest);
+  color: var(--tt-text-bright);
+  font: inherit;
+  font-size: 14px;
+}
+
+.l777-search:focus {
+  outline: none;
+  border-color: var(--tt-accent);
+}
+
+.l777-toggle {
+  padding: 9px 14px;
+  border: 1px solid var(--tt-border);
+  border-radius: 10px;
+  background: var(--tt-surface);
+  color: var(--tt-text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.l777-toggle.is-active {
+  border-color: var(--tt-accent);
+  background: var(--tt-accent-soft);
+  color: var(--tt-text-bright);
+}
+
+/* correspondence rows */
+
+.l777-tables {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.l777-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 240px) minmax(0, 1fr);
+  gap: 14px;
+  padding: 8px 10px;
+  border: 1px solid var(--tt-border-soft);
+  border-radius: 10px;
+  background: var(--tt-bg-deep);
+}
+
+.l777-row:hover {
+  border-color: var(--tt-border);
+  background: var(--tt-surface);
+}
+
+.l777-row-head {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.l777-numeral {
+  flex: none;
+  min-width: 34px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--tt-accent);
+}
+
+.l777-row-title {
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--tt-text-soft);
+}
+
+.l777-row-body {
+  min-width: 0;
+}
+
+.l777-value-line {
+  margin: 0 0 2px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--tt-text-bright);
+  overflow-wrap: anywhere;
+}
+
+.l777-value-line:last-child {
+  margin-bottom: 0;
+}
+
+.l777-value-sub {
+  display: flex;
+  gap: 8px;
+  margin: 3px 0 0;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.l777-value-sub-label {
+  flex: none;
+  max-width: 42%;
+  color: var(--tt-text-dim);
+}
+
+.l777-value-sub-text {
+  color: var(--tt-text-cool);
+  overflow-wrap: anywhere;
+}
+
+.l777-count {
+  margin: 0 0 4px;
+  font-size: 12px;
+  color: var(--tt-text-muted);
+}
+
+.l777-mark {
+  padding: 0 1px;
+  border-radius: 3px;
+  background: var(--tt-accent);
+  color: var(--tt-bg-deepest);
+}
+
+.l777-empty {
+  margin: 0;
+  padding: 18px;
+  border: 1px dashed var(--tt-border);
+  border-radius: 12px;
+  color: var(--tt-text-muted);
+  font-size: 14px;
+}
+
+/* cross-key search hits */
+
+.l777-results {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  border: 1px solid var(--tt-accent);
+  border-radius: 12px;
+  background: var(--tt-accent-soft);
+}
+
+.l777-results-title {
+  margin: 0 0 4px;
+  font-size: 12px;
+  color: var(--tt-text-bright);
+}
+
+.l777-result {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 10px;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.l777-result:hover {
+  border-color: var(--tt-accent);
+  background: var(--tt-bg-deep);
+}
+
+.l777-result-name {
+  font-size: 13px;
+  color: var(--tt-text-bright);
+}
+
+.l777-result-count {
+  font-size: 11px;
+  color: var(--tt-text-muted);
+}
+
+.l777-result-preview {
+  grid-column: 1 / -1;
+  font-size: 11.5px;
+  color: var(--tt-text-muted);
+  overflow-wrap: anywhere;
+}
+
+/* full table */
+
+.l777-matrix-wrap {
+  overflow: auto;
+  max-height: 70vh;
+  border: 1px solid var(--tt-border);
+  border-radius: 12px;
+  background: var(--tt-bg-deepest);
+}
+
+.l777-matrix {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 12px;
+  min-width: 100%;
+}
+
+.l777-matrix th,
+.l777-matrix td {
+  padding: 5px 8px;
+  border-right: 1px solid var(--tt-border-soft);
+  border-bottom: 1px solid var(--tt-border-soft);
+  vertical-align: top;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.l777-matrix thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--tt-surface-alt);
+  color: var(--tt-text-bright);
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+.l777-matrix tbody th {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--tt-surface-alt);
+  color: var(--tt-text-soft);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.l777-matrix .l777-matrix-corner {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--tt-bg-deepest);
+}
+
+.l777-matrix td {
+  color: var(--tt-text);
+  min-width: 90px;
+}
+
+.l777-matrix tbody tr:hover td {
+  background: var(--tt-surface);
+}
+
+/* ── responsive ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 820px) {
+  .l777-shell {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px 12px 40px;
+  }
+
+  .l777-side {
+    position: static;
+    max-height: none;
+  }
+
+  .l777-tree {
+    max-width: 260px;
+    margin: 0 auto;
+  }
+
+  .l777-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+
+  .l777-row-head {
+    border-bottom: 1px solid var(--tt-border-soft);
+    padding-bottom: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .l777-path,
+  .l777-node {
+    transition: none;
+  }
+}
